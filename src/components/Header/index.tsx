@@ -1,10 +1,11 @@
 import React from 'react';
+import StyledHeader from './style';
 
 const Header: React.FC = () => {
   return (
-    <header className="c-header">
+    <StyledHeader>
       <nav>
-        <ul className="c-header__nav">
+        <ul className="list">
           <li>
             Login
           </li>
@@ -16,7 +17,7 @@ const Header: React.FC = () => {
           </li>
         </ul>
       </nav>
-    </header>
+    </StyledHeader>
   )
 };
 

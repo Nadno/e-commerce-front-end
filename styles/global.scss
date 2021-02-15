@@ -13,10 +13,10 @@
   --color-secondary: #6D7CB0;
   --color-title: #151515;
   --color-text: #404040;
+  --color-shadow: #6d7bb083;
 }
 
-body,
-html {
+#__next {
   width: 100vw;
   height: 100%;
   min-height: 100vh;
@@ -24,3 +24,5 @@ html {
   background-color: #f5f5f5;
   color: var(--color-text);
 }
+
+@import "./components/c-header";

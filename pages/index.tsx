@@ -1,9 +1,10 @@
 import React from 'react';
+import Header from '../src/components/Header';
 
 const IndexPage = () => (
-  <div>
-
-  </div>
+  <>
+    <Header />
+  </>
 )
 
 export default IndexPage

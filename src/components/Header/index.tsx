@@ -6,13 +6,13 @@ const Header: React.FC = () => {
       <nav>
         <ul className="c-header__nav">
           <li>
-            Ínicio
+            Login
           </li>
           <li>
-            Categorias
+            Cadastrar
           </li>
           <li>
-            Filtrar
+            Carrinho
           </li>
         </ul>
       </nav>

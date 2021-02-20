@@ -2,10 +2,8 @@ import styled from 'styled-components';
 import Container from '../Container';
 
 const StyledHeader = styled(Container)`
-  width: 100vw;
+  width: 100%;
   height: 5rem;
-  max-width: var(--maxWidth);
-  margin: 0 auto;
 
   nav {
     height: 100%;

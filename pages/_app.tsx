@@ -17,8 +17,6 @@ const GlobalStyle = createGlobalStyle`
   :root {
     font-size: 62.5%;
     font-family: 'Lato', sans-serif;
-
-    --maxWidth: 800px;
   }
 
   body {
@@ -37,8 +35,18 @@ const GlobalStyle = createGlobalStyle`
   
   #__next {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
+    grid-template-rows: repeat(2, auto);
+
+    row-gap: 8rem;
+
+    main,
+    header,
+    section,
+    footer {
+      grid-column: 2/3;
+    }
   }
 `;
 

@@ -3,6 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import {
   createGlobalStyle,
+  StyledProps,
   ThemeProvider,
 } from 'styled-components';
 
@@ -16,6 +17,8 @@ const GlobalStyle = createGlobalStyle`
   :root {
     font-size: 62.5%;
     font-family: 'Lato', sans-serif;
+
+    --maxWidth: 800px;
   }
 
   body {
@@ -23,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     font-family: 'Lato', sans-serif;
     color: ${({ theme }) => theme.colors.text};
+    background-color: #fff;
   }
 
   html, body {
@@ -40,16 +44,16 @@ const GlobalStyle = createGlobalStyle`
 
 const theme = {
   colors: {
-    white: '#fff',
-    primary: '#5EC2C0',
-    secondary: '#6D7CB0',
-    title: '#151515',
+    white: '#f5f5f5',
+    primary: '#d64040',
+    secondary: '#b06d6d',
+    title: '#303030',
     text: '#404040',
-    shadow: '#6d7bb083',
+    shadow: '#6d7bb025',
   },
 };
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: StyledProps<AppProps>) {
   return (
     <>
       <Head>
@@ -58,6 +62,8 @@ export default function App({ Component, pageProps }: AppProps) {
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
           rel="stylesheet"
         />
+
+        <title>Produtos</title>
 
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

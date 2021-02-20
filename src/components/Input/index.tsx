@@ -1,6 +1,7 @@
+import React, { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-const Input: any = styled.input`
+const StyledInput: any = styled.input`
   width: 100%;
   height: 4rem;
   border: 2px solid ${({ theme }) => theme.colors.shadow};
@@ -19,8 +20,15 @@ const Input: any = styled.input`
   }
 `;
 
-Input.Field = styled.div`
+StyledInput.Field = styled.div`
   position: relative;
+
+  label {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
 
   &:focus-within::after {
     content: '';
@@ -41,5 +49,21 @@ Input.Field = styled.div`
     background-color: red;
   }
 `;
+
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+}
+
+const Input: React.FC<Props> = ({ id, name, label, value, ...props }) => {
+  return (
+    <StyledInput.Field>
+      <label htmlFor={id}>{label}</label>
+      <StyledInput type="text" id={id} name={name} value={value} {...props} />
+    </StyledInput.Field>
+  );
+};
 
 export default Input;

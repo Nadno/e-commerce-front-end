@@ -1,14 +1,11 @@
 import styled from 'styled-components';
+import Container from '../Container';
 
-const StyledHeader = styled.header`
+const StyledHeader = styled(Container)`
   width: 100vw;
   height: 5rem;
-  max-width: 750px;
+  max-width: var(--maxWidth);
   margin: 0 auto;
-
-  box-shadow: 0 0 8px 1px ${({ theme }) => theme.colors.shadow};
-  border-radius: 0 0 4rem 4rem;
-  background-color: var(--color-white);
 
   nav {
     height: 100%;

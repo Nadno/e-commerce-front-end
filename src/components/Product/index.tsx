@@ -1,7 +1,8 @@
 import React from 'react';
 import IProduct from '../../interfaces/product';
 import formatCurrency from '../../utils/formatCurrency';
-import Link from '../Link';
+import formatDescription from '../../utils/formatDescription';
+import Button from '../Button';
 import StyledProduct from './style';
 
 const Product: React.FC<IProduct> = ({
@@ -12,18 +13,18 @@ const Product: React.FC<IProduct> = ({
   title,
 }) => {
   return (
-    <StyledProduct>
+    <StyledProduct as="li" title={title}>
       <img src={image} alt={title} className="img" />
 
-      <div className="info">
-        <h3 className="title">{title}</h3>
-        <span className="price">{formatCurrency(price)}</span>
-        <div className="more">
-          <Link href="#">
-            Comprar
-          </Link>
+      <StyledProduct.Content>
+        <div className="info">
+          <h3 className="title">{title}</h3>
+          <p className="description" title={description}>{formatDescription(description)}</p>
+          <span className="price">{formatCurrency(price)}</span>
         </div>
-      </div>
+
+        <Button.Link href={`/products/${id}`}>Detalhes</Button.Link>
+      </StyledProduct.Content>
     </StyledProduct>
   );
 };

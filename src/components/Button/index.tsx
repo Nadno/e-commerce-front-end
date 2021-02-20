@@ -19,6 +19,8 @@ const StyledButton = styled.button`
 `;
 
 const Primary = styled(StyledButton)`
+  width: 100%;
+  max-width: 30rem;
   background-color: ${({ theme }) => theme.colors.primary};
 `;
 

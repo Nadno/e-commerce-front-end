@@ -7,6 +7,8 @@ import {
   ThemeProvider,
 } from 'styled-components';
 
+import { AccountProvider } from '../src/useAccount';
+
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
@@ -79,7 +81,9 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Component {...pageProps} />
+        <AccountProvider>
+          <Component {...pageProps} />
+        </AccountProvider>
       </ThemeProvider>
     </>
   );

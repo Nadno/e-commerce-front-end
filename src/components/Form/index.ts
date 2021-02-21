@@ -22,7 +22,8 @@ Form.Fieldset = styled.fieldset`
   padding: 0 2rem;
   border: none;
 
-  padding-top: 4rem;
+  padding-top: 2rem;
+  margin-bottom: 4rem;
 
   legend {
     font-size: 2rem;

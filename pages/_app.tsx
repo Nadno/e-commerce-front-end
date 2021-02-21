@@ -37,10 +37,11 @@ const GlobalStyle = createGlobalStyle`
     flex: 1;
     display: grid;
     grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
-    grid-template-rows: repeat(2, auto);
+    grid-template-rows: auto;
 
     row-gap: 8rem;
 
+    form,
     main,
     header,
     section,

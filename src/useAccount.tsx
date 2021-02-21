@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-
+import router from 'next/router';
 import { getAccount, removeAccount, storeAccount } from './utils/account';
 import getSecondsToExpire from './utils/jwt';
 interface Account {
@@ -64,3 +64,48 @@ export const AccountProvider: React.FC = ({ children }) => {
     </ContextAccount.Provider>
   );
 };
+
+
+const useAccount = () => {
+  const ctx = useContext<AccountProvider | null>(ContextAccount);
+  if (!ctx) throw new Error('useAccount must be used within AccountProvider');
+
+  const {
+    account,
+    setAccount,
+    token,
+    setToken,
+    refreshToken,
+    setRefreshToken,
+  } = ctx;
+
+  const login = ({ id, email, token, refreshToken }: any) => {
+    if (id && email && token && refreshToken) {
+      storeAccount({ id, email }, token, refreshToken);
+      setRefreshToken(refreshToken);
+      setAccount({ id, email });
+      setToken(token);
+    }
+
+    router.push('/');
+  };
+
+  const logout = () => {
+    setAccount({});
+    setToken('');
+    setRefreshToken('');
+    removeAccount();
+    
+    router.push('/');
+  };
+
+  return {
+    account,
+    token,
+    refreshToken,
+    login,
+    logout,
+  };
+};
+
+export default useAccount;

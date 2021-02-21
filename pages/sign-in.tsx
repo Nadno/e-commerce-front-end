@@ -33,7 +33,7 @@ const SignIn = FormData(
             handleChange={handleChange}
           />
 
-          <Form.Submit>Login</Form.Submit>
+          <Form.Submit>Entrar</Form.Submit>
         </Form.Fieldset>
       </Form>
     );

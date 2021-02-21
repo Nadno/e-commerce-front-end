@@ -35,4 +35,17 @@ Form.Fieldset = styled.fieldset`
   }
 `;
 
+Form.Submit = styled.button.attrs((_) => ({ type: 'submit' }))`
+  cursor: pointer;
+  width: 100%;
+  height: 4rem;
+
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.white};
+
+  border: none;
+  background-color: ${({ theme }) => theme.colors.secondary};
+`;
+
 export default Form;

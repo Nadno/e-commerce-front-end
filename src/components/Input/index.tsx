@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 const StyledInput: any = styled.input`
@@ -9,7 +9,6 @@ const StyledInput: any = styled.input`
   background-color: #fff;
 
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 8px 16px ${({ theme }) => theme.colors.shadow};
 
   font-size: 1.6rem;
@@ -55,13 +54,28 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   value: string;
+  handleChange(e: ChangeEvent): void;
 }
 
-const Input: React.FC<Props> = ({ id, name, label, value, ...props }) => {
+const Input: React.FC<Props> = ({
+  id,
+  name,
+  label,
+  value,
+  handleChange,
+  ...props
+}) => {
   return (
     <StyledInput.Field>
       <label htmlFor={id}>{label}</label>
-      <StyledInput type="text" id={id} name={name} value={value} {...props} />
+      <StyledInput
+        type="text"
+        id={id}
+        name={name}
+        value={value}
+        onChange={handleChange}
+        {...props}
+      />
     </StyledInput.Field>
   );
 };

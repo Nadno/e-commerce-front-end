@@ -22,7 +22,7 @@ const SignIn = FormData(
           login(data);
         })
         .catch(handleRequest(setError));
-    }, []);
+    }, [data]);
 
     return (
       <Form onSubmit={handleSubmit}>

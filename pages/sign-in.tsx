@@ -1,13 +1,27 @@
-import React, { useCallback, FormEvent } from 'react';
+import React, { useCallback, FormEvent, useState } from 'react';
 import Form from '../src/components/Form';
 
 import Input from '../src/components/Input';
 import FormData from '../src/HOC/form';
+import useAccount from '../src/useAccount';
+import handleRequest from '../src/utils/handleRequests';
+import { apiPost } from '../src/utils/api';
 
 const SignIn = FormData(
   ({ data, handleChange }) => {
+    const [error, setError] = useState('');
+    const { login } = useAccount();
+
     const handleSubmit = useCallback((e: FormEvent) => {
       e.preventDefault();
+
+      apiPost('/user/sign-in', {
+        ...data,
+      })
+        .then(({ data }) => {
+          login(data);
+        })
+        .catch(handleRequest(setError));
     }, []);
 
     return (
@@ -35,6 +49,7 @@ const SignIn = FormData(
 
           <Form.Submit>Entrar</Form.Submit>
         </Form.Fieldset>
+        {error && <span className="error">{error}</span>}
       </Form>
     );
   },

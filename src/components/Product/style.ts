@@ -43,7 +43,7 @@ StyledProduct.Content = styled.div`
   }
 
   .description {
-    height: 100%;
+    /* height: 100%; */
     display: block;
     font-size: 1.6rem;
   }

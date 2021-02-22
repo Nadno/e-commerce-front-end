@@ -4,9 +4,8 @@ import Link from 'next/link';
 import useAccount from '../../useAccount';
 import StyledHeader from './style';
 
-
 const Header: React.FC = () => {
-  const { account } = useAccount();
+  const { account, logout } = useAccount();
   const [email, setEmail] = useState('');
 
   useEffect(() => {
@@ -17,7 +16,21 @@ const Header: React.FC = () => {
     <StyledHeader as="header">
       <nav>
         <ul className="list">
-          {!!email && <li>Conta</li>}
+          <li>
+            <Link href="/cart">Carrinho</Link>
+          </li>
+
+          {!!email && (
+            <>
+              <li>
+                <Link href="/account">Conta</Link>
+              </li>
+              <li onClick={logout}>
+                <Link href="/">Sair</Link>
+              </li>
+            </>
+          )}
+          
           {!email && (
             <>
               <li>
@@ -28,7 +41,6 @@ const Header: React.FC = () => {
               </li>
             </>
           )}
-          <li>Carrinho</li>
         </ul>
       </nav>
     </StyledHeader>

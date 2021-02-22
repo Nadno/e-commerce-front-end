@@ -50,6 +50,12 @@ const GlobalStyle = createGlobalStyle`
     footer {
       grid-column: 2/3;
     }
+
+    .error {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: ${({ theme }) => theme.colors.secondary};
+    }
   }
 `;
 

@@ -3,7 +3,7 @@ import Container from '../Container';
 
 const StyledProductList = styled(Container)`
   width: 100%;
-  padding: 4rem;
+  padding: 4rem 1rem;
 
   display: flex;
   flex-direction: column;
@@ -23,6 +23,12 @@ const StyledProductList = styled(Container)`
     grid-template-columns: repeat(auto-fit, minmax(20rem, 24rem));
     justify-content: center;
     gap: 2rem;
+  }
+
+  .nothing {
+    font-size: 2rem;
+    font-weight: bold;
+    color: ${({theme})=>theme.colors.secondary};
   }
 `;
 

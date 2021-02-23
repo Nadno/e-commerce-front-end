@@ -1,4 +1,4 @@
-interface IProduct {
+interface ProductItem {
   id: number;
   price: number;
   title: string;
@@ -7,4 +7,4 @@ interface IProduct {
   image: string;
 }
 
-export default IProduct;
+export default ProductItem;

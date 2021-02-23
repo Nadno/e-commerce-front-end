@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import Link from 'next/link';
+import Link from '../Link';
 import { apiGet } from '../../utils/api';
 
 import { StyledInput } from '../Input';
@@ -55,6 +55,14 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
           Search
         </Search.Submit>
       </form>
+
+      <ul className="categories">
+        {categories.map((cat) => (
+          <li key={cat}>
+            <Link href={`/products/category/${cat}`}>{cat}</Link>
+          </li>
+        ))}
+      </ul>
     </Search.Section>
   );
 };

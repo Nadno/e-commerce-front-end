@@ -13,6 +13,18 @@ const Section = styled(Container)`
       max-width: 50rem;
     }
   }
+
+  .categories {
+    margin-top: 2rem;
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+
+    li {
+      height: 3rem;
+      font-size: 1.6rem;
+    }
+  }
 `;
 
 const Submit = styled(StyledInput)`

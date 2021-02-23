@@ -3,44 +3,44 @@ import Form from '../src/components/Form';
 
 import Input from '../src/components/Input';
 import FormData from '../src/HOC/form';
+import useAccount from '../src/useAccount';
+import { apiPost } from '../src/utils/api';
+import handleRequest from '../src/utils/handleRequests';
 
 const SignUp = FormData(
   ({ data, handleChange }) => {
-    const [reqError, setReqError] = useState('');
+    const [error, setError] = useState('');
+    const { login } = useAccount();
 
-    const handleSubmit = useCallback(async (e: FormEvent) => {
-      e.preventDefault();
-      const {
-        email,
-        password,
-        avatar,
-        giveName,
-        surname,
-        tel,
-        zipCode,
-        address,
-        stateAndCity,
-      } = data;
+    const handleSubmit = useCallback(
+      (e: FormEvent) => {
+        e.preventDefault();
+        const {
+          email,
+          password,
+          avatar,
+          giveName,
+          surname,
+          tel,
+          zipCode,
+          address,
+          house,
+          stateAndCity,
+        } = data;
 
-      try {
-        const account = await fetch('http://localhost:3333/user/sign-up', { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: `${giveName} ${surname}`,
-            tel,
-            email,
-            password,
-            avatar,
-            address: `${zipCode}, ${address}, ${stateAndCity}`,
-          }),
-        }).then(res => res.json());
-
-        if (!account.id) throw 'Não foi possível criar sua conta, pro favor tente novamente mais tarde';
-      } catch (err) {
-        setReqError(err);
-      }
-    }, []);
+        apiPost('/user/sign-up', {
+          name: `${giveName} ${surname}`,
+          tel,
+          email,
+          password,
+          avatar,
+          address: `${zipCode}, ${address}, ${house}, ${stateAndCity}`,
+        })
+          .then(({ data: account }) => login(account))
+          .catch(handleRequest(setError));
+      },
+      [data]
+    );
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -122,7 +122,16 @@ const SignUp = FormData(
             name="address"
             value={data.address}
             label="Endereço"
-            placeholder="ex.: Rua 14, Quadra 10, Casa 5"
+            placeholder="ex.: Rua 14, Quadra 10"
+            handleChange={handleChange}
+          />
+
+          <Input
+            id="house"
+            name="house"
+            value={data.house}
+            label="Casa"
+            placeholder="Número ou Letra"
             handleChange={handleChange}
           />
 
@@ -138,7 +147,7 @@ const SignUp = FormData(
           <Form.Submit>Cadastrar-se</Form.Submit>
         </Form.Fieldset>
 
-        {reqError && <span className="error">{reqError}</span>}
+        {error && <span className="error">{error}</span>}
       </Form>
     );
   },
@@ -148,6 +157,7 @@ const SignUp = FormData(
     avatar: '',
     giveName: '',
     surname: '',
+    house: '',
     tel: '',
     zipCode: '',
     address: '',

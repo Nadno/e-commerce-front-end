@@ -6,15 +6,14 @@ export default function FormData<iniData extends { [prop: string]: any }>(
   initialData: iniData
 ): React.FC<FormProps<iniData>> {
   return function FormContext() {
-    const [data, setIssoAe] = useState(initialData);
-    const FORM_DATA = Object.keys(data);
+    const [data, setData] = useState(initialData);
 
     const handleChange = useCallback(
       (e: ChangeEvent) => {
         const { name, value } = e.target as HTMLInputElement;
       
-        if (FORM_DATA.includes(name)) {
-          setIssoAe(prev => ({
+        if (typeof data[name] !== 'undefined') {
+          setData(prev => ({
             ...prev,
             [name]: value,
           }));

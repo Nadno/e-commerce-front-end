@@ -9,7 +9,7 @@ import {
   ThemeProvider,
 } from 'styled-components';
 
-import { AccountProvider } from '../src/useAccount';
+import StoreProvider from '../src/StoreProvider';
 import progress from '../src/utils/routeLoading';
 
 Router.events.on('routeChangeStart', progress.start);
@@ -124,10 +124,10 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <AccountProvider>
+        <StoreProvider>
           <Component {...pageProps} />
           <div className="loading"></div>
-        </AccountProvider>
+        </StoreProvider>
       </ThemeProvider>
     </>
   );

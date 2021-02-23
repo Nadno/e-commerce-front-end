@@ -1,15 +1,16 @@
 import React, { memo, useEffect, useState } from 'react';
-import Link from 'next/link';
+import Link from '../Link';
 
 import useAccount from '../../useAccount';
 import StyledHeader from './style';
+import Avatar from '../Avatar';
 
 const Header: React.FC = () => {
   const { account, logout } = useAccount();
-  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
-    setEmail(account.email);
+    setAvatar(account.avatar);
   }, [account]);
 
   return (
@@ -20,10 +21,12 @@ const Header: React.FC = () => {
             <Link href="/cart">Carrinho</Link>
           </li>
 
-          {!!email && (
+          {!!avatar && (
             <>
               <li>
-                <Link href="/account">Conta</Link>
+                <Link href="/account">
+                  <Avatar src={avatar} />
+                </Link>
               </li>
               <li onClick={logout}>
                 <Link href="/">Sair</Link>
@@ -31,7 +34,7 @@ const Header: React.FC = () => {
             </>
           )}
           
-          {!email && (
+          {!avatar && (
             <>
               <li>
                 <Link href="/sign-in">Login</Link>

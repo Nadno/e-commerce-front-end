@@ -1,41 +1,32 @@
 import React, {
   createContext,
-  useContext,
   useEffect,
   useState,
 } from 'react';
-import router from 'next/router';
-import { getAccount, removeAccount, storeAccount } from './utils/account';
+
+
+import { getAccount, removeAccount } from './utils/account';
 import getSecondsToExpire from './utils/jwt';
-interface Account {
-  id: number | null;
-  avatar: string;
-}
 
-interface AccountProvider {
-  account: Account;
-  token: string;
-  refreshToken: string;
-  setAccount: Function;
-  setToken: Function;
-  setRefreshToken: Function;
-}
+import { StoreProvider, Account } from './hooks';
 
-const ContextAccount = createContext<AccountProvider | null>(null);
+export const ContextAccount = createContext<StoreProvider | null>(null);
 
-export const AccountProvider: React.FC = ({ children }) => {
+const Store: React.FC = ({ children }) => {
   const [account, setAccount] = useState<Account>({
     id: null,
     avatar: '',
   });
   const [token, setToken] = useState('');
   const [refreshToken, setRefreshToken] = useState('');
+  const [cart, setCart] = useState<string[]>([]);
 
   const loginByStorage = () => {
     const { account, token, refreshToken } = getAccount();
     const secondsToExpire = getSecondsToExpire(token);
     
     if (secondsToExpire >= 1) {
+      console.log('***login')
       setAccount(account);
       setToken(token);
       setRefreshToken(refreshToken);
@@ -44,7 +35,7 @@ export const AccountProvider: React.FC = ({ children }) => {
     }
   };
 
-  useEffect(loginByStorage, []);
+  useEffect(loginByStorage, [token]);
 
   return (
     <ContextAccount.Provider
@@ -55,6 +46,8 @@ export const AccountProvider: React.FC = ({ children }) => {
         setToken,
         refreshToken,
         setRefreshToken,
+        cart,
+        setCart,
       }}
     >
       {children}
@@ -62,47 +55,4 @@ export const AccountProvider: React.FC = ({ children }) => {
   );
 };
 
-
-const useAccount = () => {
-  const ctx = useContext<AccountProvider | null>(ContextAccount);
-  if (!ctx) throw new Error('useAccount must be used within AccountProvider');
-
-  const {
-    account,
-    setAccount,
-    token,
-    setToken,
-    refreshToken,
-    setRefreshToken,
-  } = ctx;
-
-  const login = ({ id, avatar, token, refreshToken }: any) => {
-    if (id && avatar && token && refreshToken) {
-      storeAccount({ id, avatar }, token, refreshToken);
-      setRefreshToken(refreshToken);
-      setAccount({ id, avatar });
-      setToken(token);
-    }
-
-    router.push('/');
-  };
-
-  const logout = () => {
-    setAccount({});
-    setToken('');
-    setRefreshToken('');
-    removeAccount();
-    
-    router.push('/');
-  };
-
-  return {
-    account,
-    token,
-    refreshToken,
-    login,
-    logout,
-  };
-};
-
-export default useAccount;
+export default Store;

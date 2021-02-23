@@ -6,7 +6,7 @@ import SearchSection from '../components/SearchSection';
 import IProduct from '../interfaces/product';
 
 interface Props {
-  error: string;
+  error?: string;
   categories: string[];
   products: IProduct[];
   setProducts: Function;

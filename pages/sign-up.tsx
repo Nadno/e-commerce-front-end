@@ -3,7 +3,7 @@ import Form from '../src/components/Form';
 
 import Input from '../src/components/Input';
 import FormData from '../src/HOC/form';
-import useAccount from '../src/useAccount';
+import useAccount from '../src/Hooks/useAccount';
 import { apiPost } from '../src/utils/api';
 import handleRequest from '../src/utils/handleRequests';
 

@@ -1,30 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import IProduct from '../../interfaces/product';
 import Product from '../Product';
 import StyledProductList from './style';
-
-import { apiGet } from '../../utils/api';
-import handleRequest from '../../utils/handleRequests';
 interface Props {
-  category?: number;
+  error?: string;
+  products: IProduct[];
 }
 
-const ProductList: React.FC<Props> = ({ category }) => {
-  const [products, setProducts] = useState<Array<IProduct>>([]);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const url = (category || -1) >= 0
-      ? `/product/category?value=${category}`
-      : '/product';
-
-    apiGet(url)
-      .then(({ data }) => {
-        setProducts(data.products);
-      })
-      .catch(handleRequest(setError));
-  }, []);
-
+const ProductList: React.FC<Props> = ({ error, products }) => {
   return (
     <StyledProductList>
       {products.length > 0 ? (

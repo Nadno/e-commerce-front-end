@@ -1,20 +1,6 @@
 import styled from 'styled-components';
-import Container from '../Container';
 
-const StyledProductList = styled(Container)`
-  width: 100%;
-  padding: 4rem 1rem;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .title {
-    font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.title};
-    margin: 2rem 0;
-  }
-
+const Section = styled.section`
   .list {
     width: 100%;
     list-style: none;
@@ -32,4 +18,4 @@ const StyledProductList = styled(Container)`
   }
 `;
 
-export default StyledProductList;
+export default Section;

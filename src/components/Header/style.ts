@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Container from '../Container';
+import Container from '../Container/style';
 
 const StyledHeader = styled(Container)`
   width: 100%;

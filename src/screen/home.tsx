@@ -3,12 +3,12 @@ import React from 'react';
 import Header from '../components/Header';
 import ProductList from '../components/ProductList';
 import SearchSection from '../components/SearchSection';
-import IProduct from '../interfaces/product';
+import ProductItem from '../interfaces/product';
 
 interface Props {
   error?: string;
   categories: string[];
-  products: IProduct[];
+  products: ProductItem[];
   setProducts: Function;
 }
 

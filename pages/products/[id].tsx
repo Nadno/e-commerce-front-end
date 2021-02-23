@@ -1,20 +1,18 @@
 import React from 'react';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 import Head from 'next/head';
 import Header from '../../src/components/Header';
 import ProductSection from '../../src/components/ProductSection';
 
 import { apiGet } from '../../src/utils/api';
-import IProduct, { FullProduct } from '../../src/interfaces/product';
+import ProductItem from '../../src/interfaces/product';
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     if (!params) throw 'Nenhum parâmetro fornecido';
 
-    const product: IProduct = await apiGet(`/product/id?value=${params.id}`)
+    const product: ProductItem = await apiGet(`/product/id?value=${params.id}`)
       .then((res) => res.data.product)
       .catch(console.error);
 
@@ -27,7 +25,7 @@ export const getStaticProps: GetStaticProps = async ({
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const products: IProduct[] = await apiGet('/product')
+  const products: ProductItem[] = await apiGet('/product')
     .then((res) => res.data.products)
     .catch(console.error);
 
@@ -43,7 +41,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const ProductPage: React.FC<{ product: FullProduct }> = ({ product }) => {
+const ProductPage: React.FC<{ product: ProductItem }> = ({ product }) => {
   return (
     <>
       <Head>

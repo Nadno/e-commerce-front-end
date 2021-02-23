@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import Link from '../Link';
 
-import useAccount from '../../useAccount';
+import useAccount from '../../Hooks/useAccount';
 import StyledHeader from './style';
 import Avatar from '../Avatar';
 

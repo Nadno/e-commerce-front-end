@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import React, { useEffect, useState } from 'react';
 
-import IProduct from '../../src/interfaces/product';
+import ProductItem from '../../src/interfaces/product';
 import Home from '../../src/screen/home';
 
 import { apiGet } from '../../src/utils/api';
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const IndexPage: React.FC<Props> = ({ categories }) => {
-  const [products, setProducts] = useState<Array<IProduct>>([]);
+  const [products, setProducts] = useState<Array<ProductItem>>([]);
   const [error, setError] = useState('');
 
   useEffect(() => {

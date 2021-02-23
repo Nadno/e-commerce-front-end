@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-import Container from '../Container';
-import { StyledInput } from '../Input';
+import { Input } from '../Input';
 
-const Section = styled(Container)`
+const Section = styled.section`
   .search-bar {
     display: flex;
     align-items: center;
@@ -27,7 +26,7 @@ const Section = styled(Container)`
   }
 `;
 
-const Submit = styled(StyledInput)`
+const Submit = styled(Input)`
   width: initial;
   cursor: pointer;
 

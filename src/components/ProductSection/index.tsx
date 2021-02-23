@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import formatCurrency from '../../utils/formatCurrency';
+import Container from '../Container/style';
+import Product from '../Product/style';
 import Button from '../Button';
-import Container from '../Container';
 
-import { FullProduct } from '../../interfaces/product';
-import StyledProduct from '../Product/style';
+import formatCurrency from '../../utils/formatCurrency';
+import ProductItem from '../../interfaces/product';
 
-const StyledProductSection = styled(Container)`
+const Section = styled(Container)`
   margin: 8rem 1rem;
   display: grid;
   grid-template-rows: auto;
@@ -53,22 +53,21 @@ const StyledProductSection = styled(Container)`
   }
 `;
 
-const ProductSection: React.FC<FullProduct> = ({
+const ProductSection: React.FC<ProductItem> = ({
   description,
   id,
   image,
   price,
   title,
-  details,
 }) => {
   return (
-    <StyledProductSection>
+    <Section as="section">
       <Button.Back />
       <div className="img-container">
         <img src={image} alt={title} />
       </div>
 
-      <StyledProduct.Content className="about">
+      <Product.Content className="about">
         <h1 className="title">{title}</h1>
 
         <p className="description">{description}</p>
@@ -77,8 +76,8 @@ const ProductSection: React.FC<FullProduct> = ({
           <span className="price">{formatCurrency(price)}</span>
           <Button.Primary>Adicionar ao carrinho</Button.Primary>
         </div>
-      </StyledProduct.Content>
-    </StyledProductSection>
+      </Product.Content>
+    </Section>
   );
 };
 

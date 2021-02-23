@@ -1,7 +1,7 @@
 import React, { ChangeEvent, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-export const StyledInput: any = styled.input`
+export const Input: any = styled.input`
   width: 100%;
   height: 4rem;
   border: 2px solid ${({ theme }) => theme.colors.shadow};
@@ -19,7 +19,7 @@ export const StyledInput: any = styled.input`
   }
 `;
 
-StyledInput.Field = styled.div`
+Input.Field = styled.div`
   position: relative;
 
   label {
@@ -57,7 +57,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   handleChange(e: ChangeEvent): void;
 }
 
-const Input: React.FC<Props> = ({
+const DefaultInput: React.FC<Props> = ({
   id,
   name,
   label,
@@ -66,9 +66,9 @@ const Input: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <StyledInput.Field>
+    <Input.Field>
       <label htmlFor={id}>{label}</label>
-      <StyledInput
+      <Input
         type="text"
         id={id}
         name={name}
@@ -76,8 +76,8 @@ const Input: React.FC<Props> = ({
         onChange={handleChange}
         {...props}
       />
-    </StyledInput.Field>
+    </Input.Field>
   );
 };
 
-export default Input;
+export default DefaultInput;

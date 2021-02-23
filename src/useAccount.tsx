@@ -9,14 +9,11 @@ import { getAccount, removeAccount, storeAccount } from './utils/account';
 import getSecondsToExpire from './utils/jwt';
 interface Account {
   id: number | null;
-  email: string;
+  avatar: string;
 }
 
 interface AccountProvider {
-  account: {
-    id: number | null;
-    email: string;
-  };
+  account: Account;
   token: string;
   refreshToken: string;
   setAccount: Function;
@@ -29,7 +26,7 @@ const ContextAccount = createContext<AccountProvider | null>(null);
 export const AccountProvider: React.FC = ({ children }) => {
   const [account, setAccount] = useState<Account>({
     id: null,
-    email: '',
+    avatar: '',
   });
   const [token, setToken] = useState('');
   const [refreshToken, setRefreshToken] = useState('');
@@ -42,8 +39,8 @@ export const AccountProvider: React.FC = ({ children }) => {
       setAccount(account);
       setToken(token);
       setRefreshToken(refreshToken);
-    } else {
-
+    } else if (token) {
+      removeAccount();
     }
   };
 
@@ -79,11 +76,11 @@ const useAccount = () => {
     setRefreshToken,
   } = ctx;
 
-  const login = ({ id, email, token, refreshToken }: any) => {
-    if (id && email && token && refreshToken) {
-      storeAccount({ id, email }, token, refreshToken);
+  const login = ({ id, avatar, token, refreshToken }: any) => {
+    if (id && avatar && token && refreshToken) {
+      storeAccount({ id, avatar }, token, refreshToken);
       setRefreshToken(refreshToken);
-      setAccount({ id, email });
+      setAccount({ id, avatar });
       setToken(token);
     }
 

@@ -10,7 +10,7 @@ import IProduct, { FullProduct } from '../../src/interfaces/product';
 
 export const getStaticProps: GetStaticProps = async ({
   params,
-}: GetStaticPropsContext) => {
+}) => {
   try {
     if (!params) throw 'Nenhum parâmetro fornecido';
 

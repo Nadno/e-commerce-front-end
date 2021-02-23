@@ -1,6 +1,8 @@
-import { AppProps } from 'next/dist/next-server/lib/router/router';
 import React from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
+import { AppProps } from 'next/dist/next-server/lib/router/router';
+
 import {
   createGlobalStyle,
   StyledProps,
@@ -8,6 +10,10 @@ import {
 } from 'styled-components';
 
 import { AccountProvider } from '../src/useAccount';
+import progress from '../src/utils/routeLoading';
+
+Router.events.on('routeChangeStart', progress.start);
+Router.events.on('routeChangeComplete', progress.done);
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -56,6 +62,37 @@ const GlobalStyle = createGlobalStyle`
       font-weight: bold;
       color: ${({ theme }) => theme.colors.secondary};
     }
+
+    @keyframes loading-animation {
+    to {
+      transform: translateX(-50%) scaleX(0);
+    }
+  }
+
+  .loading {
+    position: absolute;
+
+    &.active {
+    height: 100%;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.white};
+
+      &::after {
+      content: '';
+      position: absolute;
+      height: 2rem;
+      width: 10rem;
+      background-color: ${({ theme }) => theme.colors.secondary};
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      animation: loading-animation 1s cubic-bezier(0.39, 0.575, 0.565, 1) alternate
+        infinite;
+    }
+    }
+  }
   }
 `;
 
@@ -89,6 +126,7 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
         <GlobalStyle />
         <AccountProvider>
           <Component {...pageProps} />
+          <div className="loading"></div>
         </AccountProvider>
       </ThemeProvider>
     </>

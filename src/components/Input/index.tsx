@@ -1,7 +1,7 @@
 import React, { ChangeEvent, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-const StyledInput: any = styled.input`
+export const StyledInput: any = styled.input`
   width: 100%;
   height: 4rem;
   border: 2px solid ${({ theme }) => theme.colors.shadow};

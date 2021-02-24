@@ -1,9 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import router from 'next/router';
 
-import { Login } from "../hooks";
+import { Login } from "../interfaces/hooks";
 import { ContextAccount } from "../StoreProvider";
-import { storeAccount, removeAccount } from '../utils/account';
+import { storeAccount, removeAccount, getAccount } from '../utils/account';
+import getSecondsToExpire from '../utils/jwt';
 
 const useAccount = () => {
   const ctx = useContext(ContextAccount);
@@ -18,8 +19,23 @@ const useAccount = () => {
     setRefreshToken,
   } = ctx;
 
+  const loginByStorage = () => {
+    const { account, token, refreshToken } = getAccount();
+    const secondsToExpire = getSecondsToExpire(token);
+    
+    if (secondsToExpire >= 1) {
+      setAccount(account);
+      setToken(token);
+      setRefreshToken(refreshToken);
+    } else if (token) {
+      removeAccount();
+    }
+  };
+
+  useEffect(loginByStorage, [token]);
+
   const login: Login = ({ id, avatar, token, refreshToken }) => {
-    if (id && avatar && token && refreshToken) {
+    if (id && token && refreshToken) {
       storeAccount({ id, avatar }, token, refreshToken);
       setRefreshToken(refreshToken);
       setAccount({ id, avatar });

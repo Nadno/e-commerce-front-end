@@ -25,6 +25,7 @@ const Cart: React.FC<Props> = ({ items, removeItem }) => {
 
   useEffect(() => {
     setCurrentItems(() => Object.keys(products).length);
+    getTotalPrice();
   }, [products]);
 
   const getProducts = useCallback(() => {
@@ -79,12 +80,6 @@ const Cart: React.FC<Props> = ({ items, removeItem }) => {
     setTotalItems(() => items.length);
   }, [items]);
 
-  useEffect(() => {
-    if (currentItems === totalItems) {
-      getTotalPrice();
-    }
-  }, [products]);
-
   return (
     <Section>
       <Container title="Carrinho" backTo="/">
@@ -93,23 +88,27 @@ const Cart: React.FC<Props> = ({ items, removeItem }) => {
             Object.entries(products).map(
               ([productId, { description, ...rest }]) => (
                 <Product key={productId} type="cart" {...rest}>
+                  <ProductCount
+                    value={products[productId].quantity}
+                    onChange={handleChangeQuantity(productId)}
+                  />
                   <Button.Primary
                     onClick={() => removeItem(productId)}
                     className="delete"
                   >
                     Retirar
                   </Button.Primary>
-                  <ProductCount
-                    value={products[productId].quantity}
-                    onChange={handleChangeQuantity(productId)}
-                  />
                 </Product>
               )
             )}
         </ul>
 
         <FinalizeOrder>
-          {currentItems === totalItems && finalPrice}
+          Preço Total:{' '}
+          <span className="total">
+            {currentItems === totalItems && finalPrice}
+          </span>
+          <Button.Secondary>Comprar</Button.Secondary>
         </FinalizeOrder>
       </Container>
     </Section>

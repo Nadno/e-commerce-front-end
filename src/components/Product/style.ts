@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ListItem: any = styled.li`
+const ListItem = styled.li`
   width: 100%;
 
   padding: 1.5rem;
@@ -21,35 +21,47 @@ const ListItem: any = styled.li`
     margin-bottom: 2rem;
   }
 
-  .content {
-    width: 100%;
+  &.cart {
+    flex-direction: row;
+    align-items: flex-start;
+
+    .img {
+      height: 8rem;
+      width: 8rem;
+    }
+  }
+`;
+
+export const ProductContent = styled.div.attrs(() => ({
+  className: 'content'
+}))`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 2rem;
+
+  .info {
     height: 100%;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
-    gap: 2rem;
+    justify-content: space-between;
+  }
 
-    .info {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+  .title {
+    font-size: 2rem;
+  }
 
-    .title {
-      font-size: 2rem;
-    }
+  .description {
+    display: block;
+    font-size: 1.6rem;
+  }
 
-    .description {
-      display: block;
-      font-size: 1.6rem;
-    }
-
-    .price {
-      font-size: 2.4rem;
-      font-weight: bold;
-      color: ${({ theme }) => theme.colors.secondary};
-    }
+  .price {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 `;
 

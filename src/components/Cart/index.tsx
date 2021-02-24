@@ -8,19 +8,24 @@ import handleRequest from '../../utils/handleRequests';
 import { CartItem } from '../../interfaces/product';
 
 import { Section, ProductCount, FinalizeOrder } from './style';
+import Button from '../Button';
 
 interface Props {
   items: string[];
+  removeItem(e: string): void;
 }
 
-const Cart: React.FC<Props> = ({ items }) => {
-  const TOTAL_ITEMS = items.length;
-  
+const Cart: React.FC<Props> = ({ items, removeItem }) => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentItems, setCurrentItems] = useState(0);
+
   const [products, setProducts] = useState<{ [prod: string]: CartItem }>({});
   const [error, setError] = useState('');
-  const [total, setTotal] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
-  const currentItems = Object.keys(products).length;
+  useEffect(() => {
+    setCurrentItems(() => Object.keys(products).length);
+  }, [products]);
 
   const getProducts = useCallback(() => {
     setProducts({});
@@ -48,7 +53,7 @@ const Cart: React.FC<Props> = ({ items }) => {
       0
     );
 
-    setTotal(total);
+    setFinalPrice(total);
   }, [products]);
 
   const handleChangeQuantity = useCallback(
@@ -69,10 +74,13 @@ const Cart: React.FC<Props> = ({ items }) => {
     [products]
   );
 
-  useEffect(getProducts, []);
+  useEffect(() => {
+    getProducts();
+    setTotalItems(() => items.length);
+  }, [items]);
 
   useEffect(() => {
-    if (currentItems === TOTAL_ITEMS) {
+    if (currentItems === totalItems) {
       getTotalPrice();
     }
   }, [products]);
@@ -81,11 +89,16 @@ const Cart: React.FC<Props> = ({ items }) => {
     <Section>
       <Container title="Carrinho" backTo="/">
         <ul className="list">
-          {currentItems === TOTAL_ITEMS &&
+          {currentItems === totalItems &&
             Object.entries(products).map(
               ([productId, { description, ...rest }]) => (
                 <Product key={productId} type="cart" {...rest}>
-                  <button className="delete">Deletar</button>
+                  <Button.Primary
+                    onClick={() => removeItem(productId)}
+                    className="delete"
+                  >
+                    Retirar
+                  </Button.Primary>
                   <ProductCount
                     value={products[productId].quantity}
                     onChange={handleChangeQuantity(productId)}
@@ -94,11 +107,11 @@ const Cart: React.FC<Props> = ({ items }) => {
               )
             )}
         </ul>
-      </Container>
 
-      <FinalizeOrder>
-        {currentItems === TOTAL_ITEMS && total}
-      </FinalizeOrder>
+        <FinalizeOrder>
+          {currentItems === totalItems && finalPrice}
+        </FinalizeOrder>
+      </Container>
     </Section>
   );
 };

@@ -47,7 +47,7 @@ const GlobalStyle = createGlobalStyle`
     grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
     grid-template-rows: auto;
 
-    row-gap: 8rem;
+    row-gap: 4rem;
 
     form,
     main,

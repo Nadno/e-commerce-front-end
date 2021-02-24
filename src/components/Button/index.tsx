@@ -38,11 +38,16 @@ const Link: React.FC<LinkProps> = ({ children, href, ...props }) => {
   );
 };
 
-const Back: React.FC = () => {
+interface BackProps {
+  className?: string;
+}
+
+const Back: React.FC<BackProps> = ({ className = '' }) => {
   return (
     <Secondary
       style={{ width: '10rem' }}
       onClick={() => router.back()}
+      className={className}
     >
       Voltar
     </Secondary>

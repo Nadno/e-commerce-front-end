@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Input } from '../Input';
 
 export const Section = styled.section`
-  height: 100%;
-
   .list {
     width: 100%;
     display: flex;
@@ -11,8 +9,38 @@ export const Section = styled.section`
     row-gap: 2.5rem;
   }
 
+  .content {
+    align-items: center;
+  }
+
   .buttons {
-    width: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  @media screen and (min-width: 350px) {
+    .buttons {
+      flex-direction: row;
+    }
+
+    @media screen and (min-width: 600px) {
+      .cart {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      .buttons {
+        max-width: 100px;
+        flex-direction: column;
+      }
+
+      .content {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
   }
 `;
 
@@ -25,5 +53,15 @@ export const ProductCount = styled(Input).attrs(() => ({
 `;
 
 export const FinalizeOrder = styled.div`
-  
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.6rem;
+
+  .total {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `;

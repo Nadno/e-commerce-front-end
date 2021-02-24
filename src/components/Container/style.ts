@@ -14,9 +14,20 @@ const Container = styled.div`
     0 2px 0 ${({ theme }) => theme.colors.secondary},
     0 -2px 0 ${({ theme }) => theme.colors.secondary};
 
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .title {
     font-size: 2.4rem;
     color: ${({ theme }) => theme.colors.title};
+  }
+
+  .back-to {
+    align-self: flex-start;
   }
 `;
 

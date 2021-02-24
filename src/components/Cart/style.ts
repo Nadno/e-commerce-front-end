@@ -1,8 +1,29 @@
 import styled from 'styled-components';
+import { Input } from '../Input';
 
-const Section = styled.section`
+export const Section = styled.section`
   height: 100%;
-  row-gap: 2.5rem;
+
+  .list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.5rem;
+  }
+
+  .buttons {
+    width: 8rem;
+  }
 `;
 
-export default Section;
+export const ProductCount = styled(Input).attrs(() => ({
+  type: 'number',
+  placeholder: 'Quantidade',
+}))`
+  border-radius: 0;
+  border-top-color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const FinalizeOrder = styled.div`
+  
+`;

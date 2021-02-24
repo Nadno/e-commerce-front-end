@@ -1,14 +1,9 @@
 import React, {
   createContext,
-  useEffect,
   useState,
 } from 'react';
 
-
-import { getAccount, removeAccount } from './utils/account';
-import getSecondsToExpire from './utils/jwt';
-
-import { StoreProvider, Account } from './hooks';
+import { StoreProvider, Account } from './interfaces/hooks';
 
 export const ContextAccount = createContext<StoreProvider | null>(null);
 
@@ -20,22 +15,6 @@ const Store: React.FC = ({ children }) => {
   const [token, setToken] = useState('');
   const [refreshToken, setRefreshToken] = useState('');
   const [cart, setCart] = useState<string[]>([]);
-
-  const loginByStorage = () => {
-    const { account, token, refreshToken } = getAccount();
-    const secondsToExpire = getSecondsToExpire(token);
-    
-    if (secondsToExpire >= 1) {
-      console.log('***login')
-      setAccount(account);
-      setToken(token);
-      setRefreshToken(refreshToken);
-    } else if (token) {
-      removeAccount();
-    }
-  };
-
-  useEffect(loginByStorage, [token]);
 
   return (
     <ContextAccount.Provider

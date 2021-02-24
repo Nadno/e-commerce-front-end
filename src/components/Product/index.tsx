@@ -1,7 +1,7 @@
 import React from 'react';
 import formatCurrency from '../../utils/formatCurrency';
 import formatDescription from '../../utils/formatDescription';
-import ListItem from './style';
+import ListItem, { ProductContent } from './style';
 
 import ProductItem from '../../interfaces/product';
 
@@ -19,22 +19,22 @@ const Product: React.FC<Props> = ({
   children,
 }) => {
   return (
-    <ListItem title={title}>
+    <ListItem title={title} className={type}>
       <img src={image} alt={title} className="img" />
 
-      <div className={`content ${type}`}>
+      <ProductContent>
         <div className="info">
           <h3 className="title">{title}</h3>
-          <p className="description" title={description}>
-            {formatDescription(description)}
-          </p>
+          {description && (
+            <p className="description" title={description}>
+              {formatDescription(description)}
+            </p>
+          )}
           <span className="price">{formatCurrency(price)}</span>
         </div>
 
-        <div className="buttons">
-          {children}
-        </div>
-      </div>
+        <div className="buttons">{children}</div>
+      </ProductContent>
     </ListItem>
   );
 };

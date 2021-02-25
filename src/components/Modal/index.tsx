@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import Button from '../Button';
-import Div from './style';
+import Div, { Background } from './style';
 
 interface Props {
   open?: boolean;
@@ -27,10 +27,13 @@ const Modal: React.ForwardRefRenderFunction<ModalHandle, Props> = (
   const [isOpen, setIsOpen] = useState(open);
   const [message, setMessage] = useState('');
 
-  const openModal = useCallback((message: string) => {
-    setMessage(message);
-    setIsOpen(true);
-  }, [message]);
+  const openModal = useCallback(
+    (message: string) => {
+      setMessage(message);
+      setIsOpen(true);
+    },
+    [message]
+  );
 
   useImperativeHandle(ref, () => ({
     openModal,
@@ -48,18 +51,20 @@ const Modal: React.ForwardRefRenderFunction<ModalHandle, Props> = (
   return (
     <>
       {isOpen ? (
-        <Div>
-          <span className="message">{message}</span>
-          <hr />
-          <div className="buttons">
-            <Button.Secondary onClick={handleOk}>
-              {okText ? okText : 'OK'}
-            </Button.Secondary>
-            <Button.Primary onClick={handleCancel}>
-              {cancelText ? cancelText : 'Cancelar'}
-            </Button.Primary>
-          </div>
-        </Div>
+        <Background>
+          <Div>
+            <span className="message">{message}</span>
+            <hr />
+            <div className="buttons">
+              <Button.Secondary onClick={handleOk}>
+                {okText ? okText : 'OK'}
+              </Button.Secondary>
+              <Button.Primary onClick={handleCancel}>
+                {cancelText ? cancelText : 'Cancelar'}
+              </Button.Primary>
+            </div>
+          </Div>
+        </Background>
       ) : null}
     </>
   );

@@ -14,19 +14,6 @@ const Div = styled(Container)`
   transform: translateX(-50%);
   transform-style: preserve-3d;
 
-  &::before {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-
-    background-color: ${({ theme }) => theme.colors.shadow};
-
-    top: 50%;
-    transform: translate3d(0, -50%, -1rem);
-
-    content: '';
-  }
-
   .message {
     font-size: 1.6rem;
     font-weight: 500;
@@ -45,6 +32,17 @@ const Div = styled(Container)`
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
   }
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: ${({ theme }) => theme.colors.shadow};
+
+  top: 0;
+  left: 0;
 `;
 
 export default Div;

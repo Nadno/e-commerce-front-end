@@ -13,6 +13,7 @@ interface Token {
 export interface StoreProvider extends Token {
   account: Account;
   cart: string[];
+  authorized: boolean;
   setAccount: Dispatch<SetStateAction<Account>>;
   setToken: Dispatch<SetStateAction<string>>;
   setRefreshToken: Dispatch<SetStateAction<string>>;
@@ -23,5 +24,7 @@ interface LoginData extends Account {};
 interface LoginData extends Token {};
 
 export type Login = ({}: LoginData) => void;
-
-export type CartAction = (id: string) => void;
+/**
+ * @returns boolean that indicates true for erros
+ */
+export type CartAction = (id: string) => boolean;

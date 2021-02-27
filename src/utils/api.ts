@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { getCookie } from './storage';
 import { COOKIE_TOKEN } from './account';
 
-export const getApiUrl = (path: string) => `http://localhost:3333${path}`;
+const api = axios.create({ baseURL: 'http://localhost:3333' });
 
 const getHeaders = () => {
   const token = getCookie(COOKIE_TOKEN);
@@ -11,23 +11,32 @@ const getHeaders = () => {
 
   return {
     Authorization: `Bearer ${token}`,
-  }
-}
+  };
+};
 
-export const apiPost = (path: string, data = {}) => {
-  const url = getApiUrl(path);
+export const apiRefreshToken = (refreshToken: string): Promise<AxiosResponse> => {
+  const path = '/refresh';
+  const options = {
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  };
+
+  return api.post(path, {}, options);
+};
+
+export const apiPost = (path: string, data = {}): Promise<AxiosResponse> => {
   const options = {
     headers: getHeaders(),
   };
 
-  return axios.post(url, data, options);
-}
+  return api.post(path, data, options);
+};
 
-export const apiGet = (path: string) => {
-  const url = getApiUrl(path);
+export const apiGet = (path: string): Promise<AxiosResponse> => {
   const options = {
     headers: getHeaders(),
-  }
+  };
 
-  return axios.get(url, options);
-}
+  return api.get(path, options);
+};

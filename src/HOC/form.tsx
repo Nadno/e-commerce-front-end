@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import FormProps from '../interfaces/form';
 
-export default function FormData<iniData extends { [prop: string]: any }>(
-  FormComponent: React.FC<FormProps<iniData>>,
-  initialData: iniData
-): React.FC<FormProps<iniData>> {
+export default function FormData<T extends { [x: string]: any }>(
+  FormComponent: React.FC<FormProps<T>>,
+  initialData: T
+): React.FC<FormProps<T>> {
   return function FormContext() {
     const [data, setData] = useState(initialData);
 

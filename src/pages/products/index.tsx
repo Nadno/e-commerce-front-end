@@ -1,11 +1,12 @@
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 
-import ProductItem from '../../src/interfaces/product';
-import Home from '../../src/screen/home';
+import ProductItem from '../../interfaces/product';
+import Home from '../../screen/home';
 
-import { apiGet } from '../../src/utils/api';
-import handleRequest from '../../src/utils/handleRequests';
+import { apiGet } from '../../utils/api';
+import handleRequest from '../../utils/handleRequests';
 
 export const getStaticProps: GetStaticProps = async () => {
   const categories: any[] = await apiGet('/product/categories')
@@ -36,12 +37,17 @@ const IndexPage: React.FC<Props> = ({ categories }) => {
   }, []);
 
   return (
-    <Home
-      error={error}
-      categories={categories}
-      products={products}
-      setProducts={setProducts}
-    />
+    <>
+      <Head>
+        <title>Produtos</title>
+      </Head>
+      <Home
+        error={error}
+        categories={categories}
+        products={products}
+        setProducts={setProducts}
+      />
+    </>
   );
 };
 

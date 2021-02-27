@@ -2,9 +2,13 @@ import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 import { StoreProvider, Account } from './interfaces/hooks';
 import { getAccount, removeAccount } from './utils/account';
+import { apiRefreshToken } from './utils/api';
 import getSecondsToExpire from './utils/jwt';
 
 export const ContextAccount = createContext<StoreProvider | null>(null);
+
+const SIXTY_SECONDS = 60,
+  TEN_SECONDS = 10;
 
 const Store: React.FC = ({ children }) => {
   const [account, setAccount] = useState<Account>({
@@ -17,50 +21,56 @@ const Store: React.FC = ({ children }) => {
 
   const [authorized, setAuthorized] = useState(true);
 
-  const startCountDown = useCallback(
-    (count) => {
-      const twoSeconds = 2000,
-        THIRTY_SECONDS = 30,
-        ONE_SECOND = 1;
-
-      if (count < ONE_SECOND) return 0;
-      let expireCount = count;
-
-      const secondsToExpireInterval: any = setInterval(() => {
-        expireCount--;
-
-        if (expireCount < THIRTY_SECONDS) {
-          setAuthorized(() => false);
-          clearInterval(secondsToExpireInterval);
-        } else if (expireCount < ONE_SECOND) {
-        }
-      }, twoSeconds);
-
-      return secondsToExpireInterval;
-    },
-    [token]
-  );
-
-  const loginByStorage = () => {
+  const loginByStorage = useCallback(() => {
     const { account, token, refreshToken } = getAccount();
-
     const secondsToExpire = getSecondsToExpire(token);
-    const countDownID: any = startCountDown(secondsToExpire);
 
-    if (countDownID) {
-      setRefreshToken(refreshToken);
+    if (secondsToExpire > TEN_SECONDS) {
       setAccount(account);
+      setRefreshToken(refreshToken);
       setToken(token);
       setAuthorized(true);
-
-      return () => clearInterval(countDownID);
     } else if (token) {
       removeAccount();
       setAuthorized(false);
     }
-  };
+  }, []);
 
-  useEffect(loginByStorage, [token]);
+  useEffect(loginByStorage, []);
+
+  const expireTimer = useCallback(() => {
+    const fiveSeconds = 5000,
+      FIVE_SECONDS = 5;
+
+    const secondsToExpire = getSecondsToExpire(token);
+    if (secondsToExpire < TEN_SECONDS) return;
+
+    let expireCount = secondsToExpire;
+    let isRefreshingToken: boolean = false;
+
+    const secondsToExpireInterval = setInterval(() => {
+      expireCount -= FIVE_SECONDS;
+
+      if (!isRefreshingToken && expireCount < SIXTY_SECONDS) {
+        isRefreshingToken = true;
+        apiRefreshToken(refreshToken)
+          .then(({ data }) => {
+            setToken(data.token);
+            isRefreshingToken = false;
+          })
+          .catch(() => {
+            isRefreshingToken = false;
+          });
+      } else if (expireCount < TEN_SECONDS) {
+        setAuthorized(() => false);
+        clearInterval(secondsToExpireInterval);
+      }
+    }, fiveSeconds);
+
+    return () => clearInterval(secondsToExpireInterval);
+  }, [token, refreshToken]);
+
+  useEffect(expireTimer, [token]);
 
   return (
     <ContextAccount.Provider

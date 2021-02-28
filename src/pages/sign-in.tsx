@@ -59,4 +59,4 @@ const SignIn: WrappedComponent<SignInData> = ({ data, handleChange }) => {
   );
 };
 
-export default FormData<{}, SignInData>(SignIn, INITIAL_DATA);
+export default FormData(SignIn, INITIAL_DATA);

@@ -1,6 +1,5 @@
 import React from 'react';
 import StyledAvatar from './style';
-
 interface Props {
   src: string;
 }

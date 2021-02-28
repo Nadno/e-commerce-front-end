@@ -181,4 +181,4 @@ const SignUp: WrappedComponent<SignUpData> = ({ data, handleChange }) => {
   );
 };
 
-export default FormData<{}, SignUpData>(SignUp, INITIAL_DATA);
+export default FormData(SignUp, INITIAL_DATA);

@@ -2,11 +2,11 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import Head from 'next/head';
-import Header from '../../src/components/Header';
-import ProductSection from '../../src/components/ProductSection';
+import Header from '../../components/Header';
+import ProductSection from '../../components/ProductSection';
 
-import { apiGet } from '../../src/utils/api';
-import ProductItem from '../../src/interfaces/product';
+import { apiGet } from '../../utils/api';
+import ProductItem from '../../interfaces/product';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
 
 import Link from '../Link';
 import { apiGet } from '../../utils/api';
@@ -52,7 +52,7 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
         </form>
 
         <ul className="categories">
-          {categories.map((cat) => (
+          {categories.length > 0 && categories.map((cat) => (
             <li key={cat}>
               <Link href={`/products/category/${cat}`}>{cat}</Link>
             </li>
@@ -63,4 +63,4 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
   );
 };
 
-export default SearchSection;
+export default memo(SearchSection);

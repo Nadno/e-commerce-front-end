@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-import { apiGet } from '../../../src/utils/api';
-import IProduct from '../../../src/interfaces/product';
-import Home from '../../../src/screen/home';
+import { apiGet } from '../../../utils/api';
+import IProduct from '../../../interfaces/product';
+import Home from '../../../screen/home';
 import Head from 'next/head';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

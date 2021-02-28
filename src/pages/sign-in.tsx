@@ -1,18 +1,21 @@
 import React, { useCallback, FormEvent, useState } from 'react';
-import Form from '../src/components/Form';
+import Form from '../components/Form';
 
-import Input from '../src/components/Input';
-import FormData from '../src/HOC/form';
-import useAccount from '../src/hooks/useAccount';
-import handleRequest from '../src/utils/handleRequests';
-import { apiPost } from '../src/utils/api';
+import Input from '../components/Input';
+import FormData, { WrappedComponent } from '../HOC/form';
+import useAccount from '../hooks/useAccount';
+import handleRequest from '../utils/handleRequests';
+import { apiPost } from '../utils/api';
 
-const SignIn = FormData(
-  ({ data, handleChange }) => {
-    const [error, setError] = useState('');
-    const { login } = useAccount();
+const INITIAL_DATA = { email: '', password: '' };
+type SignInData = typeof INITIAL_DATA;
 
-    const handleSubmit = useCallback((e: FormEvent) => {
+const SignIn: WrappedComponent<SignInData> = ({ data, handleChange }) => {
+  const [error, setError] = useState('');
+  const { login } = useAccount();
+
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
       e.preventDefault();
 
       apiPost('/user/sign-in', {
@@ -22,38 +25,38 @@ const SignIn = FormData(
           login(data);
         })
         .catch(handleRequest(setError));
-    }, [data]);
+    },
+    [data]
+  );
 
-    return (
-      <Form onSubmit={handleSubmit}>
-        <Form.Fieldset>
-          <legend>Bem vindo!</legend>
-          <Input
-            id="email"
-            name="email"
-            value={data.email}
-            label="Email"
-            placeholder="Digite seu e-mail"
-            handleChange={handleChange}
-          />
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Fieldset>
+        <legend>Bem vindo!</legend>
+        <Input
+          id="email"
+          name="email"
+          value={data.email}
+          label="Email"
+          placeholder="Digite seu e-mail"
+          handleChange={handleChange}
+        />
 
-          <Input
-            type="password"
-            id="password"
-            name="password"
-            value={data.password}
-            label="Senha"
-            placeholder="Digite sua senha"
-            handleChange={handleChange}
-          />
+        <Input
+          type="password"
+          id="password"
+          name="password"
+          value={data.password}
+          label="Senha"
+          placeholder="Digite sua senha"
+          handleChange={handleChange}
+        />
 
-          <Form.Submit>Entrar</Form.Submit>
-        </Form.Fieldset>
-        {error && <span className="error">{error}</span>}
-      </Form>
-    );
-  },
-  { email: '', password: '' }
-);
+        <Form.Submit>Entrar</Form.Submit>
+      </Form.Fieldset>
+      {error && <span className="error">{error}</span>}
+    </Form>
+  );
+};
 
-export default SignIn;
+export default FormData(SignIn, INITIAL_DATA);

@@ -9,22 +9,18 @@ const useAccount = () => {
   const ctx = useContext(ContextAccount);
   if (!ctx) throw new Error('useAccount must be used within AccountProvider');
 
-  const {
-    account,
-    setAccount,
-    token,
-    setToken,
-    refreshToken,
-    setRefreshToken,
-    authorized,
-  } = ctx;
+  const { account, setAccount, setToken, setRefreshToken, authorized } = ctx;
 
   const refreshAuth = () => {};
-  const login: Login = ({ id, avatar = '', token, refreshToken }) => {
+  const login: Login = ({ id, avatar, token, refreshToken }) => {
     if (id && token && refreshToken) {
       removeAccount();
 
-      storeAccount({ id, avatar }, token, refreshToken);
+      storeAccount({
+        account: { id, avatar: avatar || '' },
+        token,
+        refreshToken,
+      });
       setRefreshToken(refreshToken);
       setAccount({ id, avatar });
       setToken(token);
@@ -44,12 +40,10 @@ const useAccount = () => {
 
   return {
     account,
-    token,
-    refreshToken,
     login,
     logout,
     refreshAuth,
-    authorized
+    authorized,
   };
 };
 

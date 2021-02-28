@@ -10,4 +10,6 @@ declare module '../HOC/form' {
     Props = {},
     T = Props & FormProps<Data>
   > = React.FC<T>;
+
+  export type PropsWithoutData<Props, Data> = Omit<Props, keyof FormProps<Data>>;
 }

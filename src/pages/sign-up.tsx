@@ -1,51 +1,67 @@
 import React, { useCallback, FormEvent, useState } from 'react';
-import Form from '../src/components/Form';
+import Form from '../components/Form';
 
-import Input from '../src/components/Input';
-import FormData from '../src/HOC/form';
-import useAccount from '../src/hooks/useAccount';
-import { apiPost } from '../src/utils/api';
-import handleRequest from '../src/utils/handleRequests';
+import Input from '../components/Input';
+import Link from '../components/Link';
+import FormData, { WrappedComponent } from '../HOC/form';
+import useAccount from '../hooks/useAccount';
+import { apiPost } from '../utils/api';
+import handleRequest from '../utils/handleRequests';
 
-const SignUp = FormData(
-  ({ data, handleChange }) => {
-    const [error, setError] = useState('');
-    const { login } = useAccount();
+const INITIAL_DATA = {
+  email: '',
+  password: '',
+  avatar: '',
+  giveName: '',
+  surname: '',
+  house: '',
+  tel: '',
+  zipCode: '',
+  address: '',
+  stateAndCity: '',
+};
+type SignUpData = typeof INITIAL_DATA;
 
-    const handleSubmit = useCallback(
-      (e: FormEvent) => {
-        e.preventDefault();
-        const {
-          email,
-          password,
-          avatar,
-          giveName,
-          surname,
-          tel,
-          zipCode,
-          address,
-          house,
-          stateAndCity,
-        } = data;
+const SignUp: WrappedComponent<SignUpData> = ({ data, handleChange }) => {
+  const [error, setError] = useState('');
+  const { login } = useAccount();
 
-        apiPost('/user/sign-up', {
-          name: `${giveName} ${surname}`,
-          tel,
-          email,
-          password,
-          avatar,
-          address: `${zipCode}, ${address}, ${house}, ${stateAndCity}`,
-        })
-          .then(({ data: account }) => login(account))
-          .catch(handleRequest(setError));
-      },
-      [data]
-    );
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      const {
+        email,
+        password,
+        avatar,
+        giveName,
+        surname,
+        tel,
+        zipCode,
+        address,
+        house,
+        stateAndCity,
+      } = data;
 
-    return (
-      <Form onSubmit={handleSubmit}>
-        <Form.Fieldset>
-          <legend>Sua conta</legend>
+      apiPost('/user/sign-up', {
+        name: `${giveName} ${surname}`,
+        tel,
+        email,
+        password,
+        avatar,
+        address: `${zipCode}, ${address}, ${house}, ${stateAndCity}`,
+      })
+        .then(({ data: account }) => login(account))
+        .catch(handleRequest(setError));
+    },
+    [data]
+  );
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Fieldset>
+        <legend>Sua conta</legend>
+
+        <div className="input-block">
           <Input
             id="email"
             name="email"
@@ -64,20 +80,23 @@ const SignUp = FormData(
             placeholder="Digite sua senha"
             handleChange={handleChange}
           />
+        </div>
 
-          <Input
-            type="url"
-            id="avatar"
-            name="avatar"
-            value={data.avatar}
-            label="Foto / Avatar"
-            placeholder="http://exemplo.com"
-            handleChange={handleChange}
-          />
-        </Form.Fieldset>
+        <Input
+          type="url"
+          id="avatar"
+          name="avatar"
+          value={data.avatar}
+          label="Foto / Avatar"
+          placeholder="http://exemplo.com"
+          handleChange={handleChange}
+        />
+      </Form.Fieldset>
 
-        <Form.Fieldset>
-          <legend>Sobre você</legend>
+      <Form.Fieldset>
+        <legend>Sobre você</legend>
+
+        <div className="input-block">
           <Input
             id="give-name"
             name="giveName"
@@ -95,19 +114,22 @@ const SignUp = FormData(
             placeholder="Sobrenome"
             handleChange={handleChange}
           />
+        </div>
 
-          <Input
-            id="tel"
-            name="tel"
-            value={data.tel}
-            label="Telefone celular"
-            placeholder="ex.: 61 912345678"
-            handleChange={handleChange}
-          />
-        </Form.Fieldset>
+        <Input
+          id="tel"
+          name="tel"
+          value={data.tel}
+          label="Telefone celular"
+          placeholder="ex.: 61 912345678"
+          handleChange={handleChange}
+        />
+      </Form.Fieldset>
 
-        <Form.Fieldset>
-          <legend>Endereço</legend>
+      <Form.Fieldset>
+        <legend>Endereço</legend>
+
+        <div className="input-block">
           <Input
             id="zip-code"
             name="zipCode"
@@ -125,7 +147,9 @@ const SignUp = FormData(
             placeholder="ex.: Rua 14, Quadra 10"
             handleChange={handleChange}
           />
+        </div>
 
+        <div className="input-block">
           <Input
             id="house"
             name="house"
@@ -143,26 +167,18 @@ const SignUp = FormData(
             placeholder="ex.: Brasília DF"
             handleChange={handleChange}
           />
+        </div>
 
-          <Form.Submit>Cadastrar-se</Form.Submit>
-        </Form.Fieldset>
+        <Form.Submit>Cadastrar-se</Form.Submit>
+      </Form.Fieldset>
 
-        {error && <span className="error">{error}</span>}
-      </Form>
-    );
-  },
-  {
-    email: '',
-    password: '',
-    avatar: '',
-    giveName: '',
-    surname: '',
-    house: '',
-    tel: '',
-    zipCode: '',
-    address: '',
-    stateAndCity: '',
-  }
-);
+      <footer>
+        Já tem uma conta? <Link href="/sign-in">Entrar</Link>
+      </footer>
 
-export default SignUp;
+      {error && <span className="error">{error}</span>}
+    </Form>
+  );
+};
+
+export default FormData(SignUp, INITIAL_DATA);

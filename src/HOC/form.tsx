@@ -4,7 +4,8 @@ export default function FormData<Props, Data extends Record<string, any>>(
   FormComponent: WrappedComponent<Data, Props>,
   initialData: Data
 ) {
-  const FormWrapper: React.FC<Props> = props => {
+  const FormWrapper: React.FC<PropsWithoutData<Props, Data>> = props => {
+    const WrappedForm = FormComponent as WrappedComponent<Data>;
     const [data, setData] = useState(initialData);
 
     const handleChange = useCallback((e: ChangeEvent) => {
@@ -18,7 +19,7 @@ export default function FormData<Props, Data extends Record<string, any>>(
       }
     }, []);
 
-    return <FormComponent data={data} handleChange={handleChange} {...props} />;
+    return <WrappedForm data={data} handleChange={handleChange} {...props} />;
   };
 
   return FormWrapper;

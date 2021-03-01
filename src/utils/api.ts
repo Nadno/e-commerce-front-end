@@ -3,7 +3,9 @@ import axios, { AxiosResponse } from 'axios';
 import { getCookie } from './storage';
 import { COOKIE_TOKEN } from './account';
 
-const api = axios.create({ baseURL: 'http://localhost:3333' });
+const api = axios.create({
+  baseURL: 'http://localhost:3333',
+});
 
 const getHeaders = () => {
   const token = getCookie(COOKIE_TOKEN);
@@ -14,7 +16,9 @@ const getHeaders = () => {
   };
 };
 
-export const apiRefreshToken = (refreshToken: string): Promise<AxiosResponse> => {
+export const apiRefreshToken = (
+  refreshToken: string
+): Promise<AxiosResponse> => {
   const path = '/refresh';
   const options = {
     headers: {

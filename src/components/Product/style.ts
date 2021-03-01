@@ -22,9 +22,6 @@ const ListItem = styled.li`
   }
 
   &.cart {
-    flex-direction: row;
-    align-items: flex-start;
-
     .img {
       height: 8rem;
       width: 8rem;

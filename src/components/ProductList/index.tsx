@@ -28,7 +28,7 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
           </ul>
         ) : (
           <>
-            <div className="nothing">Nada encontrado!</div>
+            <div className="warn">Nada encontrado</div>
             {error && <div className="error">{error}</div>}
           </>
         )}

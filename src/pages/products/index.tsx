@@ -9,9 +9,13 @@ import { apiGet } from '../../utils/api';
 import handleRequest from '../../utils/handleRequests';
 
 export const getStaticProps: GetStaticProps = async () => {
-  const categories: any[] = await apiGet('/product/categories')
-    .then((res) => res.data.categories)
-    .catch(console.error);
+  let categories: string[] = [];
+  
+  await apiGet('/product/categories')
+    .then((res) => {
+      categories = res.data.categories;
+    })
+    .catch(() => {});
 
   return {
     props: {
@@ -31,7 +35,7 @@ const IndexPage: React.FC<Props> = ({ categories }) => {
   useEffect(() => {
     apiGet('/product')
       .then(({ data }) => {
-        setProducts(data.products);
+        if (data) setProducts(data.products);
       })
       .catch(handleRequest(setError));
   }, []);

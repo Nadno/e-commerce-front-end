@@ -5,7 +5,6 @@ export const StyledLink = styled.a`
   height: 100%;
   padding: 1rem;
   font-size: 2rem;
-  text-decoration: none;
   color: ${({ theme }) => theme.colors.title};
   display: flex;
   justify-content: center;

@@ -10,9 +10,10 @@ const Container = styled.div`
   row-gap: 2rem;
 
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 0 16px 8px ${({ theme }) => theme.colors.shadow},
-    0 2px 0 ${({ theme }) => theme.colors.secondary},
-    0 -2px 0 ${({ theme }) => theme.colors.secondary};
+  box-shadow: 0 0 16px 8px ${({ theme }) => theme.colors.shadow};
+
+  border-top: 4px solid ${({ theme }) => theme.colors.secondary};
+  border-bottom: 4px solid ${({ theme }) => theme.colors.secondary};
 
   .header {
     width: 100%;

@@ -1,31 +1,44 @@
-import React, { useCallback, useRef, useState } from 'react';
-import useAccount from '../src/hooks/useAccount';
-import useCart from '../src/hooks/useCart';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import Cart from '../src/components/Cart';
-import Header from '../src/components/Header';
-import Modal, { ModalHandle } from '../src/components/Modal';
+import useCart from '../hooks/useCart';
 
-const CartPage: React.FC = () => {
-  const { token, secondsToExpire } = useAccount();
+import Head from 'next/head';
+import Cart, { CartItem } from '../components/Cart';
+import Header from '../components/Header';
+import Checkout from '../components/Checkout';
+
+const CartPage: React.FC = () => {;
   const { cart, removeFromCart } = useCart();
-  const [step, setStep] = useState(0);
 
-  const modalRef = useRef<ModalHandle>(null);
+  const [finalPrice, setFinalPrice] = useState(0);
+  const [products, setProducts] = useState<Record<string, CartItem>>({});
 
-  const submitStep = useCallback(() => {
-    if (secondsToExpire(token) < 1) {
+  const getTotalPrice = useCallback(() => {
+    const total = Object.entries(products).reduce(
+      (acc, [, { quantity, price }]) => (acc += price * quantity),
+      0
+    );
 
-    } else {
-      setStep((prev) => prev + 1);
-    }
-  }, []);
+    setFinalPrice(total);
+  }, [products]);
+
+  useEffect(getTotalPrice, [products]);
 
   return (
     <>
+      <Head>
+        <title>Carrinho</title>
+      </Head>
       <Header />
-      <Cart items={cart} removeItem={removeFromCart} submitStep={submitStep} />
-      <Modal ref={modalRef} />
+
+      <Cart
+        items={cart}
+        products={products}
+        setItems={setProducts}
+        removeItem={removeFromCart}
+      />
+
+      <Checkout products={products} finalPrice={finalPrice} />
     </>
   );
 };

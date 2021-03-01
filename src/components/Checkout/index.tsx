@@ -1,17 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 import FormData, { WrappedComponent } from '../../HOC/form';
 
 import Form from '../Form';
 import DefaultInput from '../Input';
 
 import { CartProps } from '../Cart';
-import { Section, OrderInfo } from './style';
-
-const CheckoutForm = styled(Form)`
-  min-height: 100%;
-  justify-content: flex-start;
-`;
+import { Section, CheckoutForm } from './style';
+import OrderTable from '../OrderTable';
 
 const INITIAL_DATA = {
   cardNumber: '',
@@ -33,6 +28,8 @@ const Checkout: WrappedComponent<CheckoutData, Props> = ({
 }) => {
   return (
     <Section>
+      <OrderTable products={Object.entries(products)} finalPrice={finalPrice} />
+
       <CheckoutForm>
         <h2 className="title">Cartão</h2>
         <Form.Fieldset>
@@ -53,25 +50,23 @@ const Checkout: WrappedComponent<CheckoutData, Props> = ({
             handleChange={handleChange}
           />
 
-          <div className="input-block">
-            <DefaultInput
-              type="month"
-              id="card-validate"
-              name="cardValidate"
-              value={data.cardValidate}
-              label="Validade"
-              placeholder="MM/AA"
-              handleChange={handleChange}
-            />
-            <DefaultInput
-              id="card-security-code"
-              name="cardSecurityCode"
-              value={data.cardSecurityCode}
-              label="Código de segurança"
-              placeholder="123"
-              handleChange={handleChange}
-            />
-          </div>
+          <DefaultInput
+            type="month"
+            id="card-validate"
+            name="cardValidate"
+            value={data.cardValidate}
+            label="Validade"
+            placeholder="MM/AA"
+            handleChange={handleChange}
+          />
+          <DefaultInput
+            id="card-security-code"
+            name="cardSecurityCode"
+            value={data.cardSecurityCode}
+            label="Código de segurança"
+            placeholder="123"
+            handleChange={handleChange}
+          />
         </Form.Fieldset>
       </CheckoutForm>
     </Section>

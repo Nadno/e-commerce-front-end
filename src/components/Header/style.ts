@@ -12,12 +12,6 @@ const StyledHeader = styled(Container)`
     height: 100%;
   }
 
-  li {
-    cursor: pointer;
-    min-width: 10rem;
-    height: 100%;
-  }
-
   .list {
     display: block;
     height: 100%;

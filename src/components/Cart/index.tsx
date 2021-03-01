@@ -6,7 +6,7 @@ import Container from '../Container/';
 import { apiGet } from '../../utils/api';
 import handleRequest from '../../utils/handleRequests';
 
-import { Section, ProductCount, FinalizeOrder } from './style';
+import { Section, ProductCount } from './style';
 import Button from '../Button';
 
 const Cart: React.FC<CartProps> = ({
@@ -19,7 +19,6 @@ const Cart: React.FC<CartProps> = ({
   const [currentItems, setCurrentItems] = useState(0);
 
   const [error, setError] = useState('');
- 
 
   useEffect(() => {
     setCurrentItems(() => Object.keys(products).length);
@@ -72,26 +71,29 @@ const Cart: React.FC<CartProps> = ({
     <Section>
       {error && <span>{error}</span>}
       <Container title="Carrinho" backTo="/">
-
-        <ul className="list">
-          {currentItems === totalItems &&
-            Object.entries(products).map(
-              ([productId, { description, ...rest }]) => (
-                <Product key={productId} type="cart" {...rest}>
-                  <ProductCount
-                    value={products[productId].quantity}
-                    onChange={handleChangeQuantity(productId)}
-                  />
-                  <Button.Primary
-                    onClick={() => removeItem(productId)}
-                    className="delete"
-                  >
-                    Retirar
-                  </Button.Primary>
-                </Product>
-              )
-            )}
-        </ul>     
+        {items.length > 0 ? (
+          <ul className="list">
+            {currentItems === totalItems &&
+              Object.entries(products).map(
+                ([productId, { description, ...rest }]) => (
+                  <Product key={productId} type="cart" {...rest}>
+                    <ProductCount
+                      value={products[productId].quantity}
+                      onChange={handleChangeQuantity(productId)}
+                    />
+                    <Button.Primary
+                      onClick={() => removeItem(productId)}
+                      className="delete"
+                    >
+                      Retirar
+                    </Button.Primary>
+                  </Product>
+                )
+              )}
+          </ul>
+        ) : (
+          <div className="warn">Vazio</div>
+        )}
       </Container>
     </Section>
   );

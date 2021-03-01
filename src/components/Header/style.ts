@@ -6,6 +6,8 @@ const StyledHeader = styled(Container)`
   height: 5rem;
   padding: 0;
 
+  border-top: none;
+
   nav {
     height: 100%;
   }

@@ -22,11 +22,6 @@ const Container = styled.div`
     align-items: center;
   }
 
-  .title {
-    font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.title};
-  }
-
   .back-to {
     align-self: flex-start;
   }

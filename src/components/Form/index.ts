@@ -14,11 +14,19 @@ const Form: any = styled.form`
   box-shadow: 0 0 16px 4px ${({ theme }) => theme.colors.white};
   border-top: 4px solid ${({ theme }) => theme.colors.secondary};
   border-bottom: 4px solid ${({ theme }) => theme.colors.secondary};
+
+  @media screen and (min-width: 450px) {
+    .input-block {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 1rem;
+    }
+  }
 `;
 
 Form.Fieldset = styled.fieldset`
-  min-width: 30rem;
-  max-width: 40rem;
+  max-width: 50rem;
+  width: 100%;
   padding: 0 2rem;
   border: none;
 

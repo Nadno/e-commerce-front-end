@@ -42,6 +42,26 @@ const GlobalStyle = createGlobalStyle`
       grid-column: 2/3;
     }
 
+    a {
+      text-decoration: none;
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 2.4rem;
+      color: ${({ theme }) => theme.colors.title};
+    }
+
+    .warn,
+    .error  {
+      margin: 5rem;
+    }
+
+    .warn {
+      font-size: 4rem;
+      color: ${({ theme }) => theme.colors.shadow};
+    }
+
     .error {
       font-size: 1.4rem;
       font-weight: bold;

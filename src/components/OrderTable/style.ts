@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Container from '../Container/style';
 
 export const OrderSection = styled(Container)`
-  margin-bottom: auto;
-  
+  margin-bottom: 8rem;
+
   .order-table {
     width: 100%;
     border: solid 1px ${({ theme }) => theme.colors.shadow};
@@ -38,5 +38,9 @@ export const OrderSection = styled(Container)`
     thead th {
       font-weight: bold;
     }
+  }
+
+  @media screen and (min-width: 700px) {
+    margin-bottom: auto;
   }
 `;

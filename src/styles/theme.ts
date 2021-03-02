@@ -6,5 +6,7 @@ export default {
     title: '#303030',
     text: '#404040',
     shadow: '#6d7bb025',
+    warn: '#40404080',
+    background: '#fff',
   },
 };

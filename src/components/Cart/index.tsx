@@ -49,7 +49,8 @@ const Cart: React.FC<CartProps> = ({
       const value = parseInt(target.value.slice(-2));
       if (value < 1 || isNaN(value)) return;
 
-      if (typeof products[productId] !== 'undefined') {
+      // Values null and undefined blocked by condition
+      if (products[productId] != null) {
         setItems(prev => ({
           ...prev,
           [productId]: {
@@ -69,9 +70,8 @@ const Cart: React.FC<CartProps> = ({
 
   return (
     <Section>
-      {error && <span>{error}</span>}
       <Container title="Carrinho" backTo="/">
-        {items.length > 0 ? (
+        {currentItems > 0 ? (
           <ul className="list">
             {currentItems === totalItems &&
               Object.entries(products).map(
@@ -94,6 +94,7 @@ const Cart: React.FC<CartProps> = ({
         ) : (
           <div className="warn">Vazio</div>
         )}
+        {error && <span className="error">{error}</span>}
       </Container>
     </Section>
   );

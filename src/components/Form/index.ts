@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import Container from '../Container/style';
 
 const Form: any = styled(Container).attrs(() => ({ as: 'form' }))`
-  height: 100%;
-  min-height: 100vh;
   justify-content: center;
 
   @media screen and (min-width: 450px) {

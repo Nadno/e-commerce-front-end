@@ -18,11 +18,13 @@ const SignIn: WrappedComponent<SignInData> = ({ data, handleChange }) => {
     (e: FormEvent) => {
       e.preventDefault();
 
+      const goToPath = '/';
+
       apiPost('/user/sign-in', {
         ...data,
       })
         .then(({ data }) => {
-          login(data);
+          login(data, goToPath);
         })
         .catch(handleRequest(setError));
     },

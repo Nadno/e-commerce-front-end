@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     font-family: 'Lato', sans-serif;
     color: ${({ theme }) => theme.colors.text};
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.background};
   }
 
   html, body {
@@ -59,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
 
     .warn {
       font-size: 4rem;
-      color: ${({ theme }) => theme.colors.shadow};
+      color: ${({ theme }) => theme.colors.warn};
     }
 
     .error {

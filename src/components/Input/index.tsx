@@ -6,7 +6,7 @@ export const Input: any = styled.input`
   height: 4rem;
   border: 2px solid ${({ theme }) => theme.colors.shadow};
   border-radius: 0.5rem;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.background};
 
   padding: 0.5rem 1rem;
   box-shadow: 0 8px 16px ${({ theme }) => theme.colors.shadow};

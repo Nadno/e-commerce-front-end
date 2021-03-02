@@ -6,7 +6,7 @@ const Div = styled(Container)`
   width: 90vw;
   max-width: 400px;
 
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.background};
 
   left: 50%;
   top: 30%;

@@ -12,7 +12,7 @@ const useAccount = () => {
   const { account, setAccount, setToken, setRefreshToken, authorized } = ctx;
 
   const refreshAuth = () => {};
-  const login: Login = ({ id, avatar, token, refreshToken }) => {
+  const login: Login = ({ id, avatar, token, refreshToken }, path) => {
     if (id && token && refreshToken) {
       removeAccount();
 
@@ -26,7 +26,7 @@ const useAccount = () => {
       setToken(token);
     }
 
-    router.push('/');
+    router.push(path);
   };
 
   const logout = () => {

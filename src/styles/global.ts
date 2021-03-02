@@ -23,11 +23,12 @@ const GlobalStyle = createGlobalStyle`
   html, body {
     width: 100%;
     max-width: 100vw;
-    min-height: 100vh;
   }
   
   #__next {
-    flex: 1;
+    height: 100%;
+    min-height: 100vh;
+    
     display: grid;
     grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
     grid-template-rows: auto;
@@ -47,6 +48,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     .title {
+      margin: 2rem 0;
       font-weight: 500;
       font-size: 2.4rem;
       color: ${({ theme }) => theme.colors.title};
@@ -54,11 +56,12 @@ const GlobalStyle = createGlobalStyle`
 
     .warn,
     .error  {
-      margin: 5rem;
+      text-align: center;
+      margin: 2rem;
     }
 
     .warn {
-      font-size: 4rem;
+      font-size: 3rem;
       color: ${({ theme }) => theme.colors.warn};
     }
 

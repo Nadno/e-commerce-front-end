@@ -6,8 +6,11 @@ import Head from 'next/head';
 import Cart, { CartItem } from '../components/Cart';
 import Header from '../components/Header';
 import Checkout from '../components/Checkout';
+import useAccount from '../hooks/useAccount';
+import SignUp from '../screen/sign-up';
 
-const CartPage: React.FC = () => {;
+const CartPage: React.FC = () => {
+  const { authorized } = useAccount();
   const { cart, removeFromCart } = useCart();
 
   const [finalPrice, setFinalPrice] = useState(0);
@@ -38,7 +41,11 @@ const CartPage: React.FC = () => {;
         removeItem={removeFromCart}
       />
 
-      <Checkout products={products} finalPrice={finalPrice} />
+      {authorized ? (
+        <Checkout products={products} finalPrice={finalPrice} />
+      ) : (
+        <SignUp goToPath="/cart" />
+      )}
     </>
   );
 };

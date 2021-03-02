@@ -18,7 +18,7 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
         {products.length > 0 ? (
           <ul className="list">
             {products.length > 0 &&
-              products.map((product) => (
+              products.map(product => (
                 <Product {...product} key={product.id}>
                   <Button.Link href={`/products/${product.id}`}>
                     Detalhes
@@ -29,9 +29,9 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
         ) : (
           <>
             <div className="warn">Nada encontrado</div>
-            {error && <div className="error">{error}</div>}
           </>
         )}
+        {error && <div className="error">{error}</div>}
       </Container>
     </Section>
   );

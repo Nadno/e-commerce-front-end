@@ -25,7 +25,8 @@ const Primary = styled(StyledButton)`
 `;
 
 const Secondary = styled(StyledButton)`
-  background-color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.secondary};
+  border: 2px solid ${({ theme }) => theme.colors.secondary};
 `;
 
 const Link: React.FC<LinkProps> = ({ children, href, ...props }) => {

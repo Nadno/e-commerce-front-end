@@ -4,8 +4,8 @@ import styled from 'styled-components';
 export const Input: any = styled.input`
   width: 100%;
   height: 4rem;
-  border: 2px solid ${({ theme }) => theme.colors.shadow};
   border-radius: 0.5rem;
+  border: 2px solid ${({ theme }) => theme.colors.shadow};
   background-color: ${({ theme }) => theme.colors.background};
 
   padding: 0.5rem 1rem;
@@ -47,6 +47,15 @@ Input.Field = styled.div`
   &.invalid::after {
     background-color: red;
   }
+
+  .invalid-error {
+    margin-left: 1rem;
+    color: ${({ theme }) => theme.colors.primary};
+
+    &::before {
+      content: '*';
+    }
+  }
 `;
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -54,6 +63,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   value: string;
+  error?: string;
   handleChange(e: ChangeEvent): void;
 }
 
@@ -62,12 +72,19 @@ const DefaultInput: React.FC<Props> = ({
   name,
   label,
   value,
+  error,
   handleChange,
   ...props
 }) => {
+  const isInvalid = !!error;
+  const classError = isInvalid ? 'invalid' : '';
+
   return (
-    <Input.Field>
-      <label htmlFor={id}>{label}</label>
+    <Input.Field className={classError}>
+      <label htmlFor={id}>
+        {label}
+        {isInvalid && <span className="invalid-error">{error}</span>}
+      </label>
       <Input
         type="text"
         id={id}

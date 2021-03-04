@@ -24,6 +24,13 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     max-width: 100vw;
   }
+
+  .title {
+      margin: 2rem 0;
+      font-weight: 500;
+      font-size: 2.4rem;
+      color: ${({ theme }) => theme.colors.title};
+    }
   
   #__next {
     height: 100%;
@@ -47,13 +54,6 @@ const GlobalStyle = createGlobalStyle`
       text-decoration: none;
     }
 
-    .title {
-      margin: 2rem 0;
-      font-weight: 500;
-      font-size: 2.4rem;
-      color: ${({ theme }) => theme.colors.title};
-    }
-
     .warn,
     .error  {
       text-align: center;
@@ -66,6 +66,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     .error {
+      display: block;
       font-size: 1.4rem;
       font-weight: bold;
       color: ${({ theme }) => theme.colors.secondary};

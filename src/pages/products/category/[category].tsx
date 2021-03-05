@@ -8,14 +8,15 @@ import Head from 'next/head';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params) throw 'Nenhum parâmetro fornecido';
-  const { category } = params;
+  const { response: data_res } = apiGet(`/product/category?value=${params.category}`);
+  const { response: cat_res } = apiGet('/product/categories');
 
-  const data: any = await apiGet(`/product/category?value=${category}`)
+  const data: any = await data_res
     .then(({ data }) => data)
     .catch(console.error);
 
-  const categories: string[] = await apiGet('/product/categories')
-    .then((res) => res.data.categories)
+  const categories: string[] = await cat_res
+    .then(res => res.data.categories)
     .catch(console.error);
 
   return {
@@ -27,11 +28,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categories: string[] = await apiGet('/product/categories')
-    .then(({ data }) => data.categories)
-    .catch(console.error);
+  const { response } = apiGet('/product/categories');
 
-  const paths = categories.map((category) => ({
+  const categories: string[] =
+    (await response.then(({ data }) => data.categories).catch(console.error)) ||
+    [];
+
+  const paths = categories.map(category => ({
     params: {
       category,
     },

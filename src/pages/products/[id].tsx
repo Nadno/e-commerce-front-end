@@ -11,10 +11,11 @@ import ProductItem from '../../interfaces/product';
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     if (!params) throw 'Nenhum parâmetro fornecido';
+    let product: ProductItem;
 
-    const product: ProductItem = await apiGet(`/product/id?value=${params.id}`)
-      .then((res) => res.data.product)
-      .catch(console.error);
+    const { response } = apiGet(`/product/id?value=${params.id}`);
+
+    product = await response.then(res => res.data.product).catch(console.error);
 
     return {
       props: { product },
@@ -25,9 +26,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const products: ProductItem[] = await apiGet('/product')
-    .then((res) => res.data.products)
-    .catch(console.error);
+  const { response } = apiGet('/product');
+
+  let products: ProductItem[] =
+    (await response.then(({ data }) => data.products).catch(console.error)) ||
+    [];
 
   const paths = products.map(({ id }) => ({
     params: {

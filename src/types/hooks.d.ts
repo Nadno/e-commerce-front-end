@@ -10,7 +10,7 @@ interface Token {
   refreshToken: string;
 }
 
-export interface StoreProvider extends Token {
+export interface StoreProvider {
   account: Account;
   cart: string[];
   authorized: boolean;
@@ -20,10 +20,14 @@ export interface StoreProvider extends Token {
   setCart: Dispatch<SetStateAction<string[]>>;
 }
 
+export interface CookieStore extends Token {
+  account: Account,
+}
+
 interface LoginData extends Account {};
 interface LoginData extends Token {};
 
-export type Login = ({}: LoginData) => void;
+export type Login = ({}: LoginData, path: string) => void;
 /**
  * @returns boolean that indicates true for erros
  */

@@ -1,15 +1,19 @@
 import { ChangeEvent } from 'react';
-interface FormProps<T> {
-  data: T;
-  handleChange(e: ChangeEvent): void;
-}
 
 declare module '../HOC/form' {
+  type InputError<Names> = Partial<Record<Names, string>>;
+  interface FormProps<Data> {
+    data: Data;
+    invalid: boolean;
+    inputError: InputError<keyof Data>;
+    handleChange(e: ChangeEvent): void;
+  }
+
   export type WrappedComponent<
     Data,
     Props = {},
     T = Props & FormProps<Data>
   > = React.FC<T>;
 
-  export type PropsWithoutData<Props, Data> = Omit<Props, keyof FormProps<Data>>;
+  export type WrapperProps = Omit<Props, keyof FormProps<Data>>;
 }

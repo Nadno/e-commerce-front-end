@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Container from '../Container';
 import IProduct from '../../interfaces/product';
@@ -12,6 +12,14 @@ interface Props {
 }
 
 const ProductList: React.FC<Props> = ({ error, products }) => {
+  const [message, setMessage] = useState('Buscando itens');
+
+  useEffect(() => {
+    if (error || !products.length) {
+      setMessage('Nada encontrado');
+    }
+  }, [error, products]);
+
   return (
     <Section>
       <Container title="Produtos">
@@ -27,9 +35,7 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
               ))}
           </ul>
         ) : (
-          <>
-            <div className="warn">Nada encontrado</div>
-          </>
+          <div className="warn">{message}</div>
         )}
         {error && <div className="error">{error}</div>}
       </Container>

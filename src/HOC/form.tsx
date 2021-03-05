@@ -1,25 +1,63 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 export default function FormData<Props, Data extends Record<string, any>>(
-  FormComponent: WrappedComponent<Data, Props>,
-  initialData: Data
+  Component: WrappedComponent<Data, Props>,
+  initialData: Data,
+  validate: Function
 ) {
-  const FormWrapper: React.FC<PropsWithoutData<Props, Data>> = props => {
-    const WrappedForm = FormComponent as WrappedComponent<Data>;
+  type InputNames = keyof Data;
+
+  const FormWrapper: React.FC<WrapperProps> = props => {
     const [data, setData] = useState(initialData);
+    const [invalid, setInvalid] = useState(true);
+    const [changedInput, setChangedInput] = useState<InputNames>('');
+    const [inputError, setInputError] = useState<InputError<InputNames>>({});
 
-    const handleChange = useCallback((e: ChangeEvent) => {
-      const { name, value } = e.target as HTMLInputElement;
+    const handleValidate = useCallback(() => {
+      if (!changedInput) return;
+      const zeroDotFourSeconds = 400;
 
-      if (typeof data[name] !== 'undefined') {
+      const timeoutId = setTimeout(() => {
+        const error: string = validate(changedInput, data);
+        if (error) {
+          setInputError(prev => ({
+            ...prev,
+            [changedInput]: error,
+          }));
+          setInvalid(() => true);
+        } else {
+          setInputError(prev => (delete prev[changedInput] ? prev : {}));
+          setInvalid(() => false);
+        }
+      }, zeroDotFourSeconds);
+
+      return () => clearTimeout(timeoutId);
+    }, [data, changedInput]);
+
+    useEffect(handleValidate, [data, changedInput]);
+
+    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+
+      if (data[name] != null) {
         setData(prev => ({
           ...prev,
           [name]: value,
         }));
+        setChangedInput(() => name);
       }
     }, []);
 
-    return <WrappedForm data={data} handleChange={handleChange} {...props} />;
+    const WrappedComponent = Component as WrappedComponent<Data>;
+    return (
+      <WrappedComponent
+        data={data}
+        invalid={invalid}
+        inputError={inputError}
+        handleChange={handleChange}
+        {...props}
+      />
+    );
   };
 
   return FormWrapper;

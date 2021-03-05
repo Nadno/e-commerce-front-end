@@ -4,11 +4,14 @@ import Container from '../Container/style';
 const Form: any = styled(Container).attrs(() => ({ as: 'form' }))`
   justify-content: center;
 
-  @media screen and (min-width: 450px) {
-    .input-block {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: 1rem;
+  .input-block {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr;
+    gap: 1.5rem;
+
+    @media screen and (min-width: 450px) {
+      grid-template: 1fr / 1fr 1fr;
+      align-items: flex-end;
     }
   }
 `;
@@ -29,11 +32,11 @@ Form.Fieldset = styled.fieldset`
   }
 
   & > div {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
-Form.Submit = styled.button.attrs(() => ({ type: 'submit' }))`
+Form.Submit = styled.button.attrs(props => ({ type: 'submit', ...props }))`
   cursor: pointer;
   width: 100%;
   height: 4rem;
@@ -43,6 +46,7 @@ Form.Submit = styled.button.attrs(() => ({ type: 'submit' }))`
   color: ${({ theme }) => theme.colors.white};
 
   border: none;
+  margin-top: 3rem;
   background-color: ${({ theme }) => theme.colors.secondary};
 `;
 

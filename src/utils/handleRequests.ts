@@ -4,6 +4,8 @@ const DEFAULT_MESSAGE =
 
 export default function handleRequest(setError: Function) {
   return function handleError(err: AxiosError) {
+    if (err.message === 'canceled') return;
+     
     if (err.response) {
       const { data } = err.response;
       const message = data.message ? data.message : DEFAULT_MESSAGE;

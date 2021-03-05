@@ -9,6 +9,7 @@ import progress from '../utils/routeLoading';
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
 import Head from 'next/head';
+import ModalProvider from '../providers/ModalProvider';
 
 Router.events.on('routeChangeStart', progress.start);
 Router.events.on('routeChangeComplete', progress.done);
@@ -21,7 +22,9 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
       </Head>
       <ThemeProvider theme={theme}>
         <StoreProvider>
-          <Component {...pageProps} />
+          <ModalProvider>
+            <Component {...pageProps} />
+          </ModalProvider>
           <GlobalStyle />
           <div className="loading"></div>
         </StoreProvider>

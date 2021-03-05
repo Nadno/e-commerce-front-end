@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Container from '../Container/style';
 
-const Div = styled(Container)`
+const ModalContainer = styled(Container)`
   position: fixed;
   width: 90vw;
   max-width: 400px;
@@ -34,7 +34,7 @@ const Div = styled(Container)`
   }
 `;
 
-export const Background = styled.div`
+const Background = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -45,4 +45,4 @@ export const Background = styled.div`
   left: 0;
 `;
 
-export default Div;
+export { ModalContainer, Background };

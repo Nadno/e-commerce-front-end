@@ -48,6 +48,7 @@ export const ProductContent = styled.div.attrs(() => ({
 
   .title {
     font-size: 2rem;
+    margin-top: 0;
   }
 
   .description {

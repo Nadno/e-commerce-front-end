@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Header from '../components/Header';
 import ProductList from '../components/ProductList';
 import SearchSection from '../components/SearchSection';
-import ProductItem from '../interfaces/product';
+import ProductItem from '../types/product';
 
 interface Props {
   error?: string;
@@ -25,4 +25,4 @@ const Home: React.FC<Props> = ({
   </>
 );
 
-export default Home;
+export default memo(Home);

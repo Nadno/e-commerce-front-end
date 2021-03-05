@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { apiGet } from '../../../utils/api';
-import IProduct from '../../../interfaces/product';
+import IProduct from '../../../types/product';
 import Home from '../../../screen/home';
 import Head from 'next/head';
 

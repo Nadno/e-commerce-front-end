@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import ProductItem from '../../interfaces/product';
+import ProductItem from '../../types/product';
 import Home from '../../screen/home';
 
 import { apiGet } from '../../utils/api';

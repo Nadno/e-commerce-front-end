@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import ProductSection from '../../components/ProductSection';
 
 import { apiGet } from '../../utils/api';
-import ProductItem from '../../interfaces/product';
+import ProductItem from '../../types/product';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {

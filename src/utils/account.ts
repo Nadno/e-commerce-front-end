@@ -1,4 +1,4 @@
-import { CookieStore} from '../interfaces/hooks';
+import { CookieStore} from '../types/hooks';
 import { setCookie, getCookie, removeCookie } from './storage';
 
 const expires = new Date();

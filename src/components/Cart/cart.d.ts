@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import ProductItem from "../../interfaces/product";
+import ProductItem from "../../types/product";
 
 declare module './' {
   export interface CartItem extends ProductItem {

@@ -12,6 +12,5 @@ export const Section = styled.section`
 `;
 
 export const CheckoutForm = styled(Form)`
-  min-height: 100%;
   justify-content: flex-start;
 `;

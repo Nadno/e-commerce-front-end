@@ -3,7 +3,7 @@ import formatCurrency from '../../utils/formatCurrency';
 import formatDescription from '../../utils/formatDescription';
 import ListItem, { ProductContent } from './style';
 
-import ProductItem from '../../interfaces/product';
+import ProductItem from '../../types/product';
 
 interface Props extends ProductItem {
   type?: 'normal' | 'cart';

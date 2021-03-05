@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Container from '../Container';
-import IProduct from '../../interfaces/product';
+import IProduct from '../../types/product';
 import Product from '../Product';
 import Section from './style';
 import Button from '../Button';

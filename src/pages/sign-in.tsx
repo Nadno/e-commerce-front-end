@@ -6,42 +6,53 @@ import FormData, { WrappedComponent } from '../HOC/form';
 import useAccount from '../hooks/useAccount';
 import handleRequest from '../utils/handleRequests';
 import { apiPost } from '../utils/api';
+import validate from '../utils/validate';
 
 const INITIAL_DATA = { email: '', password: '' };
 type SignInData = typeof INITIAL_DATA;
 
-const SignIn: WrappedComponent<SignInData> = ({ data, handleChange }) => {
+const SignIn: WrappedComponent<SignInData> = ({
+  data,
+  invalid,
+  inputError,
+  handleChange,
+}) => {
   const [error, setError] = useState('');
   const { login } = useAccount();
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
+      if (invalid) return;
 
       const goToPath = '/';
 
-      apiPost('/user/sign-in', {
+      const { response } = apiPost('/user/sign-in', {
         ...data,
-      })
+      });
+      
+      response
         .then(({ data }) => {
           login(data, goToPath);
         })
         .catch(handleRequest(setError));
     },
-    [data]
+    [data, invalid]
   );
 
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Fieldset>
         <legend>Bem vindo!</legend>
+
         <Input
           id="email"
           name="email"
           value={data.email}
+          error={inputError.email}
           label="Email"
           placeholder="Digite seu e-mail"
-          handleChange={handleChange}
+          onChange={handleChange}
         />
 
         <Input
@@ -49,16 +60,16 @@ const SignIn: WrappedComponent<SignInData> = ({ data, handleChange }) => {
           id="password"
           name="password"
           value={data.password}
+          error={inputError.password}
           label="Senha"
           placeholder="Digite sua senha"
-          handleChange={handleChange}
+          onChange={handleChange}
         />
-
-        <Form.Submit>Entrar</Form.Submit>
+        {error && <span className="error">{error}</span>}
+        <Form.Submit disabled={invalid}>Entrar</Form.Submit>
       </Form.Fieldset>
-      {error && <span className="error">{error}</span>}
     </Form>
   );
 };
 
-export default FormData(SignIn, INITIAL_DATA);
+export default FormData(SignIn, INITIAL_DATA, validate['sign-in']);

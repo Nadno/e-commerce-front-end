@@ -5,7 +5,7 @@ type InputError = { name: string; error: string };
 export function getInputError({ name, error }: InputError) {
   const formErrors = errors.form as any;
 
-  if (formErrors[name] != null) {
+  if (formErrors[name] && formErrors[name][error]) {
     return formErrors[name][error];
   } else {
     return formErrors.default[error]

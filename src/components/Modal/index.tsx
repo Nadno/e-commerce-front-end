@@ -1,72 +1,42 @@
-import React, {
-  useState,
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-} from 'react';
-
+import React, { MouseEvent } from 'react';
 import Button from '../Button';
-import Div, { Background } from './style';
+import { ModalContainer, Background } from './style';
 
 interface Props {
-  open?: boolean;
+  message: string;
+  isOpen: boolean;
   cancelText?: string;
   okText?: string;
-  okAction?: Function;
+  handleOk(e: MouseEvent): void;
+  handleCancel(e: MouseEvent): void;
 }
 
-export interface ModalHandle {
-  openModal(message: string): void;
-}
+const Modal: React.FC<Props> = ({
+  isOpen,
+  message,
+  okText,
+  cancelText,
+  handleOk,
+  handleCancel,
+}) => (
+  <>
+    {isOpen ? (
+      <Background>
+        <ModalContainer>
+          <span className="message">{message}</span>
+          <hr />
+          <div className="buttons">
+            <Button.Secondary onClick={handleOk}>
+              {okText ? okText : 'OK'}
+            </Button.Secondary>
+            <Button.Secondary onClick={handleCancel}>
+              {cancelText ? cancelText : 'Cancelar'}
+            </Button.Secondary>
+          </div>
+        </ModalContainer>
+      </Background>
+    ) : null}
+  </>
+);
 
-const Modal: React.ForwardRefRenderFunction<ModalHandle, Props> = (
-  { open = false, okText, cancelText, okAction },
-  ref
-) => {
-  const [isOpen, setIsOpen] = useState(open);
-  const [message, setMessage] = useState('');
-
-  const openModal = useCallback(
-    (message: string) => {
-      setMessage(message);
-      setIsOpen(true);
-    },
-    [message]
-  );
-
-  useImperativeHandle(ref, () => ({
-    openModal,
-  }));
-
-  const handleCancel = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  const handleOk = useCallback(() => {
-    setIsOpen(false);
-    if (okAction) okAction();
-  }, []);
-
-  return (
-    <>
-      {isOpen ? (
-        <Background>
-          <Div>
-            <span className="message">{message}</span>
-            <hr />
-            <div className="buttons">
-              <Button.Secondary onClick={handleOk}>
-                {okText ? okText : 'OK'}
-              </Button.Secondary>
-              <Button.Primary onClick={handleCancel}>
-                {cancelText ? cancelText : 'Cancelar'}
-              </Button.Primary>
-            </div>
-          </Div>
-        </Background>
-      ) : null}
-    </>
-  );
-};
-
-export default forwardRef(Modal);
+export default Modal;

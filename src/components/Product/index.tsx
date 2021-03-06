@@ -4,22 +4,24 @@ import formatDescription from '../../utils/formatDescription';
 import ListItem, { ProductContent } from './style';
 
 import ProductItem from '../../types/product';
+import Animation from '../../types/animation';
 
 interface Props extends ProductItem {
   type?: 'normal' | 'cart';
+  animation: Animation;
 }
 
 const Product: React.FC<Props> = ({
   description,
-  id,
   image,
   price,
   title,
   type = 'normal',
+  animation,
   children,
 }) => {
   return (
-    <ListItem title={title} className={type}>
+    <ListItem {...animation} title={title} className={type}>
       <img src={image} alt={title} className="img" />
 
       <ProductContent>

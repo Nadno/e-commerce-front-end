@@ -12,6 +12,7 @@ import { apiGet } from '../../utils/api';
 
 import { Input } from '../Input/style';
 import * as Search from './style';
+import Form from '../Form';
 
 interface Props {
   categories: string[];
@@ -34,8 +35,9 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
       e.preventDefault();
 
       const { response } = apiGet(`/product/name?value=${productName}`);
-      const products = await response
-        .then(({ data }) => data.products || data.product);
+      const products = await response.then(
+        ({ data }) => data.products || data.product
+      );
 
       setProducts(() => products);
     },
@@ -44,17 +46,16 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
 
   return (
     <Search.Section>
-      <Container title="Pesquise">
+      <Container title="Pesquisar">
         <form className="search-bar" onSubmit={handleSearch}>
           <Input
+            type="search"
             id="search"
             name="search"
             value={productName}
             onChange={searchChange}
           />
-          <Search.Submit as="button" type="submit">
-            Search
-          </Search.Submit>
+          <Form.SubmitSecondary>Buscar</Form.SubmitSecondary>
         </form>
 
         <ul className="categories">

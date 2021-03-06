@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../Button';
 import Container from '../Container/style';
 
 const Form: any = styled(Container).attrs(() => ({ as: 'form' }))`
@@ -36,18 +37,17 @@ Form.Fieldset = styled.fieldset`
   }
 `;
 
-Form.Submit = styled.button.attrs(props => ({ type: 'submit', ...props }))`
-  cursor: pointer;
-  width: 100%;
+Form.SubmitPrimary = styled(Button.Primary).attrs(props => ({
+  type: 'submit',
+  ...props,
+}))`
   height: 4rem;
-
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.white};
-
-  border: none;
   margin-top: 3rem;
-  background-color: ${({ theme }) => theme.colors.secondary};
 `;
+
+Form.SubmitSecondary = styled(Button.Secondary).attrs(props => ({
+  type: 'submit',
+  ...props,
+}))``;
 
 export default Form;

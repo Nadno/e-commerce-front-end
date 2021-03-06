@@ -1,7 +1,7 @@
 import React, { useCallback, FormEvent, useState } from 'react';
 import Form from '../components/Form';
 
-import Input from '../components/Input';
+import { Input } from '../components/Input';
 import Link from '../components/Link';
 import FormData, { WrappedComponent } from '../HOC/form';
 import useAccount from '../hooks/useAccount';

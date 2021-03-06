@@ -3,8 +3,10 @@ import { isEqual, notNull, validPattern } from './validations';
 
 const patternFor: Record<string, RegExp> = {
   email: /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/,
-  password: /^[a-zA-Z-0-9]{6,30}$/,
+  password: /^[a-zA-Z-0-9]{3,30}$/,
   tel: /^[1-9]{2} (?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/,
+  VS: /^4[0-9]{12}(?:[0-9]{3})?$/,
+  MS: /^5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}$/,
 };
 
 const ERROR = {
@@ -33,18 +35,23 @@ function setDefaultValidation(optionalInputs: string[] = []) {
 
       if (patternFor[name])
         tests.push([validPattern(patternFor[name], value), ERROR.INVALID]);
-      
+
       return validTests(name, tests);
     }
 
     return '';
   };
 }
-const validationMethods: Record<string, any> = {
-  'sign-in': {
+
+type ValidationFunction = (name: string, data: any) => string;
+
+const SIGN_UP = 'sign-up', SIGN_IN = 'sign-n', CREDIT_CARD = 'credit-card';
+
+const validationMethods: Record<string, Record<string, ValidationFunction>> = {
+  [SIGN_IN]: {
     default: setDefaultValidation(),
   },
-  'sign-up': {
+  [SIGN_UP]: {
     default: setDefaultValidation(['avatar']),
 
     confirmPassword(name: string, data: any) {
@@ -53,8 +60,31 @@ const validationMethods: Record<string, any> = {
         [notNull(data.confirmPassword), ERROR.EMPTY],
         [isEqual(data.password, data.confirmPassword), ERROR.NOT_EQUAL],
       ];
-  
+
       return validTests(name, tests);
+    },
+  },
+  [CREDIT_CARD]: {
+    default: setDefaultValidation(),
+
+    cardNumber(name: string, { cardType, cardNumber }) {
+      const tests = [
+        [notNull(cardNumber), ERROR.EMPTY],
+        [validPattern(patternFor[cardType], cardNumber), ERROR.INVALID],
+      ];
+
+      return validTests(name, tests);
+    },
+    
+    cardType(name: string, { cardType }) {
+      const CARDS = ['MS', 'VS'];
+      return CARDS.includes(cardType)
+        ? ''
+        : getInputError({ name, error: ERROR.INVALID });
+    },
+
+    cardValidate() {
+      return '';
     },
   },
 };
@@ -74,8 +104,9 @@ function setValidation(
 }
 
 const validate: any = {
-  'sign-in': setValidation('sign-in'),
-  'sign-up': setValidation('sign-up'),
+  [SIGN_IN]: setValidation(SIGN_IN),
+  [SIGN_UP]: setValidation(SIGN_UP),
+  [CREDIT_CARD]: setValidation(CREDIT_CARD),
 };
 
 export default validate;

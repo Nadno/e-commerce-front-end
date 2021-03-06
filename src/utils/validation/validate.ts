@@ -4,7 +4,13 @@ import {
   ValidationMethods,
 } from '../../types/validation';
 import { getInputError } from '../getError';
-import { isEqual, notNull, validPattern } from './validations';
+import {
+  isEqual,
+  notNull,
+  validPattern,
+  biggerOrEqualThan,
+  lessOrEqualThan,
+} from './validations';
 
 const patternFor: Record<string, RegExp> = {
   email: /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/,
@@ -36,7 +42,7 @@ function validTests(name: string, tests: Tests) {
 function setDefaultValidation(
   optionalInputs: string[] = []
 ): ValidationFunction {
-  return function defaultValidation(name: string, data: any) {
+  return function defaultValidation(name, data) {
     const value = data[name];
 
     if (!optionalInputs.includes(name)) {
@@ -53,7 +59,7 @@ function setDefaultValidation(
 }
 
 const SIGN_UP = 'sign-up',
-  SIGN_IN = 'sign-n',
+  SIGN_IN = 'sign-in',
   CREDIT_CARD = 'credit-card';
 
 const validationMethods: ValidationMethods = {
@@ -63,7 +69,7 @@ const validationMethods: ValidationMethods = {
   [SIGN_UP]: {
     default: setDefaultValidation(['avatar']),
 
-    confirmPassword(name: string, data: any) {
+    confirmPassword(name, data) {
       const tests: Tests = [
         [notNull(data.password), ERROR.DEPENDENT_EMPTY],
         [notNull(data.confirmPassword), ERROR.EMPTY],
@@ -76,24 +82,37 @@ const validationMethods: ValidationMethods = {
   [CREDIT_CARD]: {
     default: setDefaultValidation(),
 
-    cardNumber(name: string, { cardType, cardNumber }) {
+    cardNumber(name, { cardType, cardNumber }) {
       const tests: Tests = [
         [notNull(cardNumber), ERROR.EMPTY],
         [validPattern(patternFor[cardType], cardNumber), ERROR.INVALID],
       ];
-
       return validTests(name, tests);
     },
 
-    cardType(name: string, { cardType }) {
+    cardType(name, data) {
       const CARDS = ['MS', 'VS'];
-      return CARDS.includes(cardType)
-        ? NO_ERRORS
+
+      return CARDS.includes(data.cardType)
+        ? this.cardNumber('cardNumber', data)
         : getInputError({ name, error: ERROR.INVALID });
     },
 
-    cardValidate() {
-      return NO_ERRORS;
+    cardValidate(name, { cardValidate }) {
+      const [year, month] = cardValidate.split('-');
+      if (!year || !month) return getInputError({ name, error: ERROR.INVALID });
+
+      const date = new Date();
+
+      const minYear = biggerOrEqualThan(Number(year), date.getFullYear());
+      const maxYear = lessOrEqualThan(Number(year), date.getFullYear() + 20);
+
+      const minMonth = biggerOrEqualThan(Number(month) - 1, date.getMonth());
+
+      const isOk = minYear() && maxYear() && minMonth();
+
+      if (isOk) return NO_ERRORS;
+      return getInputError({ name, error: ERROR.INVALID });
     },
   },
 };

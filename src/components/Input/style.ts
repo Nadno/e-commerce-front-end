@@ -45,7 +45,7 @@ const InputField = styled.div`
     transform: translateX(2px);
   }
 
-  &.invalid::after {
+  &.invalid .input::after {
     background-color: red;
   }
 

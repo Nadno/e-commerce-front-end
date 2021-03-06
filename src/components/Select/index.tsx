@@ -1,5 +1,6 @@
 import React, { InputHTMLAttributes } from 'react';
-import { Input, InputField } from '../Input/style';
+import { Input } from '../Input/style';
+import { InputField } from '../Input';
 
 interface Props extends InputHTMLAttributes<HTMLSelectElement> {
   options: any[];
@@ -10,30 +11,14 @@ interface Props extends InputHTMLAttributes<HTMLSelectElement> {
   value: string;
 }
 
-const Select: React.FC<Props> = ({
-  id,
-  name,
-  label,
-  value,
-  error,
-  options,
-  ...props
-}) => (
-  <InputField>
-    <label htmlFor={id}>
-      {label}
-      {error && <span className="invalid-error">{error}</span>}
-    </label>
-    <div className="input">
-      <Input name={name} id={id} {...props} as="select">
-        {options.length &&
-          options.map(({ value, abbr }) => (
-            <option value={abbr} key={abbr}>
-              {value}
-            </option>
-          ))}
-      </Input>
-    </div>
+const Select: React.FC<Props> = ({ options, ...props }) => (
+  <InputField {...props} Input={Input} as="select">
+    {options.length &&
+      options.map(({ value, abbr }) => (
+        <option value={abbr} key={abbr}>
+          {value}
+        </option>
+      ))}
   </InputField>
 );
 

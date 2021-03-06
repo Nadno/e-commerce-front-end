@@ -26,13 +26,24 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
         {products.length > 0 ? (
           <ul className="list">
             {products.length > 0 &&
-              products.map(product => (
-                <Product {...product} key={product.id}>
-                  <Button.Link href={`/products/${product.id}`}>
-                    Detalhes
-                  </Button.Link>
-                </Product>
-              ))}
+              products.map((product, index) => {
+                const delay = `${0.3 * (index + 1)}s`;
+                return (
+                  <Product
+                    key={product.id}
+                    animation={{
+                      duration: '350ms',
+                      delay,
+                      fill: 'forwards',
+                    }}
+                    {...product}
+                  >
+                    <Button.Link href={`/products/${product.id}`}>
+                      Detalhes
+                    </Button.Link>
+                  </Product>
+                );
+              })}
           </ul>
         ) : (
           <div className="warn">{message}</div>

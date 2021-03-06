@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { ContextAccount } from '../StoreProvider';
 
-import { CartAction } from '../interfaces/hooks';
+import { CartAction } from '../types/hooks';
 import { setCookie, getCookie } from '../utils/storage';
 
 const COOKIE_CART = 'cart';
@@ -18,11 +18,11 @@ const useCart = () => {
   }, []);
 
   const addToCart: CartAction = (id) => {
-    let error = false;
+    let ok = true;
 
     setCart((cart) => {
       if (cart.includes(id)) {
-        error = true;
+        ok = false;
         return cart;
       }
 
@@ -32,7 +32,7 @@ const useCart = () => {
       return newCart;
     });
 
-    return error;
+    return ok;
   };
 
   const removeFromCart: CartAction = (id) => {

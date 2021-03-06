@@ -1,9 +1,9 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import getSecondsToExpire from './utils/jwt';
-import { apiRefreshToken } from './utils/api';
-import { getAccount, removeAccount, storeAccount } from './utils/account';
-import { StoreProvider, Account } from './types/hooks';
+import getSecondsToExpire from '../utils/jwt';
+import { apiRefreshToken } from '../utils/api';
+import { getAccount, removeAccount, storeAccount } from '../utils/account';
+import { StoreProvider, Account } from '../types/hooks';
 
 export const ContextAccount = createContext<StoreProvider | null>(null);
 

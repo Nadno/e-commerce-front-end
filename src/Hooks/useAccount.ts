@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import router from 'next/router';
 
 import { Login } from '../types/hooks';
-import { ContextAccount } from '../StoreProvider';
+import { ContextAccount } from '../providers/StoreProvider';
 import { storeAccount, removeAccount } from '../utils/account';
 
 const useAccount = () => {

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { ContextAccount } from '../StoreProvider';
+import { ContextAccount } from '../providers/StoreProvider';
 
 import { CartAction } from '../types/hooks';
 import { setCookie, getCookie } from '../utils/storage';

@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
+import handleRequest from '../../utils/handleRequests';
+import { apiGet } from '../../utils/api';
+
 import Product from '../Product';
 import Container from '../Container/';
-
-import { apiGet } from '../../utils/api';
-import handleRequest from '../../utils/handleRequests';
-
-import { Section, ProductCount } from './style';
 import Button from '../Button';
+import { Section } from './style';
+import { Input } from '../Input';
 
 const Cart: React.FC<CartProps> = ({
   items,
@@ -15,7 +15,7 @@ const Cart: React.FC<CartProps> = ({
   setItems,
   removeItem,
 }) => {
-  const [totalItems, setTotalItems] = useState(0);
+  const TOTAL_ITEMS = items.length;
   const [currentItems, setCurrentItems] = useState(0);
 
   const [error, setError] = useState('');
@@ -28,7 +28,7 @@ const Cart: React.FC<CartProps> = ({
     setItems({});
     items.forEach(id => {
       apiGet(`/product/id?value=${id}`)
-        .then(({ data }) => {
+        .response.then(({ data }) => {
           const productId = String(data.product.id);
 
           setItems(products => ({
@@ -65,7 +65,6 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(() => {
     getProducts();
-    setTotalItems(() => items.length);
   }, [items]);
 
   return (
@@ -73,12 +72,25 @@ const Cart: React.FC<CartProps> = ({
       <Container title="Carrinho" backTo="/">
         {currentItems > 0 ? (
           <ul className="list">
-            {currentItems === totalItems &&
+            {currentItems === TOTAL_ITEMS &&
               Object.entries(products).map(
-                ([productId, { description, ...rest }]) => (
-                  <Product key={productId} type="cart" {...rest}>
-                    <ProductCount
-                      value={products[productId].quantity}
+                ([productId, { description, ...rest }], index) => (
+                  <Product
+                    key={productId}
+                    type="cart"
+                    animation={{
+                      duration: '450ms',
+                      delay: `${0.3 * (index + 1)}s`,
+                      fill: 'forwards',
+                    }}
+                    {...rest}
+                  >
+                    <Input
+                      type="number"
+                      id={`cart-item-${productId}`}
+                      name="cartItem"
+                      label="Quantidade:"
+                      value={String(products[productId].quantity)}
                       onChange={handleChangeQuantity(productId)}
                     />
                     <Button.Primary

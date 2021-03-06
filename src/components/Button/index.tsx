@@ -5,36 +5,72 @@ import router from 'next/router';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
- cursor: pointer;
+  cursor: pointer;
   height: 4rem;
-  padding: 0 2rem;
+  padding: 0 2em;
   display: flex;
   align-items: center;
   justify-content: center;
 
   font-size: 1.6rem;
   font-weight: bold;
-  color: #f5f5f5;
-  border: none;
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(0.95) !important;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const Primary = styled(StyledButton)`
   width: 100%;
-  max-width: 30rem;
+  border: none;
+  color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.primary};
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const Secondary = styled(StyledButton)`
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: hidden;
   color: ${({ theme }) => theme.colors.secondary};
   border: 2px solid ${({ theme }) => theme.colors.secondary};
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: ${({ theme }) => theme.colors.secondary};
+
+    z-index: -1;
+    transform: translateY(100%);
+    transition: transform 250ms ease;
+  }
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.white};
+
+    &::before {
+      transform: translateX(0);
+    }
+  }
 `;
 
 const Link: React.FC<LinkProps> = ({ children, href, ...props }) => {
   return (
     <NextLink href={href} passHref>
-      <Primary {...props} as="a">
+      <Secondary {...props} as="a">
         {children}
-      </Primary>
+      </Secondary>
     </NextLink>
   );
 };

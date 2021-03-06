@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from 'react';
-import { Input, InputField } from './style';
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+import { Input as StyledInput, InputField as Field } from './style';
+interface Props<T> extends InputHTMLAttributes<T> {
   id: string;
   name: string;
   label: string;
@@ -8,28 +8,39 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-const DefaultInput: React.FC<Props> = ({
+export interface InputFieldProps <Element> extends Props<Element> {
+  Input: any;
+  as?: string;
+}
+
+function InputField<Element>({
   id,
   name,
   label,
   value,
   error,
+  Input,
+  children,
   ...props
-}) => {
-  const isInvalid = !!error;
-  const classError = isInvalid ? 'invalid' : '';
-
+}: InputFieldProps<Element>) {
   return (
-    <InputField className={classError}>
+    <Field className={error ? 'invalid' : ''}>
       <label htmlFor={id}>
         {label}
-        {isInvalid && <span className="invalid-error">{error}</span>}
+        {error && <span className="invalid-error">{error}</span>}
       </label>
       <div className="input">
-        <Input type="text" id={id} name={name} value={value} {...props} />
+        <Input type="text" id={id} name={name} value={value} {...props}>
+          {children}
+        </Input>
       </div>
-    </InputField>
+    </Field>
   );
-};
+}
 
-export default DefaultInput;
+
+const Input: React.FC<Props<HTMLInputElement>> = props => (
+  <InputField Input={StyledInput} {...props} />
+);
+
+export { Input, InputField };

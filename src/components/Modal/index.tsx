@@ -26,12 +26,12 @@ const Modal: React.FC<Props> = ({
           <span className="message">{message}</span>
           <hr />
           <div className="buttons">
-            <Button.Secondary onClick={handleOk}>
+            <Button.Primary onClick={handleOk}>
               {okText ? okText : 'OK'}
-            </Button.Secondary>
-            <Button.Secondary onClick={handleCancel}>
+            </Button.Primary>
+            <Button.Primary onClick={handleCancel}>
               {cancelText ? cancelText : 'Cancelar'}
-            </Button.Secondary>
+            </Button.Primary>
           </div>
         </ModalContainer>
       </Background>

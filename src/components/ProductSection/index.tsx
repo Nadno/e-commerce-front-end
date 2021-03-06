@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import router from 'next/router';
 
 import Container from '../Container/style';
-import Product from '../Product/style';
+import { ProductContent } from '../Product/style';
 import Button from '../Button';
 
 import formatCurrency from '../../utils/formatCurrency';
-import ProductItem from '../../interfaces/product';
+import ProductItem from '../../types/product';
+import useCart from '../../hooks/useCart';
+import useModal from '../../hooks/useModal';
 
 const Section = styled(Container)`
   margin: 8rem 1rem;
@@ -37,10 +40,6 @@ const Section = styled(Container)`
     row-gap: 2rem;
   }
 
-  .about {
-    padding: 0 2rem;
-  }
-
   @media screen and (min-width: 450px) {
     .cart {
       flex-direction: row;
@@ -60,23 +59,44 @@ const ProductSection: React.FC<ProductItem> = ({
   price,
   title,
 }) => {
+  const { addToCart } = useCart();
+  const [openModal, setActions, setButtons] = useModal();
+
+  const handleAddToCart = useCallback(() => {
+    if (addToCart(String(id))) {
+      setButtons({
+        okButtonText: 'Continuar',
+        cancelButtonText: 'Carrinho',
+      });
+      setActions({
+        cancelAction() {
+          router.push('/cart');
+        },
+      });
+      openModal('O item foi adicionado ao carrinho.');
+    }
+  }, []);
+
   return (
     <Section as="section">
       <Button.Back />
+
       <div className="img-container">
         <img src={image} alt={title} />
       </div>
 
-      <Product.Content className="about">
+      <ProductContent>
         <h1 className="title">{title}</h1>
 
         <p className="description">{description}</p>
 
         <div className="cart">
           <span className="price">{formatCurrency(price)}</span>
-          <Button.Primary>Adicionar ao carrinho</Button.Primary>
+          <Button.Primary onClick={handleAddToCart}>
+            Adicionar ao carrinho
+          </Button.Primary>
         </div>
-      </Product.Content>
+      </ProductContent>
     </Section>
   );
 };

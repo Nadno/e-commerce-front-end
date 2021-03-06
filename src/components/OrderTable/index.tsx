@@ -1,4 +1,5 @@
 import React from 'react';
+import formatCurrency from '../../utils/formatCurrency';
 import { OrderSection } from './style';
 
 interface Props {
@@ -38,7 +39,7 @@ const OrderTable: React.FC<Props> = ({ products, finalPrice }) => {
               <tr key={id}>
                 <th scope="row">{title}</th>
                 <td>{quantity}</td>
-                <td>{price}</td>
+                <td>{formatCurrency(price)}</td>
               </tr>
             );
           })}
@@ -46,7 +47,7 @@ const OrderTable: React.FC<Props> = ({ products, finalPrice }) => {
           <tr>
             <th>Total</th>
             <td colSpan={2} className="total">
-              {finalPrice}
+              {formatCurrency(finalPrice)}
             </td>
           </tr>
         </tbody>

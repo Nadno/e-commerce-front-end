@@ -7,6 +7,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :focus {
+    outline: none;
+  }
+
   :root {
     font-size: 62.5%;
     font-family: 'Lato', sans-serif;
@@ -26,11 +30,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .title {
-      margin: 2rem 0;
-      font-weight: 500;
-      font-size: 2.4rem;
-      color: ${({ theme }) => theme.colors.title};
-    }
+    font-weight: 500;
+    font-size: 2.4rem;
+    color: ${({ theme }) => theme.colors.title};
+  }
+
+  .container .title {
+    margin: 2rem 0;
+  }
   
   #__next {
     height: 100%;

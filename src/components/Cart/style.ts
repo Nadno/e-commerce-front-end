@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Input } from '../Input';
+import { Input } from '../Input/style';
 
-export const Section = styled.section`
+const Section = styled.section`  
   .list {
     width: 100%;
     display: flex;
@@ -23,6 +23,7 @@ export const Section = styled.section`
   @media screen and (min-width: 350px) {
     .buttons {
       flex-direction: row;
+      align-items: flex-end;
     }
 
     @media screen and (min-width: 600px) {
@@ -42,26 +43,12 @@ export const Section = styled.section`
       }
     }
   }
-`;
 
-export const ProductCount = styled(Input).attrs(() => ({
-  type: 'number',
-  placeholder: 'Quantidade',
-}))`
-  border-radius: 0;
-  border-top-color: ${({ theme }) => theme.colors.primary};
-`;
-
-export const FinalizeOrder = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.6rem;
-
-  .total {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.primary};
+  .input::after {
+    top: 0;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `;
+
+export { Section };

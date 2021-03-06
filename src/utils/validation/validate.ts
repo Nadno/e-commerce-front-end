@@ -1,4 +1,9 @@
-import { getInputError } from './getError';
+import {
+  Tests,
+  ValidationFunction,
+  ValidationMethods,
+} from '../../types/validation';
+import { getInputError } from '../getError';
 import { isEqual, notNull, validPattern } from './validations';
 
 const patternFor: Record<string, RegExp> = {
@@ -16,17 +21,21 @@ const ERROR = {
   NOT_EQUAL: 'notEqual',
 };
 
-function validTests(name: string, tests: any) {
+const NO_ERRORS = '';
+
+function validTests(name: string, tests: Tests) {
   for (let [valid, error] of tests) {
     if (!valid()) {
       return getInputError({ name, error });
     }
   }
 
-  return '';
+  return NO_ERRORS;
 }
 
-function setDefaultValidation(optionalInputs: string[] = []) {
+function setDefaultValidation(
+  optionalInputs: string[] = []
+): ValidationFunction {
   return function defaultValidation(name: string, data: any) {
     const value = data[name];
 
@@ -39,15 +48,15 @@ function setDefaultValidation(optionalInputs: string[] = []) {
       return validTests(name, tests);
     }
 
-    return '';
+    return NO_ERRORS;
   };
 }
 
-type ValidationFunction = (name: string, data: any) => string;
+const SIGN_UP = 'sign-up',
+  SIGN_IN = 'sign-n',
+  CREDIT_CARD = 'credit-card';
 
-const SIGN_UP = 'sign-up', SIGN_IN = 'sign-n', CREDIT_CARD = 'credit-card';
-
-const validationMethods: Record<string, Record<string, ValidationFunction>> = {
+const validationMethods: ValidationMethods = {
   [SIGN_IN]: {
     default: setDefaultValidation(),
   },
@@ -55,7 +64,7 @@ const validationMethods: Record<string, Record<string, ValidationFunction>> = {
     default: setDefaultValidation(['avatar']),
 
     confirmPassword(name: string, data: any) {
-      const tests = [
+      const tests: Tests = [
         [notNull(data.password), ERROR.DEPENDENT_EMPTY],
         [notNull(data.confirmPassword), ERROR.EMPTY],
         [isEqual(data.password, data.confirmPassword), ERROR.NOT_EQUAL],
@@ -68,23 +77,23 @@ const validationMethods: Record<string, Record<string, ValidationFunction>> = {
     default: setDefaultValidation(),
 
     cardNumber(name: string, { cardType, cardNumber }) {
-      const tests = [
+      const tests: Tests = [
         [notNull(cardNumber), ERROR.EMPTY],
         [validPattern(patternFor[cardType], cardNumber), ERROR.INVALID],
       ];
 
       return validTests(name, tests);
     },
-    
+
     cardType(name: string, { cardType }) {
       const CARDS = ['MS', 'VS'];
       return CARDS.includes(cardType)
-        ? ''
+        ? NO_ERRORS
         : getInputError({ name, error: ERROR.INVALID });
     },
 
     cardValidate() {
-      return '';
+      return NO_ERRORS;
     },
   },
 };

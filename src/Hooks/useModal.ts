@@ -1,17 +1,14 @@
 import { useContext } from 'react';
-import {
-  ModalRefContext,
-  OpenModal,
-  SetActions,
-  SetButtons,
-} from '../providers/ModalProvider';
+import { ModalRefContext } from '../providers/ModalProvider';
+import { CreateModal, OpenModal } from '../types/modal';
 
-const useModal = (): [OpenModal, SetActions, SetButtons] => {
+const useModal = (): [CreateModal, OpenModal] => {
   const ctx = useContext(ModalRefContext);
   if (!ctx) throw new Error('useAccount must be used within AccountProvider');
 
-  const { openModal, setActions, setButtons } = ctx;
-  return [openModal, setActions, setButtons];
+  const [createModal, openModal] = ctx;
+
+  return [createModal, openModal];
 };
 
 export default useModal;

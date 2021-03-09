@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Checkout from '../components/Checkout';
 import useAccount from '../hooks/useAccount';
 import SignUp from '../screen/sign-up';
+import { GridContainer } from '../components/Container/style';
 
 const CartPage: React.FC = () => {
   const { authorized } = useAccount();
@@ -28,7 +29,7 @@ const CartPage: React.FC = () => {
   useEffect(getTotalPrice, [products]);
 
   return (
-    <>
+    <GridContainer>
       <Head>
         <title>Carrinho</title>
       </Head>
@@ -46,7 +47,7 @@ const CartPage: React.FC = () => {
       ) : (
         <SignUp goToPath="/cart" />
       )}
-    </>
+    </GridContainer>
   );
 };
 

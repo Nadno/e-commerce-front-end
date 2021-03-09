@@ -7,6 +7,7 @@ import ProductSection from '../../components/ProductSection';
 
 import { apiGet } from '../../utils/api';
 import ProductItem from '../../types/product';
+import { GridContainer } from '../../components/Container/style';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
@@ -46,10 +47,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const ProductPage: React.FC<{ product: ProductItem }> = ({ product }) => {
   return (
-    <>
+    <GridContainer>
       <Head>
-        <meta property="og:image" content={product.image} key="image" />
+        <meta property="og:site_name" content="Loja" key="site_name" />
         <meta property="og:title" content={product.title} key="title" />
+        <meta property="og:image" content={product.image} key="image" />
         <meta
           property="og:description"
           content={product.description}
@@ -60,7 +62,7 @@ const ProductPage: React.FC<{ product: ProductItem }> = ({ product }) => {
       </Head>
       <Header />
       <ProductSection {...product} />
-    </>
+    </GridContainer>
   );
 };
 

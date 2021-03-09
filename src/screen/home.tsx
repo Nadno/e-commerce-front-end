@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { GridContainer } from '../components/Container/style';
 
 import Header from '../components/Header';
 import ProductList from '../components/ProductList';
@@ -18,11 +19,11 @@ const Home: React.FC<Props> = ({
   products,
   setProducts,
 }) => (
-  <>
+  <GridContainer>
     <Header />
     <SearchSection categories={categories} setProducts={setProducts} />
     <ProductList error={error} products={products} />
-  </>
+  </GridContainer>
 );
 
 export default memo(Home);

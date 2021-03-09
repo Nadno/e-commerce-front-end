@@ -37,4 +37,19 @@ const Container = styled.div`
   }
 `;
 
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
+  grid-template-rows: auto;
+
+  row-gap: 4rem;
+
+  section,
+  header,
+  main,
+  form {
+    grid-column: 2/3;
+  }
+`;
+
 export default Container;

@@ -1,12 +1,12 @@
 import React, { useCallback, FormEvent, useState } from 'react';
-import Form from '../components/Form';
+import { Form, Fieldset, PrimarySubmit } from '../components/Form';
 
-import Input from '../components/Input';
+import { Input } from '../components/Input';
 import FormData, { WrappedComponent } from '../HOC/form';
 import useAccount from '../hooks/useAccount';
 import handleRequest from '../utils/handleRequests';
 import { apiPost } from '../utils/api';
-import validate from '../utils/validate';
+import validate from '../utils/validation/validate';
 
 const INITIAL_DATA = { email: '', password: '' };
 type SignInData = typeof INITIAL_DATA;
@@ -30,7 +30,7 @@ const SignIn: WrappedComponent<SignInData> = ({
       const { response } = apiPost('/user/sign-in', {
         ...data,
       });
-      
+
       response
         .then(({ data }) => {
           login(data, goToPath);
@@ -42,7 +42,7 @@ const SignIn: WrappedComponent<SignInData> = ({
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Fieldset>
+      <Fieldset>
         <legend>Bem vindo!</legend>
 
         <Input
@@ -66,8 +66,8 @@ const SignIn: WrappedComponent<SignInData> = ({
           onChange={handleChange}
         />
         {error && <span className="error">{error}</span>}
-        <Form.Submit disabled={invalid}>Entrar</Form.Submit>
-      </Form.Fieldset>
+        <PrimarySubmit disabled={invalid}>Entrar</PrimarySubmit>
+      </Fieldset>
     </Form>
   );
 };

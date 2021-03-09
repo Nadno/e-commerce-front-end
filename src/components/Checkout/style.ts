@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Form from '../Form';
+import { Form } from '../Form';
 
 export const Section = styled.section`
   margin: 4rem 0;

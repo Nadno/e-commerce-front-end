@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import FormData, { WrappedComponent } from '../../HOC/form';
 
-import Form from '../Form';
+import { Fieldset, PrimarySubmit } from '../Form';
 import { Input } from '../Input';
 import Select from '../Select';
 import OrderTable from '../OrderTable';
@@ -55,12 +55,12 @@ const Checkout: WrappedComponent<CheckoutData, Props> = ({
   );
 
   return (
-    <Section>
+    <Section className="section-container">
       <OrderTable products={Object.entries(products)} finalPrice={finalPrice} />
 
       <CheckoutForm onSubmit={handleSubmit}>
         <h2 className="title">Cartão</h2>
-        <Form.Fieldset>
+        <Fieldset>
           <div className="input-block">
             <Input
               id="card-number"
@@ -114,8 +114,8 @@ const Checkout: WrappedComponent<CheckoutData, Props> = ({
             placeholder="123"
             onChange={handleChange}
           />
-          <Form.SubmitPrimary disabled={invalid}>Comprar</Form.SubmitPrimary>
-        </Form.Fieldset>
+          <PrimarySubmit disabled={invalid}>Comprar</PrimarySubmit>
+        </Fieldset>
       </CheckoutForm>
     </Section>
   );

@@ -1,5 +1,5 @@
 import React, { useCallback, FormEvent, useState } from 'react';
-import Form from '../components/Form';
+import { Form, Fieldset, PrimarySubmit } from '../components/Form';
 
 import { Input } from '../components/Input';
 import Link from '../components/Link';
@@ -7,7 +7,7 @@ import FormData, { WrappedComponent } from '../HOC/form';
 import useAccount from '../hooks/useAccount';
 import { apiPost } from '../utils/api';
 import handleRequest from '../utils/handleRequests';
-import validate from '../utils/validate';
+import validate from '../utils/validation/validate';
 
 const INITIAL_DATA = {
   email: '',
@@ -79,7 +79,7 @@ const SignUp: WrappedComponent<SignUpData, Props> = ({
   return (
     <Form onSubmit={handleSubmit}>
       <h1 className="title">Cadastre-se</h1>
-      <Form.Fieldset>
+      <Fieldset>
         <legend>Sua conta</legend>
 
         <Input
@@ -125,9 +125,9 @@ const SignUp: WrappedComponent<SignUpData, Props> = ({
           placeholder="ex.: http://exemplo.com (opcional)"
           onChange={handleChange}
         />
-      </Form.Fieldset>
+      </Fieldset>
 
-      <Form.Fieldset>
+      <Fieldset>
         <legend>Sobre você</legend>
 
         <div className="input-block">
@@ -161,9 +161,9 @@ const SignUp: WrappedComponent<SignUpData, Props> = ({
           placeholder="ex.: 61 912345678"
           onChange={handleChange}
         />
-      </Form.Fieldset>
+      </Fieldset>
 
-      <Form.Fieldset>
+      <Fieldset>
         <legend>Endereço</legend>
 
         <div className="input-block">
@@ -210,8 +210,8 @@ const SignUp: WrappedComponent<SignUpData, Props> = ({
           />
         </div>
 
-        <Form.Submit>Cadastrar-se</Form.Submit>
-      </Form.Fieldset>
+        <PrimarySubmit>Cadastrar-se</PrimarySubmit>
+      </Fieldset>
 
       <footer>
         Já tem uma conta? <Link href="/sign-in">Entrar</Link>

@@ -12,7 +12,7 @@ import { apiGet } from '../../utils/api';
 
 import { Input } from '../Input/style';
 import * as Search from './style';
-import Form from '../Form';
+import { SecondarySubmit } from '../Form';
 
 interface Props {
   categories: string[];
@@ -55,7 +55,7 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
             value={productName}
             onChange={searchChange}
           />
-          <Form.SubmitSecondary>Buscar</Form.SubmitSecondary>
+          <SecondarySubmit>Buscar</SecondarySubmit>
         </form>
 
         <ul className="categories">

@@ -3,8 +3,7 @@ import Container from '../Container/style';
 
 const StyledHeader = styled(Container)`
   width: 100%;
-  height: 5.5rem;
-  padding: 0;
+  padding: 0.8rem;
 
   border-top: none;
 
@@ -12,7 +11,11 @@ const StyledHeader = styled(Container)`
     height: 100%;
     width: 100%;
   }
-  
+
+  a {
+    height: 3.5rem;
+    padding: 0.4em;
+  }
 
   .list {
     height: inherit;
@@ -20,7 +23,7 @@ const StyledHeader = styled(Container)`
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 `;
 

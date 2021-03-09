@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledAvatar = styled.div`
   img {
-    height: 3rem;
+    height: 2.5rem;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary},

@@ -4,7 +4,7 @@ import { AppProps } from 'next/dist/next-server/lib/router/router';
 
 import { StyledProps, ThemeProvider } from 'styled-components';
 
-import StoreProvider from '../StoreProvider';
+import StoreProvider from '../providers/StoreProvider';
 import progress from '../utils/routeLoading';
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
@@ -24,9 +24,9 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
         <StoreProvider>
           <ModalProvider>
             <Component {...pageProps} />
+            <div id="load" className="load" />
           </ModalProvider>
           <GlobalStyle />
-          <div className="loading"></div>
         </StoreProvider>
       </ThemeProvider>
     </>

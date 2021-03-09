@@ -1,24 +1,25 @@
-const overflowActive = (toggle: boolean) =>
-  (document.body.style.overflowY = toggle ? 'hidden' : 'initial');
+const overflow = (value: 'hidden' | 'initial') =>
+  (document.body.style.overflowY = value);
 
 const progress = {
   start() {
-    overflowActive(true);
-    const $load = document.querySelector<HTMLElement>('.loading');
+    const $load = document.getElementById('load');
     if ($load) {
+      $load.classList.add('loading');
+
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
-      });
-      $load.classList.add('active');
+      });     
     }
+    overflow('hidden');
   },
   done() {
-    const $load = document.querySelector<HTMLElement>('.loading');
+    const $load = document.getElementById('load');
     if ($load) {
-      $load.classList.remove('active');
+      $load.classList.remove('loading');
     }
-    overflowActive(false);
+    overflow('initial');
   },
 };
 

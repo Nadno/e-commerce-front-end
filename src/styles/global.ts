@@ -8,7 +8,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :focus {
-    outline: none;
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: 4px;
   }
 
   :root {
@@ -42,20 +43,6 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     height: 100%;
     min-height: 100vh;
-    
-    display: grid;
-    grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
-    grid-template-rows: auto;
-
-    row-gap: 4rem;
-
-    form,
-    main,
-    header,
-    section,
-    footer {
-      grid-column: 2/3;
-    }
 
     a {
       text-decoration: none;
@@ -69,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
 
     .warn {
       font-size: 3rem;
-      color: ${({ theme }) => theme.colors.warn};
+      color: ${({ theme }) => theme.colors.text};
     }
 
     .error {
@@ -78,39 +65,45 @@ const GlobalStyle = createGlobalStyle`
       font-weight: bold;
       color: ${({ theme }) => theme.colors.secondary};
     }
-
-    @keyframes loading-animation {
-    to {
-      transform: translateX(-50%) scaleX(0);
-    }
   }
 
-  .loading {
-    position: absolute;
+  @keyframes loading-animation {
+      from {
+        transform: scaleX(1.5);
+      }
+
+      to {
+        transform: scaleX(0);
+      }
+    }
+
+  .load {
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: 100;
 
-    &.active {
-    height: 100vh;
-    width: 100vw;
-    background-color: ${({ theme }) => theme.colors.white};
+    &.loading {
+      width: 100vw;
+      min-height: 100vh;
+      background-color: ${({ theme }) => theme.colors.white};
 
-      &::after {
-      content: '';
-      position: absolute;
-      height: 2rem;
-      width: 10rem;
-      background-color: ${({ theme }) => theme.colors.secondary};
+        &::after {
+          content: '';
+          position: absolute;
+          height: 2rem;
+          width: 10rem;
+          background-color: ${({ theme }) => theme.colors.primary};
 
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, 50%);
 
-      animation: loading-animation 1s cubic-bezier(0.39, 0.575, 0.565, 1) alternate
-        infinite;
+          animation: loading-animation 1s cubic-bezier(.18,.89,.32,1.28) alternate
+            infinite;
+        }
+      }
     }
-    }
-  }
-  }
 `;
 
 export default GlobalStyle;

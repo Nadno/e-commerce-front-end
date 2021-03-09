@@ -17,6 +17,7 @@ const Input = styled.input`
     outline: none;
   }
 `;
+
 const InputField = styled.div`
   label {
     display: block;
@@ -38,7 +39,7 @@ const InputField = styled.div`
     height: 0.2rem;
 
     border-radius: 0 0 0.5rem 0.5rem;
-    background-color: #83b636;
+    background-color: ${({ theme }) => theme.colors.valid};
 
     bottom: 0;
     left: 0;
@@ -51,7 +52,7 @@ const InputField = styled.div`
 
   .invalid-error {
     margin-left: 1rem;
-    color: ${({ theme }) => theme.colors.primary};
+    color: tomato;
 
     &::before {
       content: '*';

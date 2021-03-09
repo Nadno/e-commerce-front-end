@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const StyledButton = styled.button`
   cursor: pointer;
   height: 4rem;
-  padding: 0 2em;
+  padding: 0.4em 1em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,6 +34,12 @@ const Primary = styled(StyledButton)`
   &:hover {
     transform: scale(1.05);
   }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.background},
+      0 0 0 4px ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 const Secondary = styled(StyledButton)`
@@ -55,9 +61,20 @@ const Secondary = styled(StyledButton)`
     transition: transform 250ms ease;
   }
 
-  &:hover,
-  &:focus {
+  &:hover {
     color: ${({ theme }) => theme.colors.white};
+
+    &::before {
+      transform: translateX(0);
+    }
+  }
+
+
+  &:focus {
+    outline: none;
+    color: ${({ theme }) => theme.colors.white};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.background},
+      0 0 0 4px ${({ theme }) => theme.colors.secondary};
 
     &::before {
       transform: translateX(0);

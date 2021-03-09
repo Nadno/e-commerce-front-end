@@ -1,36 +1,30 @@
 import React, { createContext, useCallback, useState } from 'react';
 import Modal from '../components/Modal';
+import {
+  SetActions,
+  SetButtons,
+  ModalTypes,
+  Provider,
+  CreateModal,
+} from '../types/modal';
 
-type Action = { okAction?: () => void; cancelAction?: () => void };
-export type OpenModal = (message: string) => void;
-export type SetActions = ({}: Action) => void;
-export type SetButtons = ({}: {
-  okButtonText: string;
-  cancelButtonText: string;
-}) => void;
-
-export const ModalRefContext = createContext<{
-  openModal: OpenModal;
-  setActions: SetActions;
-  setButtons: SetButtons;
-} | null>(null);
+export const ModalRefContext = createContext<Provider | null>(null);
 
 const ModalProvider: React.FC = ({ children }) => {
+  const [type, setType] = useState<ModalTypes>('Warn');
   const [message, setMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [handles, setHandles] = useState<Record<string, Function>>({});
+
   const [okButton, setOkButton] = useState('');
   const [cancelButton, setCancelButton] = useState('');
+  const [handles, setHandles] = useState<Record<string, Function>>({});
 
-  const openModal: OpenModal = useCallback(message => {
-    setMessage(_ => message);
-    setIsOpen(_ => true);
-  }, []);
+  const openModal = useCallback(() => setIsOpen(() => true), []);
 
   const setButtons: SetButtons = useCallback(
     ({ okButtonText, cancelButtonText }) => {
-      setOkButton(_ => okButtonText);
-      setCancelButton(_ => cancelButtonText);
+      if (okButtonText) setOkButton(() => okButtonText);
+      if (cancelButtonText)setCancelButton(() => cancelButtonText);
     },
     []
   );
@@ -44,32 +38,49 @@ const ModalProvider: React.FC = ({ children }) => {
     });
   }, []);
 
+  const createModal: CreateModal = {
+    Action: useCallback(
+      ({ message, okAction, okButtonText, cancelAction, cancelButtonText }) => {
+        setButtons({ okButtonText, cancelButtonText });
+        setActions({ okAction, cancelAction });
+
+        setType(() => 'Action');
+        setMessage(() => message);
+      },
+      []
+    ),
+
+    Warn: useCallback(({ message, okAction, okButtonText }) => {
+      setButtons({ okButtonText });
+      setActions({ okAction });
+
+      setType(() => 'Warn');
+      setMessage(() => message);
+    }, []),
+  };
+
   const handleOk = useCallback(() => {
     if (handles.ok) {
       handles.ok();
     }
-    setIsOpen(_ => false);
-    setOkButton('');
+    setIsOpen(() => false);
+    setOkButton(() => '');
   }, [handles]);
 
   const handleCancel = useCallback(() => {
     if (handles.cancel) {
       handles.cancel();
     }
-    setIsOpen(_ => false);
-    setCancelButton('');
+    setIsOpen(() => false);
+    setCancelButton(() => '');
   }, [handles]);
 
+  const ModalType = Modal[type];
+
   return (
-    <ModalRefContext.Provider
-      value={{
-        openModal,
-        setActions,
-        setButtons,
-      }}
-    >
+    <ModalRefContext.Provider value={[createModal, openModal]}>
       {children}
-      <Modal
+      <ModalType
         message={message}
         isOpen={isOpen}
         cancelText={cancelButton}

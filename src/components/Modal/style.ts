@@ -2,17 +2,24 @@ import styled from 'styled-components';
 import Container from '../Container/style';
 
 const ModalContainer = styled(Container)`
-  position: fixed;
-  width: 90vw;
+  position: absolute;
+  width: 100%;
+  margin: 0;
   max-width: 400px;
 
   background-color: ${({ theme }) => theme.colors.background};
 
   left: 50%;
-  top: 30%;
+  top: 50%;
   z-index: 10;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%) !important;
   transform-style: preserve-3d;
+
+  &.action .buttons {
+    column-gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .message {
     font-size: 1.6rem;
@@ -23,14 +30,12 @@ const ModalContainer = styled(Container)`
   hr {
     width: 100%;
     height: 0.3rem;
+    border: none;
     background-color: ${({ theme }) => theme.colors.secondary};
   }
 
   .buttons {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 2rem;
   }
 `;
 

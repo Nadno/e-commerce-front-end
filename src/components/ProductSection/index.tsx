@@ -18,7 +18,12 @@ const Section = styled(Container)`
   align-items: center;
   justify-content: center;
 
-  gap: 2rem;
+  gap: 1rem;
+
+  .title {
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+  }
 
   .img-container {
     margin: 4rem 0;
@@ -44,10 +49,10 @@ const Section = styled(Container)`
     .cart {
       flex-direction: row;
       align-items: center;
-    }
 
-    .price {
-      padding: 0 2rem;
+      button {
+        width: initial;
+      }
     }
   }
 `;
@@ -60,21 +65,26 @@ const ProductSection: React.FC<ProductItem> = ({
   title,
 }) => {
   const { addToCart } = useCart();
-  const [openModal, setActions, setButtons] = useModal();
+  const [createModal, openModal] = useModal();
 
   const handleAddToCart = useCallback(() => {
+    const toCart = () => router.push('/cart');
+
     if (addToCart(String(id))) {
-      setButtons({
-        okButtonText: 'Continuar',
-        cancelButtonText: 'Carrinho',
+      createModal.Action({
+        message: 'O item foi adicionado ao carrinho.',
+        okButtonText: 'Carrinho',
+        cancelButtonText: 'Continuar',
+        okAction: toCart,
       });
-      setActions({
-        cancelAction() {
-          router.push('/cart');
-        },
+    } else {
+      createModal.Warn({
+        message:
+          'Erro ao adicionar o item ao carrinho, verifique se o item já não se encontra presente no carrinho.',
       });
-      openModal('O item foi adicionado ao carrinho.');
     }
+
+    openModal();
   }, []);
 
   return (

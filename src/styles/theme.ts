@@ -6,7 +6,7 @@ export default {
     title: '#2F4858',
     text: '#27687D',
     shadow: '#6d7bb025',
-    warn: '#40404080',
+    warn: '#FFBD6D',
     background: '#fff',
     valid: '#A1EB83',
   },

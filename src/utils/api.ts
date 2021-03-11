@@ -45,6 +45,19 @@ export const apiPost = (path: string, data = {}): ApiObject => {
   };
 };
 
+export const apiPut = (path: string, data = {}): ApiObject => {
+  const signal = axios.CancelToken.source();
+  const options = {
+    headers: getHeaders(),
+    cancelToken: signal.token,
+  };
+
+  return {
+    cancelRequest: cancel(signal),
+    response: api.put(path, data, options),
+  };
+};
+
 export const apiGet = (path: string): ApiObject => {
   const signal = axios.CancelToken.source();
   const options = {

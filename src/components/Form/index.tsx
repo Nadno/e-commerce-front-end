@@ -1,12 +1,14 @@
+import React from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import Container from '../Container/style';
 
-const Form = styled(Container).attrs(props => ({ ...props, as: 'form', }))`
+const Form = styled(Container).attrs(props => ({ ...props, as: 'form' }))`
   width: 100%;
   height: 100%;
   max-width: 750px;
   min-height: 100vh;
+  padding: 0 2rem;
   justify-content: center;
 
   .input-block {
@@ -28,7 +30,6 @@ const Form = styled(Container).attrs(props => ({ ...props, as: 'form', }))`
 const Fieldset = styled.fieldset`
   max-width: 50rem;
   width: 100%;
-  padding: 0 2rem;
   border: none;
 
   padding-top: 2rem;
@@ -48,17 +49,21 @@ const Fieldset = styled.fieldset`
   }
 `;
 
-const PrimarySubmit = styled(Button.Primary).attrs(props => ({
-  type: 'submit',
-  ...props,
-}))`
-  height: 4rem;
-  margin-top: 3rem;
-`;
+const Submit: React.FC<{ type?: 'primary' | 'secondary' }> = ({
+  type = 'primary',
+  children,
+}) => {
+  const buttonType = type === 'primary' ? 'Primary' : 'Secondary';
+  const SubmitButton = Button[buttonType];
 
-const SecondarySubmit = styled(Button.Secondary).attrs(props => ({
-  type: 'submit',
-  ...props,
-}))``;
+  return (
+    <SubmitButton
+      type="submit"
+      style={{ maxWidth: '50rem', marginBottom: '2rem' }}
+    >
+      {children}
+    </SubmitButton>
+  );
+};
 
-export { Form, Fieldset, PrimarySubmit, SecondarySubmit };
+export { Form, Fieldset, Submit };

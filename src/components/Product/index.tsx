@@ -22,7 +22,7 @@ const Product: React.FC<Props> = ({
 }) => {
   return (
     <ListItem {...animation} title={title} className={type}>
-      <img src={image} alt={title} className="img" />
+      <img src={image} alt={title} />
 
       <ProductContent>
         <div className="info">

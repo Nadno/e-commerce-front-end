@@ -19,19 +19,12 @@ const ListItem = styled.li<Animation>`
   background-color: white;
 
   transform: translateY(-6.4rem);
-  gap: 2.5rem;
+  row-gap: 2.5rem;
 
-  .img {
+  img {
     width: 100%;
     object-fit: cover;
     margin-bottom: 2rem;
-  }
-
-  &.cart {
-    .img {
-      height: 8rem;
-      width: 8rem;
-    }
   }
 
   @keyframes show-product {

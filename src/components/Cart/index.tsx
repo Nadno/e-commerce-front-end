@@ -8,6 +8,7 @@ import Container from '../Container/';
 import Button from '../Button';
 import { Section } from './style';
 import { Input } from '../Input';
+import { AxiosResponse } from 'axios';
 
 const Cart: React.FC<CartProps> = ({
   items,
@@ -24,24 +25,30 @@ const Cart: React.FC<CartProps> = ({
     setCurrentItems(() => Object.keys(products).length);
   }, [products]);
 
+  const getProduct = useCallback(id => {
+    const setProduct = ({ data }: AxiosResponse) => {
+      const productId = String(data.product.id);
+
+      setItems(products => ({
+        ...products,
+
+        [productId]: {
+          quantity: 1,
+          ...data.product,
+        },
+      }));
+    };
+
+    apiGet(`/product/id?value=${id}`)
+      .send()
+      .then(setProduct)
+      .catch(handleRequest(setError));
+  }, []);
+
   const getProducts = useCallback(() => {
     setItems({});
-    items.forEach(id => {
-      apiGet(`/product/id?value=${id}`)
-        .response.then(({ data }) => {
-          const productId = String(data.product.id);
 
-          setItems(products => ({
-            ...products,
-
-            [productId]: {
-              quantity: 1,
-              ...data.product,
-            },
-          }));
-        })
-        .catch(handleRequest(setError));
-    });
+    items.forEach(getProduct);
   }, [items]);
 
   const handleChangeQuantity = useCallback(
@@ -63,9 +70,7 @@ const Cart: React.FC<CartProps> = ({
     [products]
   );
 
-  useEffect(() => {
-    getProducts();
-  }, [items]);
+  useEffect(getProducts, [items]);
 
   return (
     <Section>

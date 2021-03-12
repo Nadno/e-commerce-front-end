@@ -5,7 +5,7 @@ export default {
     secondary: '#0B7FAD',
     title: '#27687D',
     text: '#2F4858',
-    shadow: '#6d7bb025',
+    shadow: 'rgba(0, 0, 0, 0.1)',
     warn: '#FFBD6D',
     background: '#fff',
     valid: '#A1EB83',

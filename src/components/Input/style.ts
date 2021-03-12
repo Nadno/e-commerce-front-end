@@ -7,10 +7,11 @@ const Input = styled.input`
   border: 2px solid ${({ theme }) => theme.colors.shadow};
   background-color: ${({ theme }) => theme.colors.background};
 
-  padding: 0.5rem 1rem;
+  padding: 0.5em;
   box-shadow: 0 8px 16px ${({ theme }) => theme.colors.shadow};
 
   font-size: 1.6rem;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.text};
 
   &:focus {
@@ -21,22 +22,23 @@ const Input = styled.input`
 const InputField = styled.div`
   label {
     display: block;
-    font-size: 1.6rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 0.5rem;
   }
 
   .input {
     position: relative;
-    height: 4rem;
+    height: 4.5rem;
+    font-size: 1.8rem;
   }
 
-  .input::after {
+  .input:focus-within ::after {
     content: '';
 
     position: absolute;
     width: calc(100% - 4px);
-    height: 0.2rem;
+    height: 0.2em;
 
     border-radius: 0 0 0.5rem 0.5rem;
     background-color: ${({ theme }) => theme.colors.valid};
@@ -46,7 +48,7 @@ const InputField = styled.div`
     transform: translateX(2px);
   }
 
-  &.invalid .input::after {
+  &.invalid .input:focus-within ::after {
     background-color: red;
   }
 

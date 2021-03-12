@@ -4,7 +4,7 @@ const Container = styled.div`
   animation: show-container 0.4s forwards ease;
 
   position: relative;
-  padding: 1.5rem;
+  padding: 4rem 1.5rem;
 
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@ const Container = styled.div`
   opacity: 0;
   transform: translateY(3.2rem);
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 0 16px 8px ${({ theme }) => theme.colors.shadow};
+  box-shadow: 0 20px 16px 8px ${({ theme }) => theme.colors.shadow};
   border-top: 4px solid ${({ theme }) => theme.colors.secondary};
   border-bottom: 4px solid ${({ theme }) => theme.colors.secondary};
 

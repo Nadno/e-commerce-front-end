@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 export default function FormData<Props, Data extends Record<string, any>>(
-  Component: WrappedComponent<Data, Props>,
+  Component: FormComponent<Data, Props>,
   initialData: Data,
   validate: Function
 ) {
   type InputNames = keyof Data;
 
-  const FormWrapper: React.FC<WrapperProps> = props => {
+  const FormWrapper: React.FC<Props> = props => {
     const [data, setData] = useState(initialData);
     const [invalid, setInvalid] = useState(true);
     const [changedInput, setChangedInput] = useState<InputNames>('');
@@ -48,7 +48,7 @@ export default function FormData<Props, Data extends Record<string, any>>(
       }
     }, []);
 
-    const WrappedComponent = Component as WrappedComponent<Data>;
+    const WrappedComponent = Component as FormComponent<Data>;
     return (
       <WrappedComponent
         data={data}

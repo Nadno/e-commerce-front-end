@@ -1,5 +1,7 @@
-type Actions = { okAction?: () => void; cancelAction?: () => void };
-type Buttons = {
+import { Dispatch, SetStateAction } from 'react';
+
+export type Actions = { okAction?: () => void; cancelAction?: () => void };
+export type Buttons = {
   okButtonText?: string;
   cancelButtonText?: string;
 };
@@ -23,4 +25,10 @@ export type CreateModalMethods = ({
 
 export type CreateModal = Record<string, CreateModalMethods>;
 
-export type Provider = [CreateModal, OpenModal];
+export type Provider = {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setMessage: Dispatch<SetStateAction<string>>;
+  setType: Dispatch<SetStateAction<string>>;
+  setButtons: SetButtons;
+  setActions: SetActions;
+};

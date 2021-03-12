@@ -5,7 +5,6 @@ import {
   SetButtons,
   ModalTypes,
   Provider,
-  CreateModal,
 } from '../types/modal';
 
 export const ModalRefContext = createContext<Provider | null>(null);
@@ -19,12 +18,10 @@ const ModalProvider: React.FC = ({ children }) => {
   const [cancelButton, setCancelButton] = useState('');
   const [handles, setHandles] = useState<Record<string, Function>>({});
 
-  const openModal = useCallback(() => setIsOpen(() => true), []);
-
   const setButtons: SetButtons = useCallback(
     ({ okButtonText, cancelButtonText }) => {
       if (okButtonText) setOkButton(() => okButtonText);
-      if (cancelButtonText)setCancelButton(() => cancelButtonText);
+      if (cancelButtonText) setCancelButton(() => cancelButtonText);
     },
     []
   );
@@ -38,26 +35,6 @@ const ModalProvider: React.FC = ({ children }) => {
     });
   }, []);
 
-  const createModal: CreateModal = {
-    Action: useCallback(
-      ({ message, okAction, okButtonText, cancelAction, cancelButtonText }) => {
-        setButtons({ okButtonText, cancelButtonText });
-        setActions({ okAction, cancelAction });
-
-        setType(() => 'Action');
-        setMessage(() => message);
-      },
-      []
-    ),
-
-    Warn: useCallback(({ message, okAction, okButtonText }) => {
-      setButtons({ okButtonText });
-      setActions({ okAction });
-
-      setType(() => 'Warn');
-      setMessage(() => message);
-    }, []),
-  };
 
   const handleOk = useCallback(() => {
     if (handles.ok) {
@@ -78,7 +55,15 @@ const ModalProvider: React.FC = ({ children }) => {
   const ModalType = Modal[type];
 
   return (
-    <ModalRefContext.Provider value={[createModal, openModal]}>
+    <ModalRefContext.Provider
+      value={{
+        setType,
+        setButtons,
+        setActions,
+        setMessage,
+        setIsOpen,
+      }}
+    >
       {children}
       <ModalType
         message={message}

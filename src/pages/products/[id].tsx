@@ -8,6 +8,7 @@ import ProductSection from '../../components/ProductSection';
 import { apiGet } from '../../utils/api';
 import ProductItem from '../../types/product';
 import { GridContainer } from '../../components/Container/style';
+import CommentSection from '../../components/Comment';
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
@@ -64,6 +65,7 @@ const ProductPage: React.FC<{ product: ProductItem }> = ({ product }) => {
       </Head>
       <Header />
       <ProductSection {...product} />
+      <CommentSection productId={product.id} />
     </GridContainer>
   );
 };

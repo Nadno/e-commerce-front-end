@@ -27,7 +27,7 @@ export interface CookieStore extends Token {
 interface LoginData extends Account {};
 interface LoginData extends Token {};
 
-export type Login = ({}: LoginData, path: string) => void;
+export type Login = ({ data }: { data: LoginData }, path?: string) => void;
 /**
  * @returns boolean that indicates true for erros
  */

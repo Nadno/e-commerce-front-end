@@ -69,7 +69,6 @@ const Secondary = styled(StyledButton)`
     }
   }
 
-
   &:focus {
     outline: none;
     color: ${({ theme }) => theme.colors.white};
@@ -92,11 +91,9 @@ const Link: React.FC<LinkProps> = ({ children, href, ...props }) => {
   );
 };
 
-interface BackProps {
+const Back: React.FC<{
   className?: string;
-}
-
-const Back: React.FC<BackProps> = ({ className = '' }) => {
+}> = ({ className = '' }) => {
   return (
     <Secondary
       style={{ width: '10rem' }}

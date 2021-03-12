@@ -8,11 +8,12 @@ import React, {
 
 import Link from '../Link';
 import Container from '../Container';
-import { apiGet } from '../../utils/api';
+import { Submit } from '../Form';
 
 import { Input } from '../Input/style';
 import * as Search from './style';
-import { SecondarySubmit } from '../Form';
+
+import { apiGet } from '../../utils/api';
 
 interface Props {
   categories: string[];
@@ -34,10 +35,9 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
     async (e: FormEvent) => {
       e.preventDefault();
 
-      const { response } = apiGet(`/product/name?value=${productName}`);
-      const products = await response.then(
-        ({ data }) => data.products || data.product
-      );
+      const products = await apiGet(`/product/name?value=${productName}`)
+        .send()
+        .then(({ data }) => data.products || data.product);
 
       setProducts(() => products);
     },
@@ -55,7 +55,7 @@ const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
             value={productName}
             onChange={searchChange}
           />
-          <SecondarySubmit>Buscar</SecondarySubmit>
+          <Submit type="secondary">Buscar</Submit>
         </form>
 
         <ul className="categories">

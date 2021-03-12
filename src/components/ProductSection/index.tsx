@@ -71,14 +71,14 @@ const ProductSection: React.FC<ProductItem> = ({
     const toCart = () => router.push('/cart');
 
     if (addToCart(String(id))) {
-      createModal.Action({
+      createModal.action({
         message: 'O item foi adicionado ao carrinho.',
         okButtonText: 'Carrinho',
         cancelButtonText: 'Continuar',
         okAction: toCart,
       });
     } else {
-      createModal.Warn({
+      createModal.warn({
         message:
           'Erro ao adicionar o item ao carrinho, verifique se o item já não se encontra presente no carrinho.',
       });

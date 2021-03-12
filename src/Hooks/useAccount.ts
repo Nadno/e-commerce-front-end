@@ -13,17 +13,17 @@ const useAccount = () => {
 
   const refreshAuth = () => {};
   const login: Login = ({ data }, path = '/') => {
-    const { id, avatar = '', token, refreshToken } = data;
+    const { id, avatar = '', name, token, refreshToken } = data;
     if (id && token && refreshToken) {
       removeAccount();
 
       storeAccount({
-        account: { id, avatar },
+        account: { id, avatar, name },
         token,
         refreshToken,
       });
       setRefreshToken(refreshToken);
-      setAccount({ id, avatar });
+      setAccount({ id, avatar, name });
       setToken(token);
     }
 
@@ -31,7 +31,7 @@ const useAccount = () => {
   };
 
   const logout = () => {
-    setAccount({ id: null, avatar: '' });
+    setAccount({ id: null, avatar: '', name: '' });
     setToken('');
     setRefreshToken('');
     removeAccount();

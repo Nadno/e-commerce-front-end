@@ -13,6 +13,7 @@ const ONE_MINUTE = 60,
 const Store: React.FC = ({ children }) => {
   const NO_ACCOUNT = {
     id: null,
+    name: '',
     avatar: '',
   };
 

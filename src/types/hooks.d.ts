@@ -2,6 +2,7 @@ import React, { SetStateAction, Dispatch } from 'react';
 
 export interface Account {
   id: number | null;
+  name: string;
   avatar: string;
 }
 

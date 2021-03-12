@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const StyledButton = styled.button`
   cursor: pointer;
-  height: 4rem;
+  height: 4.5rem;
   padding: 0.4em 1em;
   display: flex;
   align-items: center;

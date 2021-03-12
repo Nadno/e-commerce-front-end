@@ -8,7 +8,7 @@ const Form = styled(Container).attrs(props => ({ ...props, as: 'form' }))`
   height: 100%;
   max-width: 750px;
   min-height: 100vh;
-  padding: 4rem 2rem;
+  padding: 4rem 2.5rem;
   justify-content: center;
 
   .input-block {

@@ -4,7 +4,7 @@ const Section = styled.section`
   .list {
     width: 100%;
     list-style: none;
-    padding-top: 4rem;
+    margin-top: 4rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 24rem));
     justify-content: center;

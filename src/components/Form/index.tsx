@@ -8,7 +8,7 @@ const Form = styled(Container).attrs(props => ({ ...props, as: 'form' }))`
   height: 100%;
   max-width: 750px;
   min-height: 100vh;
-  padding: 0 2rem;
+  padding: 4rem 2rem;
   justify-content: center;
 
   .input-block {
@@ -59,7 +59,7 @@ const Submit: React.FC<{ type?: 'primary' | 'secondary' }> = ({
   return (
     <SubmitButton
       type="submit"
-      style={{ maxWidth: '50rem', marginBottom: '2rem' }}
+      style={{ maxWidth: '50rem', }}
     >
       {children}
     </SubmitButton>

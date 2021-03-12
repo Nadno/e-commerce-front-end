@@ -29,11 +29,10 @@ const InputField = styled.div`
 
   .input {
     position: relative;
-    height: 4.5rem;
     font-size: 1.8rem;
   }
 
-  .input:focus-within ::after {
+  .input::after {
     content: '';
 
     position: absolute;
@@ -41,15 +40,20 @@ const InputField = styled.div`
     height: 0.2em;
 
     border-radius: 0 0 0.5rem 0.5rem;
-    background-color: ${({ theme }) => theme.colors.valid};
+    background-color: initial;
 
-    bottom: 0;
+    bottom: 2px;
     left: 0;
     transform: translateX(2px);
+    transition: background-color 250ms ease-in;
+  }
+
+  .input:focus-within ::after {
+    background-color: ${({ theme }) => theme.colors.valid};
   }
 
   &.invalid .input:focus-within ::after {
-    background-color: red;
+    background-color: tomato;
   }
 
   .invalid-error {

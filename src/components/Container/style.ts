@@ -25,10 +25,6 @@ const Container = styled.div`
     align-items: center;
   }
 
-  .back-to {
-    align-self: flex-start;
-  }
-
   @keyframes show-container {
     to {
       transform: translateY(0);

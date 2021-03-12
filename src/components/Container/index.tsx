@@ -9,7 +9,7 @@ interface Props {
 
 const Section: React.FC<Props> = ({ title, backTo, children }) => {
   return (
-    <Container className="container">
+    <Container>
       {backTo ? (
         <div className="header">
           <h2 className="title">{title}</h2>

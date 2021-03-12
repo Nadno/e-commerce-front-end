@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Input } from '../Input/style';
 
-const Section = styled.section`  
+const Section = styled.section`
   .list {
     width: 100%;
     display: flex;
@@ -9,8 +8,8 @@ const Section = styled.section`
     row-gap: 2.5rem;
   }
 
-  .content {
-    align-items: center;
+  img {
+    max-width: 300px;
   }
 
   .buttons {
@@ -26,20 +25,29 @@ const Section = styled.section`
       align-items: flex-end;
     }
 
-    @media screen and (min-width: 600px) {
-      .cart {
+    @media screen and (min-width: 400px) {
+      .content {
         flex-direction: row;
-        align-items: flex-start;
       }
 
       .buttons {
-        max-width: 100px;
+        max-width: 120px;
         flex-direction: column;
       }
 
-      .content {
-        flex-direction: row;
-        align-items: flex-start;
+      @media screen and (min-width: 520px) {
+        .cart {
+          column-gap: 2rem;
+          flex-direction: row;
+          align-items: flex-start;
+
+          img {
+            max-width: 150px;
+          }
+        }
+
+        @media screen and (min-width: 600px) {
+        }
       }
     }
   }

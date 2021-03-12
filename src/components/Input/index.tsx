@@ -2,6 +2,7 @@ import React, { InputHTMLAttributes } from 'react';
 import { Input as StyledInput, InputField as Field } from './style';
 interface Props<T> extends InputHTMLAttributes<T> {
   id: string;
+  as?: string;
   name: string;
   label: string;
   value: string;
@@ -10,7 +11,6 @@ interface Props<T> extends InputHTMLAttributes<T> {
 
 export interface InputFieldProps <Element> extends Props<Element> {
   Input: any;
-  as?: string;
 }
 
 function InputField<Element>({
@@ -30,7 +30,7 @@ function InputField<Element>({
         {error && <span className="invalid-error">{error}</span>}
       </label>
       <div className="input">
-        <Input type="text" id={id} name={name} value={value} {...props}>
+        <Input id={id} name={name} value={value} {...props}>
           {children}
         </Input>
       </div>

@@ -35,10 +35,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: 2.4rem;
     color: ${({ theme }) => theme.colors.title};
   }
-
-  .container .title {
-    margin: 2rem 0;
-  }
   
   #__next {
     height: 100%;
@@ -68,12 +64,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   @keyframes loading-animation {
-      from {
-        transform: scaleX(1.5);
-      }
-
       to {
-        transform: scaleX(0);
+        transform: translate(-50%, 50%) scaleX(0);
       }
     }
 
@@ -97,7 +89,7 @@ const GlobalStyle = createGlobalStyle`
 
           top: 50%;
           left: 50%;
-          transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%) scaleX(1.5);
 
           animation: loading-animation 1s cubic-bezier(.18,.89,.32,1.28) alternate
             infinite;

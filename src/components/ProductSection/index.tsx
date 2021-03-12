@@ -14,7 +14,7 @@ import useModal from '../../hooks/useModal';
 const Section = styled(Container)`
   margin: 8rem 1rem;
   display: grid;
-  grid-template-rows: auto;
+  grid-template: auto / 1fr;
   align-items: center;
   justify-content: center;
 

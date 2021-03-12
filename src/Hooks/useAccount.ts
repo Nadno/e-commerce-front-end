@@ -12,12 +12,13 @@ const useAccount = () => {
   const { account, setAccount, setToken, setRefreshToken, authorized } = ctx;
 
   const refreshAuth = () => {};
-  const login: Login = ({ id, avatar, token, refreshToken }, path) => {
+  const login: Login = ({ data }, path = '/') => {
+    const { id, avatar = '', token, refreshToken } = data;
     if (id && token && refreshToken) {
       removeAccount();
 
       storeAccount({
-        account: { id, avatar: avatar || '' },
+        account: { id, avatar },
         token,
         refreshToken,
       });

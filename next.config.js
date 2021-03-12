@@ -6,6 +6,7 @@ module.exports = {
         destination: '/products',
         permanent: true,
       },
-    ]
+    ];
   },
-}
+  reactStrictMode: true,
+};

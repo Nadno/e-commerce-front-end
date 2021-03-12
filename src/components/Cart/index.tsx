@@ -72,41 +72,44 @@ const Cart: React.FC<CartProps> = ({
 
   useEffect(getProducts, [items]);
 
+  const cartProducts = useCallback(
+    ([productId, { description, ...rest }], index) => (
+      <Product
+        key={productId}
+        type="cart"
+        animation={{
+          duration: '450ms',
+          delay: `${0.3 * (index + 1)}s`,
+          fill: 'forwards',
+        }}
+        {...rest}
+      >
+        <Input
+          type="number"
+          id={`cart-item-${productId}`}
+          name="cartItem"
+          label="Quantidade:"
+          value={String(products[productId].quantity)}
+          onChange={handleChangeQuantity(productId)}
+        />
+        <Button.Primary
+          onClick={() => removeItem(productId)}
+          className="delete"
+        >
+          Retirar
+        </Button.Primary>
+      </Product>
+    ),
+    [products]
+  );
+
   return (
     <Section>
       <Container title="Carrinho" backTo="/">
         {currentItems > 0 ? (
           <ul className="list">
             {currentItems === TOTAL_ITEMS &&
-              Object.entries(products).map(
-                ([productId, { description, ...rest }], index) => (
-                  <Product
-                    key={productId}
-                    type="cart"
-                    animation={{
-                      duration: '450ms',
-                      delay: `${0.3 * (index + 1)}s`,
-                      fill: 'forwards',
-                    }}
-                    {...rest}
-                  >
-                    <Input
-                      type="number"
-                      id={`cart-item-${productId}`}
-                      name="cartItem"
-                      label="Quantidade:"
-                      value={String(products[productId].quantity)}
-                      onChange={handleChangeQuantity(productId)}
-                    />
-                    <Button.Primary
-                      onClick={() => removeItem(productId)}
-                      className="delete"
-                    >
-                      Retirar
-                    </Button.Primary>
-                  </Product>
-                )
-              )}
+              Object.entries(products).map(cartProducts)}
           </ul>
         ) : (
           <div className="warn">Vazio</div>

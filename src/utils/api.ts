@@ -4,13 +4,15 @@ import { getCookie } from './storage';
 import { COOKIE_TOKEN } from './account';
 
 const api = axios.create({
-  baseURL: 'http://192.168.1.2:3333',
+  baseURL: 'http://localhost:3333',
 });
 
-type ApiObject = { cancelRequest: () => void; response: Promise<AxiosResponse> };
+interface Request {
+  cancel: () => void;
+  send: () => Promise<AxiosResponse>;
+}
 
-const cancel = (signal: CancelTokenSource) => 
-  () => signal.cancel('canceled');
+const cancel = (signal: CancelTokenSource) => () => signal.cancel('canceled');
 
 const getHeaders = () => {
   const token = getCookie(COOKIE_TOKEN);
@@ -32,40 +34,31 @@ export const apiRefreshToken = (refreshToken: string) => {
   return api.post(path, {}, options);
 };
 
-export const apiPost = (path: string, data = {}): ApiObject => {
-  const signal = axios.CancelToken.source();
+export const apiPost = (path: string, data = {}): Promise<AxiosResponse> => {
   const options = {
     headers: getHeaders(),
-    cancelToken: signal.token,
   };
 
-  return {
-    cancelRequest: cancel(signal),
-    response: api.post(path, data, options),
-  };
+  return api.post(path, data, options);
 };
 
-export const apiPut = (path: string, data = {}): ApiObject => {
-  const signal = axios.CancelToken.source();
+export const apiPut = (path: string, data = {}): Promise<AxiosResponse> => {
   const options = {
     headers: getHeaders(),
-    cancelToken: signal.token,
   };
 
-  return {
-    cancelRequest: cancel(signal),
-    response: api.put(path, data, options),
-  };
+  return api.put(path, data, options);
 };
 
-export const apiGet = (path: string): ApiObject => {
+export const apiGet = (path: string): Request => {
   const signal = axios.CancelToken.source();
   const options = {
     headers: getHeaders(),
     cancelToken: signal.token,
   };
+
   return {
-    cancelRequest: cancel(signal),
-    response: api.get(path, options),
+    cancel: cancel(signal),
+    send: () => api.get(path, options),
   };
 };

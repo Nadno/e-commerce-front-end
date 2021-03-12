@@ -1,41 +1,39 @@
 import React, { useCallback, FormEvent, useState } from 'react';
-import { Form, Fieldset, PrimarySubmit } from '../components/Form';
+import { Form, Fieldset, Submit } from '../components/Form';
 
 import { Input } from '../components/Input';
-import FormData, { WrappedComponent } from '../HOC/form';
+import FormData, { FormComponent } from '../HOC/form';
 import useAccount from '../hooks/useAccount';
 import handleRequest from '../utils/handleRequests';
 import { apiPost } from '../utils/api';
 import validate from '../utils/validation/validate';
+import useModal from '../hooks/useModal';
 
 const INITIAL_DATA = { email: '', password: '' };
 type SignInData = typeof INITIAL_DATA;
 
-const SignIn: WrappedComponent<SignInData> = ({
+const SignIn: FormComponent<SignInData> = ({
   data,
   invalid,
   inputError,
   handleChange,
 }) => {
-  const [error, setError] = useState('');
+  const [createModal, openModal] = useModal();
   const { login } = useAccount();
+
+  const unsuccessSign = useCallback(message => {
+    createModal.warn({ message });
+    openModal();
+  }, []);
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      if (invalid) return;
+      if (invalid) return unsuccessSign('Todos campos precisão estar válidos!');
 
-      const goToPath = '/';
-
-      const { response } = apiPost('/user/sign-in', {
-        ...data,
-      });
-
-      response
-        .then(({ data }) => {
-          login(data, goToPath);
-        })
-        .catch(handleRequest(setError));
+      apiPost('/user/sign-in', { ...data })
+        .then(login)
+        .catch(handleRequest(unsuccessSign));
     },
     [data, invalid]
   );
@@ -65,8 +63,7 @@ const SignIn: WrappedComponent<SignInData> = ({
           placeholder="Digite sua senha"
           onChange={handleChange}
         />
-        {error && <span className="error">{error}</span>}
-        <PrimarySubmit disabled={invalid}>Entrar</PrimarySubmit>
+        <Submit>Entrar</Submit>
       </Fieldset>
     </Form>
   );

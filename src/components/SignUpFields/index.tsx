@@ -1,6 +1,6 @@
 import { FormProps } from '../../HOC/form';
 import { SignUpData } from '../../screen/sign-up';
-import { Fieldset } from '../Form';
+import { Fieldset } from '../Form/style';
 import { Input } from '../Input';
 
 interface Props extends Omit<FormProps<SignUpData>, 'invalid'> {}

@@ -8,7 +8,7 @@ import React, {
 
 import Link from '../Link';
 import Container from '../Container';
-import { Submit } from '../Form';
+import { Submit } from '../Button';
 
 import { Input } from '../Input/style';
 import * as Search from './style';
@@ -22,7 +22,7 @@ interface Props {
 
 const SearchSection: React.FC<Props> = ({ setProducts, categories }) => {
   const [productName, setProductName] = useState('');
-
+  
   const searchChange = useCallback(
     (e: ChangeEvent) => {
       const { value } = e.target as HTMLInputElement;

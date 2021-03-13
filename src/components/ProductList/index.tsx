@@ -4,7 +4,7 @@ import Container from '../Container';
 import IProduct from '../../types/product';
 import Product from '../Product';
 import Section from './style';
-import Button from '../Button';
+import { Link } from '../Button';
 
 interface Props {
   error?: string;
@@ -38,9 +38,9 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
                     }}
                     {...product}
                   >
-                    <Button.Link href={`/products/${product.id}`}>
+                    <Link href={`/products/${product.id}`}>
                       Detalhes
-                    </Button.Link>
+                    </Link>
                   </Product>
                 );
               })}

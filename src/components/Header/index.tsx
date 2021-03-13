@@ -47,4 +47,21 @@ const Header: React.FC = () => {
   );
 };
 
+export const AccountHeader: React.FC = () => {
+  const { logout } = useAccount();
+
+  return (
+    <StyledHeader as="header">
+      <nav>
+        <ul className="list">
+          <DefaultItems />
+          <li onClick={logout}>
+            <Link href="/">Sair</Link>
+          </li>
+        </ul>
+      </nav>
+    </StyledHeader>
+  );
+};
+
 export default memo(Header);

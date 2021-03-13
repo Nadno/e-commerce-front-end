@@ -1,18 +1,12 @@
 import styled from 'styled-components';
 import Container from '../Container/style';
 
-const ModalContainer = styled(Container)`
-  position: absolute;
+const ModalContainer = styled(Container).attrs(p => ({ ...p, as: 'div' }))`
   width: 100%;
+  max-width: 40rem;
   margin: 0;
-  max-width: 400px;
-
   background-color: ${({ theme }) => theme.colors.background};
 
-  left: 50%;
-  top: 50%;
-  z-index: 10;
-  transform: translate(-50%, -50%) !important;
   transform-style: preserve-3d;
 
   &.action .buttons {
@@ -22,7 +16,7 @@ const ModalContainer = styled(Container)`
   }
 
   .message {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 500;
     text-align: center;
   }
@@ -41,13 +35,16 @@ const ModalContainer = styled(Container)`
 
 const Background = styled.div`
   position: fixed;
-  width: 100vw;
-  height: 100vh;
 
+  display: grid;
+  place-items: center;
   background-color: ${({ theme }) => theme.colors.shadow};
 
   top: 0;
+  bottom: 0;
+
   left: 0;
+  right: 0;
 `;
 
 export { ModalContainer, Background };

@@ -42,4 +42,11 @@ export const GridContainer = styled.div`
   }
 `;
 
+export const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 2rem;
+`;
+
 export default Container;

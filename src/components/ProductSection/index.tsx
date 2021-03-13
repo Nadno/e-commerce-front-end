@@ -2,9 +2,11 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import router from 'next/router';
 
-import Container from '../Container/style';
+import Star from '../Star';
+import { ButtonBack } from '../Button';
+import { PrimaryButton } from '../Button/style';
 import { ProductContent } from '../Product/style';
-import Button from '../Button';
+import Container, { FlexContainer } from '../Container/style';
 
 import formatCurrency from '../../utils/formatCurrency';
 import ProductItem from '../../types/product';
@@ -37,14 +39,6 @@ const Section = styled(Container)`
     }
   }
 
-  .cart {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    row-gap: 2rem;
-  }
-
   @media screen and (min-width: 450px) {
     .cart {
       flex-direction: row;
@@ -63,6 +57,7 @@ const ProductSection: React.FC<ProductItem> = ({
   image,
   price,
   title,
+  rating,
 }) => {
   const { addToCart } = useCart();
   const [createModal, openModal] = useModal();
@@ -89,23 +84,26 @@ const ProductSection: React.FC<ProductItem> = ({
 
   return (
     <Section as="section">
-      <Button.Back />
+      <ButtonBack />
 
       <div className="img-container">
         <img src={image} alt={title} />
       </div>
 
       <ProductContent>
-        <h1 className="title">{title}</h1>
+        <div className="product">
+          <h1 className="title">{title}</h1>
+          <Star rating={rating} />
+        </div>
 
         <p className="description">{description}</p>
 
-        <div className="cart">
+        <FlexContainer className="cart">
           <span className="price">{formatCurrency(price)}</span>
-          <Button.Primary onClick={handleAddToCart}>
+          <PrimaryButton onClick={handleAddToCart}>
             Adicionar ao carrinho
-          </Button.Primary>
-        </div>
+          </PrimaryButton>
+        </FlexContainer>
       </ProductContent>
     </Section>
   );

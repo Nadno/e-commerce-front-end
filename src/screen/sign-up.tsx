@@ -1,19 +1,21 @@
-import React, { useCallback, FormEvent, useState } from 'react';
-import { Form, Submit } from '../components/Form';
+import React, { useCallback, FormEvent } from 'react';
+import Link from 'next/link';
 
-import { apiPost } from '../utils/api';
-import handleRequest from '../utils/handleRequests';
-import Link from '../components/Link';
-import FormData, { FormComponent } from '../HOC/form';
-import useAccount from '../hooks/useAccount';
-import validate from '../utils/validation/validate';
 import {
   UserAccount,
   UserAbout,
   UserAddress,
 } from '../components/SignUpFields';
-import { formatAccountToAPI } from '../utils/formatAccount';
+import Form from '../components/Form';
+import handleRequest from '../utils/handleRequests';
+import FormData, { FormComponent } from '../HOC/form';
+
 import useModal from '../hooks/useModal';
+import useAccount from '../hooks/useAccount';
+import { apiPost } from '../utils/api';
+import validate from '../utils/validation/validate';
+import { formatAccountToAPI } from '../utils/formatAccount';
+import { Submit } from '../components/Button';
 
 export const INITIAL_DATA = {
   email: '',
@@ -62,16 +64,14 @@ export const SignUp: FormComponent<SignUpData, Props> = ({
   );
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h1 className="title">Cadastre-se</h1>
-
+    <Form onSubmit={handleSubmit} title="Cadastre-se">
       <UserAccount data={data} {...props} />
       <UserAbout data={data} {...props} />
       <UserAddress data={data} {...props} />
       <Submit>Cadastrar-se</Submit>
 
       <footer>
-        Já tem uma conta? <Link href="/sign-in">Entrar</Link>
+        Já possui uma conta? <br /> <Link href="/sign-in">Entrar</Link>
       </footer>
     </Form>
   );

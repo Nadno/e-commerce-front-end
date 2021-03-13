@@ -2,11 +2,14 @@ import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 
 import useAccount from '../hooks/useAccount';
 
+import { AccountHeader } from '../components/Header';
+import Form from '../components/Form';
+import { Fieldset } from '../components/Form/style';
 import FormData, { FormComponent } from '../HOC/form';
-import { Form, Fieldset, Submit } from '../components/Form';
 import { SignUpData, INITIAL_DATA } from '../screen/sign-up';
 import { GridContainer } from '../components/Container/style';
 import { UserAbout, UserAddress } from '../components/SignUpFields';
+import { Submit } from '../components/Button';
 
 import validate from '../utils/validation/validate';
 import { apiGet, apiPut } from '../utils/api';
@@ -38,8 +41,8 @@ const AccountForm: FormComponent<SignUpData> = ({
 
     openModal();
   }, []);
-  
-  const unsuccessUpdate = useCallback((message) => {
+
+  const unsuccessUpdate = useCallback(message => {
     createModal.warn({
       message,
     });
@@ -59,9 +62,7 @@ const AccountForm: FormComponent<SignUpData> = ({
   );
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h1 className="title">Alterar conta</h1>
-
+    <Form onSubmit={handleSubmit} title="Alterar conta">
       <Fieldset>
         <Input
           type="url"
@@ -79,7 +80,7 @@ const AccountForm: FormComponent<SignUpData> = ({
       <UserAddress data={data} inputError={inputError} {...props} />
 
       <Fieldset>
-        <legend className="title">Confirmação</legend>
+        <legend>Confirmação</legend>
 
         <Input
           id="email"
@@ -135,6 +136,7 @@ const Account = () => {
 
   return (
     <GridContainer>
+      <AccountHeader />
       <WrappedAccountForm />
     </GridContainer>
   );

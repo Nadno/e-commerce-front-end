@@ -1,31 +1,30 @@
 import styled from 'styled-components';
 import Container from '../Container/style';
 
-const Section = styled(Container)``;
+const Section = styled(Container)`
+  hr {
+    width: 100%;
+    height: 0.2rem;
+    border: none;
+    background-color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  ul {
+    width: 100%;
+    list-style: none;
+
+    & > li:not(:last-child) {
+      margin-bottom: 2.5rem;
+    }
+  }
+`;
 
 const CommentForm = styled.form`
   width: 100%;
   padding: 0;
 
   header {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    row-gap: 2rem;
-
     margin-bottom: 1rem;
-  }
-
-  .user {
-    display: flex;
-    align-items: center;
-    align-self: flex-start;
-
-    .name {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-left: 2rem;
-    }
   }
 
   .rating {
@@ -48,7 +47,7 @@ const CommentForm = styled.form`
     }
   }
 
-  button[type="submit"] {
+  button[type='submit'] {
     align-self: flex-end;
     margin-top: 2rem;
     margin-left: auto;
@@ -61,4 +60,27 @@ const CommentForm = styled.form`
   }
 `;
 
-export { Section, CommentForm };
+const CommentContainer = styled.li`
+  width: 100%;
+  min-height: 10rem;
+
+  padding: 2rem;
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.background};
+  box-shadow: 0 20px 24px 4px ${({ theme }) => theme.colors.shadow};
+
+  .content {
+    padding: 1em 0;
+    font-size: 1.6rem;
+  }
+
+  header {
+    row-gap: 2rem;
+
+    @media screen and (min-width: 500px) {
+      flex-direction: row;
+    }
+  }
+`;
+
+export { Section, CommentForm, CommentContainer };

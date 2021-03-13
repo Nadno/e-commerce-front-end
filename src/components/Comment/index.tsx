@@ -1,24 +1,37 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
-import { Section, CommentForm } from './style';
+import { Section, CommentForm, CommentContainer } from './style';
 import { Input } from '../Input';
 
-import { apiPost } from '../../utils/api';
-import Avatar from '../Avatar';
+import { apiGet, apiPost } from '../../utils/api';
 import useAccount from '../../hooks/useAccount';
 import Select from '../Select';
-import { Submit } from '../Form';
+import { Submit } from '../Button';
+import User from '../User';
+import Star from '../Star';
+import { FlexContainer } from '../Container/style';
 
 interface Props {
   productId: number;
 }
 
-const CreateComment: React.FC<Props> = ({ productId }) => {
+interface CreateComment extends Props {
+  setComments: Dispatch<SetStateAction<any[]>>;
+}
+
+const CreateComment: React.FC<CreateComment> = ({ productId, setComments }) => {
+  const initialData = () => ({ rating: '1', comment: '' });
+
   const { avatar, name, id: userId } = useAccount().account;
-  const [data, setData] = useState({
-    rating: '1',
-    comment: '',
-  });
+  const [data, setData] = useState(initialData);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -43,6 +56,9 @@ const CreateComment: React.FC<Props> = ({ productId }) => {
         rate: rating,
         user_id: userId,
         product_id: productId,
+      }).then(({ data }) => {
+        setComments(prev => [data.comment, ...prev]);
+        setData(initialData);
       });
     },
     [data]
@@ -50,11 +66,8 @@ const CreateComment: React.FC<Props> = ({ productId }) => {
 
   return (
     <CommentForm onSubmit={handleSubmit}>
-      <header>
-        <div className="user">
-          <Avatar src={avatar} />
-          <span className="name">{name}</span>
-        </div>
+      <FlexContainer as="header">
+        <User avatar={avatar} name={name} />
 
         <div className="rating">
           <Select
@@ -68,7 +81,7 @@ const CreateComment: React.FC<Props> = ({ productId }) => {
             onChange={handleChange}
           />
         </div>
-      </header>
+      </FlexContainer>
 
       <div className="create-comment">
         <Input
@@ -86,11 +99,61 @@ const CreateComment: React.FC<Props> = ({ productId }) => {
   );
 };
 
-const CommentSection: React.FC<Props> = ({ productId }) => {
+interface CommentProps {
+  name: string;
+  comment: string;
+  user_id: number;
+  rate: number;
+  avatar: string;
+}
+
+const Comment: React.FC<CommentProps> = ({ name, rate, comment, avatar }) => {
   return (
-    <Section as="section">
-      <CreateComment productId={productId} />
-    </Section>
+    <CommentContainer>
+      <FlexContainer as="header">
+        <User avatar={avatar} name={name} />
+        <Star rating={rate} />
+      </FlexContainer>
+
+      <div className="content">{comment}</div>
+    </CommentContainer>
+  );
+};
+
+const CommentSection: React.FC<Props> = ({ productId }) => {
+  const [comments, setComments] = useState<any[]>([]);
+  const { id } = useAccount().account;
+
+  useEffect(() => {
+    const { send, cancel } = apiGet(`/product/comments/${productId}`);
+
+    send().then(({ data }) => {
+      setComments(data.comments);
+    });
+
+    return cancel;
+  }, []);
+
+  return (
+    <>
+      {comments.length > 0 && (
+        <Section>
+          <h2 className="title">Comentários</h2>
+
+          {id != null && (
+            <CreateComment productId={productId} setComments={setComments} />
+          )}
+
+          <hr />
+
+          <ul>
+            {comments.map(comment => (
+              <Comment key={comment.id} {...comment} />
+            ))}
+          </ul>
+        </Section>
+      )}
+    </>
   );
 };
 

@@ -51,6 +51,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     .warn {
+      opacity: 0.4;
       font-size: 3rem;
       color: ${({ theme }) => theme.colors.text};
     }

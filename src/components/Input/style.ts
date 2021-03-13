@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const Input = styled.input`
   width: 100%;
   height: 100%;
+  min-height: 4.5rem;
   border-radius: 0.5rem;
   border: 2px solid ${({ theme }) => theme.colors.shadow};
   background-color: ${({ theme }) => theme.colors.background};

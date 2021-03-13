@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import Button from '../Button';
+import { PrimaryButton } from '../Button/style';
 import { ModalContainer, Background } from './style';
 
 interface Props {
@@ -40,16 +40,16 @@ const Action: React.FC<ActionProps> = ({
   ...props
 }) => (
   <Modal {...props} className="action">
-    <Button.Primary onClick={handleOk}>{okText ? okText : 'OK'}</Button.Primary>
-    <Button.Primary onClick={handleCancel}>
+    <PrimaryButton onClick={handleOk}>{okText ? okText : 'OK'}</PrimaryButton>
+    <PrimaryButton onClick={handleCancel}>
       {cancelText ? cancelText : 'Cancelar'}
-    </Button.Primary>
+    </PrimaryButton>
   </Modal>
 );
 
 const Warn: React.FC<WarnProps> = ({ okText, handleOk, ...props }) => (
   <Modal {...props} className="warn">
-    <Button.Primary onClick={handleOk}>{okText ? okText : 'OK'}</Button.Primary>
+    <PrimaryButton onClick={handleOk}>{okText ? okText : 'OK'}</PrimaryButton>
   </Modal>
 );
 

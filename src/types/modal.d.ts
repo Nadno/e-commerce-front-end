@@ -28,7 +28,7 @@ export type CreateModal = Record<string, CreateModalMethods>;
 export type Provider = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
-  setType: Dispatch<SetStateAction<string>>;
+  setType: Dispatch<SetStateAction<ModalTypes>>;
   setButtons: SetButtons;
   setActions: SetActions;
 };

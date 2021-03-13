@@ -45,6 +45,7 @@ export const formatAccountToAPI = ({
     email,
     password,
     avatar,
+    zipCode,
     address: formattedAddress,
   };
 };

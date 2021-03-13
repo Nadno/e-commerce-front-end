@@ -7,7 +7,7 @@ export default function FormData<Props, Data extends Record<string, any>>(
 ) {
   type InputNames = keyof Data;
 
-  const FormWrapper: React.FC<Props> = props => {
+  const FormWrapper: React.FC<Omit<Props, keyof FormProps<Data>>> = props => {
     const [data, setData] = useState(initialData);
     const [invalid, setInvalid] = useState(true);
     const [changedInput, setChangedInput] = useState<InputNames>('');

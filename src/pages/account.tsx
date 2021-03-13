@@ -110,7 +110,9 @@ const AccountForm: FormComponent<SignUpData> = ({
 };
 
 const Account = () => {
-  const [initialData, setInitialData] = useState<SignUpData>(INITIAL_DATA);
+  const [initialData, setInitialData] = useState<SignUpData>({
+    ...INITIAL_DATA,
+  });
   const { id } = useAccount().account;
 
   const getAccount = useCallback(() => {

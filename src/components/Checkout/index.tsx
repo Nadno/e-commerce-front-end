@@ -31,7 +31,6 @@ interface Props extends Pick<CartProps, 'products'> {
 const Checkout: FormComponent<CheckoutData, Props> = ({
   data,
   inputError,
-  invalid,
   handleChange,
   finalPrice,
   products,

@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { AxiosResponse } from 'axios';
+
+import Product from '../Product';
+import { Input } from '../Input';
+import { CartList } from './style';
+import Container from '../Container/';
+import { PrimaryButton } from '../Button/style';
 
 import handleRequest from '../../utils/handleRequests';
 import { apiGet } from '../../utils/api';
-
-import Product from '../Product';
-import Container from '../Container/';
-import Button from '../Button';
-import { Section } from './style';
-import { Input } from '../Input';
-import { AxiosResponse } from 'axios';
 
 const Cart: React.FC<CartProps> = ({
   items,
@@ -92,31 +92,26 @@ const Cart: React.FC<CartProps> = ({
           value={String(products[productId].quantity)}
           onChange={handleChangeQuantity(productId)}
         />
-        <Button.Primary
-          onClick={() => removeItem(productId)}
-          className="delete"
-        >
+        <PrimaryButton onClick={() => removeItem(productId)}>
           Retirar
-        </Button.Primary>
+        </PrimaryButton>
       </Product>
     ),
     [products]
   );
 
   return (
-    <Section>
-      <Container title="Carrinho" backTo="/">
-        {currentItems > 0 ? (
-          <ul className="list">
-            {currentItems === TOTAL_ITEMS &&
-              Object.entries(products).map(cartProducts)}
-          </ul>
-        ) : (
-          <div className="warn">Vazio</div>
-        )}
-        {error && <span className="error">{error}</span>}
-      </Container>
-    </Section>
+    <Container title="Carrinho">
+      {currentItems > 0 ? (
+        <CartList className="list">
+          {currentItems === TOTAL_ITEMS &&
+            Object.entries(products).map(cartProducts)}
+        </CartList>
+      ) : (
+        <div className="warn">Vazio</div>
+      )}
+      {error && <span className="error">{error}</span>}
+    </Container>
   );
 };
 

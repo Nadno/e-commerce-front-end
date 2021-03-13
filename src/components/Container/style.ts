@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.section`
   animation: show-container 0.4s forwards ease;
 
   position: relative;
@@ -18,22 +18,16 @@ const Container = styled.div`
   border-top: 4px solid ${({ theme }) => theme.colors.secondary};
   border-bottom: 4px solid ${({ theme }) => theme.colors.secondary};
 
-  .header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   @keyframes show-container {
     to {
-      transform: translateY(0);
+      transform: initial;
       opacity: 1;
     }
   }
 `;
 
 export const GridContainer = styled.div`
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr minmax(30rem, 80rem) 1fr;
   grid-template-rows: auto;

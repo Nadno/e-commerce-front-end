@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import Animation from '../../types/animation';
+import { FlexContainer } from '../Container/style';
 
-const ListItem = styled.li<Animation>`
+const ListItem = styled(FlexContainer).attrs(props => ({
+  as: 'li',
+  ...props,
+}))<Animation>`
   animation: show-product
     ${({ duration, delay, fill, cubic }) =>
       `${duration} ${delay || 0} ${fill || ''} ${cubic || ''}`};
 
   width: 100%;
   padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   opacity: 0;
 
@@ -19,7 +20,6 @@ const ListItem = styled.li<Animation>`
   background-color: white;
 
   transform: translateY(-6.4rem);
-  row-gap: 2.5rem;
 
   img {
     width: 100%;
@@ -35,21 +35,15 @@ const ListItem = styled.li<Animation>`
   }
 `;
 
-export const ProductContent = styled.div.attrs(() => ({
+export const ProductContent = styled(FlexContainer).attrs(() => ({
   className: 'content',
 }))`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
   gap: 2rem;
 
   .info {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     gap: inherit;
   }
 

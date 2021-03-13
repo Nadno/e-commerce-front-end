@@ -5,40 +5,42 @@ import useAccount from '../../hooks/useAccount';
 import StyledHeader from './style';
 import Avatar from '../Avatar';
 
+const DefaultItems: React.FC = () => (
+  <>
+    <li>
+      <Link href="/products">Início</Link>
+    </li>
+
+    <li>
+      <Link href="/cart">Carrinho</Link>
+    </li>
+  </>
+);
+
 const Header: React.FC = () => {
-  const { account, logout } = useAccount();
+  const { account } = useAccount();
+
+  const GuestItem = (
+    <li>
+      <Link href="/sign-in">Entrar</Link>
+    </li>
+  );
+
+  const UserItem = (
+    <li>
+      <Link href="/account">
+        <Avatar src={account.avatar} />
+      </Link>
+    </li>
+  );
 
   return (
     <StyledHeader as="header">
       <nav>
         <ul className="list">
-          <li>
-            <Link href="/cart">Carrinho</Link>
-          </li>
+          <DefaultItems />
 
-          {!!account.id && (
-            <>
-              <li>
-                <Link href="/account">
-                  <Avatar src={account.avatar} />
-                </Link>
-              </li>
-              <li onClick={logout}>
-                <Link href="/">Sair</Link>
-              </li>
-            </>
-          )}
-          
-          {!account.id && (
-            <>
-              <li>
-                <Link href="/sign-in">Login</Link>
-              </li>
-              <li>
-                <Link href="/sign-up">Cadastrar</Link>
-              </li>
-            </>
-          )}
+          {account.id != null ? UserItem : GuestItem}
         </ul>
       </nav>
     </StyledHeader>

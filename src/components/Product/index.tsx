@@ -5,6 +5,7 @@ import ListItem, { ProductContent } from './style';
 
 import ProductItem from '../../types/product';
 import Animation from '../../types/animation';
+import { FlexContainer } from '../Container/style';
 
 interface Props extends ProductItem {
   type?: 'normal' | 'cart';
@@ -25,7 +26,7 @@ const Product: React.FC<Props> = ({
       <img src={image} alt={title} />
 
       <ProductContent>
-        <div className="info">
+        <FlexContainer className="info">
           <h3 className="title">{title}</h3>
           {description && (
             <p className="description" title={description}>
@@ -33,7 +34,7 @@ const Product: React.FC<Props> = ({
             </p>
           )}
           <span className="price">{formatCurrency(price)}</span>
-        </div>
+        </FlexContainer>
 
         <div className="buttons">{children}</div>
       </ProductContent>

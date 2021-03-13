@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
-const Section = styled.section`
-  .list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 2.5rem;
-  }
+const CartList = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.5rem;
+  margin-top: 2rem;
 
   img {
     max-width: 300px;
@@ -59,4 +58,4 @@ const Section = styled.section`
   }
 `;
 
-export { Section };
+export { CartList };

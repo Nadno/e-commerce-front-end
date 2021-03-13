@@ -1,15 +1,16 @@
 import React from 'react';
 import formatCurrency from '../../utils/formatCurrency';
+import { CartItem } from '../Cart';
 import { OrderSection } from './style';
 
 interface Props {
-  products: any[][];
+  products: [string, CartItem][];
   finalPrice: number;
 }
 
 const OrderTable: React.FC<Props> = ({ products, finalPrice }) => {
   return (
-    <OrderSection>
+    <OrderSection as="div">
       <table className="order-table">
         <caption className="title">Pedido</caption>
 

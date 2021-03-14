@@ -4,7 +4,7 @@ import { getCookie } from './storage';
 import { COOKIE_TOKEN } from './account';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: 'https://minha-loja-app.herokuapp.com/',
 });
 
 interface Request {

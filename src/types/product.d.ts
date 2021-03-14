@@ -8,4 +8,14 @@ interface ProductItem {
   rating: number;
 }
 
+export interface ProductComment {
+  id: number;
+  rate: number;
+  comment: string;
+  product_id: number;
+  user_id: number;
+  name: string;
+  avatar: string;
+}
+
 export default ProductItem;

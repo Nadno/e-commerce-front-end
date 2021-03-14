@@ -26,11 +26,10 @@ export const INITIAL_DATA = {
   surname: '',
   house: '',
   tel: '',
-  zipCode: '',
+  cep: '',
   address: '',
   stateAndCity: '',
 };
-
 interface Props {
   goToPath?: string;
 }
@@ -57,7 +56,7 @@ export const SignUp: FormComponent<SignUpData, Props> = ({
       if (invalid) return unsuccessSign('Todos campos precisão estar válidos!');
 
       apiPost('/user/sign-up', formatAccountToAPI(data))
-        .then(({ data: account }) => login(account, goToPath))
+        .then(({ data }) => login({ data }, goToPath))
         .catch(handleRequest(unsuccessSign));
     },
     [data, invalid]

@@ -32,7 +32,7 @@ export const formatAccountToAPI = ({
   giveName,
   surname,
   tel,
-  zipCode,
+  cep,
   address,
   house,
   stateAndCity,
@@ -45,7 +45,7 @@ export const formatAccountToAPI = ({
     email,
     password,
     avatar,
-    zipCode,
+    cep,
     address: formattedAddress,
   };
 };

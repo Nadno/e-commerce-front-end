@@ -105,10 +105,10 @@ const UserAddress: React.FC<Props> = ({ data, inputError, handleChange }) => {
 
       <div className="input-block">
         <Input
-          id="zip-code"
-          name="zipCode"
-          value={data.zipCode}
-          error={inputError.zipCode}
+          id="cep"
+          name="cep"
+          value={data.cep}
+          error={inputError.cep}
           label="CEP"
           placeholder="CEP"
           onChange={handleChange}

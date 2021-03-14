@@ -15,10 +15,10 @@ const ProductList: React.FC<Props> = ({ error, products }) => {
   const [message, setMessage] = useState('Buscando itens');
 
   useEffect(() => {
-    if (error || !products.length) {
-      setMessage('Nada encontrado');
+    if (!products.length) {
+      setMessage('Vazio');
     }
-  }, [error, products]);
+  }, [products]);
 
   return (
     <Section>

@@ -34,6 +34,7 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
   handleChange,
   finalPrice,
   products,
+  validSubmit,
 }) => {
   const { account } = useAccount();
 
@@ -45,14 +46,16 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
         ([, product]) => product
       );
 
-      apiPost('/order/create', {
-        id: account.id,
-        products: formattedProducts,
-      })
-        .then(console.log)
-        .catch(handleRequest(console.log));
+      validSubmit(warnModal => {
+        apiPost('/order/create', {
+          id: account.id,
+          products: formattedProducts,
+        })
+          .then(console.log)
+          .catch(handleRequest(warnModal));
+      });
     },
-    [data, products]
+    [data, products, inputError]
   );
 
   return (

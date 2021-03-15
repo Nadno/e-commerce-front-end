@@ -79,8 +79,6 @@ export default function FormData<Props, Data extends Record<string, any>>(
 
     const validSubmit = useCallback(
       (callback: (warnModal: Function) => void) => {
-        console.log(inputError);
-
         if (Object.values(inputError).length)
           return warnModal('Todos campos precisão estar válidos!');
 

@@ -5,7 +5,6 @@ interface ProductItem {
   description?: string;
   categoryId: number;
   image: string;
-  rating: number;
 }
 
 export interface ProductComment {

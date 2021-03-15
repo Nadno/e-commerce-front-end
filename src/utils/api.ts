@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, CancelTokenSource } from 'axios';
 
 import { getCookie } from './storage';
-import { COOKIE_TOKEN } from './account';
+import { COOKIE_REFRESH_TOKEN, COOKIE_TOKEN } from './account';
 
 const api = axios.create({
   baseURL: 'https://minha-loja-app.herokuapp.com/',
@@ -23,15 +23,15 @@ const getHeaders = () => {
   };
 };
 
-export const apiRefreshToken = (refreshToken: string) => {
-  const path = '/refresh';
+export const apiRefreshToken = () => {
+  const refreshToken = getCookie(COOKIE_REFRESH_TOKEN);
   const options = {
     headers: {
       Authorization: `Bearer ${refreshToken}`,
     },
   };
 
-  return api.post(path, {}, options);
+  return api.post('/refresh', {}, options);
 };
 
 export const apiPost = (path: string, data = {}): Promise<AxiosResponse> => {

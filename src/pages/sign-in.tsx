@@ -12,35 +12,29 @@ import useAccount from '../hooks/useAccount';
 import { apiPost } from '../utils/api';
 import handleRequest from '../utils/handleRequests';
 import validate from '../utils/validation/validate';
-import useModal from '../hooks/useModal';
 
 const INITIAL_DATA = { email: '', password: '' };
 type SignInData = typeof INITIAL_DATA;
 
 const SignIn: FormComponent<SignInData> = ({
   data,
-  invalid,
   inputError,
+  validSubmit,
   handleChange,
 }) => {
-  const [createModal, openModal] = useModal();
   const { login } = useAccount();
-
-  const unsuccessSign = useCallback(message => {
-    createModal.warn({ message });
-    openModal();
-  }, []);
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      if (invalid) return unsuccessSign('Todos campos precisão estar válidos!');
 
-      apiPost('/user/sign-in', { ...data })
-        .then(login)
-        .catch(handleRequest(unsuccessSign));
+      validSubmit(warnModal => {
+        apiPost('/user/sign-in', { ...data })
+          .then(login)
+          .catch(handleRequest(warnModal));
+      });
     },
-    [data, invalid]
+    [data, inputError]
   );
 
   return (
@@ -73,9 +67,9 @@ const SignIn: FormComponent<SignInData> = ({
         </Fieldset>
 
         <footer>
-          Ainda não possui uma conta? <br /> 
-          <Link href="/sign-up">Cadastrar-se</Link>, 
-          ou volte para a <Link href="/products">Página inicial</Link>.
+          Ainda não possui uma conta? <br />
+          <Link href="/sign-up">Cadastrar-se</Link>, ou volte para a{' '}
+          <Link href="/products">Página inicial</Link>.
         </footer>
       </Form>
     </GridContainer>

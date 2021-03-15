@@ -10,7 +10,6 @@ import Form from '../components/Form';
 import handleRequest from '../utils/handleRequests';
 import FormData, { FormComponent } from '../HOC/form';
 
-import useModal from '../hooks/useModal';
 import useAccount from '../hooks/useAccount';
 import { apiPost } from '../utils/api';
 import validate from '../utils/validation/validate';
@@ -38,28 +37,22 @@ export type SignUpData = typeof INITIAL_DATA;
 
 export const SignUp: FormComponent<SignUpData, Props> = ({
   data,
-  invalid,
+  validSubmit,
   goToPath = '/',
   ...props
 }) => {
-  const [createModal, openModal] = useModal();
   const { login } = useAccount();
-
-  const unsuccessSign = useCallback(message => {
-    createModal.warn({ message });
-    openModal();
-  }, []);
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      if (invalid) return unsuccessSign('Todos campos precisão estar válidos!');
-
-      apiPost('/user/sign-up', formatAccountToAPI(data))
-        .then(({ data }) => login({ data }, goToPath))
-        .catch(handleRequest(unsuccessSign));
+      validSubmit(warnModal => {
+        apiPost('/user/sign-up', formatAccountToAPI(data))
+          .then(({ data }) => login({ data }, goToPath))
+          .catch(handleRequest(warnModal));
+      });
     },
-    [data, invalid]
+    [data, props.inputError]
   );
 
   return (
@@ -76,4 +69,4 @@ export const SignUp: FormComponent<SignUpData, Props> = ({
   );
 };
 
-export default FormData(SignUp, INITIAL_DATA, validate['sign-up']);
+export default FormData(SignUp, INITIAL_DATA, validate['sign-up'], ['avatar']);

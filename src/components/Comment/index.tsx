@@ -21,6 +21,7 @@ import { FlexContainer } from '../Container/style';
 import handleRequest from '../../utils/handleRequests';
 import { ProductComment } from '../../types/product';
 import { SecondaryButton } from '../Button/style';
+import { between } from '../../utils/validation/validations';
 
 interface Props {
   productId: number;
@@ -54,6 +55,12 @@ const CreateComment: React.FC<CreateComment> = ({ productId, setComments }) => {
       e.preventDefault();
 
       const { comment, rating } = data;
+
+      const isBetweenMinAndMaxCharacters = between(comment.length, 20, 500);
+      const isBetweenMinAndMaxValue = between(Number(rating), 1, 5);
+
+      if (!isBetweenMinAndMaxCharacters || !isBetweenMinAndMaxValue) return;
+
       apiPost('/product/rate', {
         comment,
         rate: rating,
@@ -95,6 +102,11 @@ const CreateComment: React.FC<CreateComment> = ({ productId, setComments }) => {
           value={data.comment}
           onChange={handleChange}
         />
+        <div className="create-comment__length">
+          Caracteres: {data.comment.length} <br />
+          Min: 20 <br />
+          Máx: 500
+        </div>
       </div>
 
       <Submit type="secondary">Enviar</Submit>
@@ -104,7 +116,7 @@ const CreateComment: React.FC<CreateComment> = ({ productId, setComments }) => {
 
 const Comment: React.FC<ProductComment> = ({ name, rate, comment, avatar }) => {
   return (
-    <CommentContainer>
+    <CommentContainer className="comment">
       <FlexContainer as="header">
         <User avatar={avatar} name={name} />
         <Star rating={rate} />
@@ -128,7 +140,6 @@ const CommentSection: React.FC<Props> = ({ productId }) => {
       const isFirstPage = page === 1 ? true : false;
       const { comments, pages } = data;
       if (isFirstPage) {
-        console.log(pages);
         setComments(() => comments);
         setPages(() => pages);
       } else {
@@ -143,51 +154,47 @@ const CommentSection: React.FC<Props> = ({ productId }) => {
       `/product/comments/${productId}?page=${page}`
     );
 
-    send().then(handleCommentsRequest).catch(handleRequest(console.log));
+    send().then(handleCommentsRequest).catch(handleRequest(console.error));
 
     return cancel;
   }, [page]);
+
+  useEffect(getComments, [page]);
 
   const nextPage = useCallback(() => {
     if (isOnMaxPage) return;
     setPage(prev => prev + 1);
   }, [page, isOnMaxPage]);
 
-  useEffect(getComments, [page]);
-
   const isUser = id != null;
   const hasComments = comments.length > 0;
 
-  return (
-    <>
-      {isUser || hasComments ? (
-        <Section>
-          <h2 className="title">Comentários</h2>
+  return isUser || hasComments ? (
+    <Section>
+      <h2 className="title">Comentários</h2>
 
-          {isUser && (
-            <CreateComment productId={productId} setComments={setComments} />
-          )}
-
-          {hasComments && (
-            <>
-              <hr />
-
-              <ul>
-                {comments.map(comment => (
-                  <Comment key={comment.id} {...comment} />
-                ))}
-              </ul>
-
-              <SecondaryButton onClick={nextPage} disabled={isOnMaxPage}>
-                Mais comentários
-              </SecondaryButton>
-            </>
-          )}
-        </Section>
-      ) : (
-        <div />
+      {isUser && (
+        <CreateComment productId={productId} setComments={setComments} />
       )}
-    </>
+
+      {hasComments && (
+        <>
+          <hr />
+
+          <ul className="comment-list">
+            {comments.map(comment => (
+              <Comment key={comment.id} {...comment} />
+            ))}
+          </ul>
+
+          <SecondaryButton onClick={nextPage} disabled={isOnMaxPage}>
+            Mais comentários
+          </SecondaryButton>
+        </>
+      )}
+    </Section>
+  ) : (
+    <div />
   );
 };
 

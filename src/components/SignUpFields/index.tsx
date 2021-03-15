@@ -3,9 +3,12 @@ import { SignUpData } from '../../screen/sign-up';
 import { Fieldset } from '../Form/style';
 import { Input } from '../Input';
 
-interface Props extends Omit<FormProps<SignUpData>, 'invalid'> {}
+interface FieldProps<WithProps extends keyof SignUpData>
+  extends Omit<FormProps<Pick<SignUpData, WithProps>>, 'validSubmit'> {}
 
-const UserAccount: React.FC<Props> = ({ data, inputError, handleChange }) => {
+const UserAccount: React.FC<
+  FieldProps<'email' | 'password' | 'confirmPassword' | 'avatar'>
+> = ({ data, inputError, handleChange }) => {
   return (
     <Fieldset>
       <legend>Sua conta</legend>
@@ -58,7 +61,11 @@ const UserAccount: React.FC<Props> = ({ data, inputError, handleChange }) => {
   );
 };
 
-const UserAbout: React.FC<Props> = ({ data, inputError, handleChange }) => {
+const UserAbout: React.FC<FieldProps<'giveName' | 'surname' | 'tel'>> = ({
+  data,
+  inputError,
+  handleChange,
+}) => {
   return (
     <Fieldset>
       <legend>Sobre você</legend>
@@ -98,7 +105,9 @@ const UserAbout: React.FC<Props> = ({ data, inputError, handleChange }) => {
   );
 };
 
-const UserAddress: React.FC<Props> = ({ data, inputError, handleChange }) => {
+const UserAddress: React.FC<
+  FieldProps<'cep' | 'address' | 'house' | 'stateAndCity'>
+> = ({ data, inputError, handleChange }) => {
   return (
     <Fieldset>
       <legend>Endereço</legend>

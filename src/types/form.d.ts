@@ -4,9 +4,9 @@ declare module '../HOC/form' {
   type InputError<Names> = Partial<Record<Names, string>>;
   export interface FormProps<Data> {
     data: Data;
-    invalid: boolean;
     inputError: InputError<keyof Data>;
     handleChange(e: ChangeEvent): void;
+    validSubmit(callback: (warnCallback: Function) => void): void;
   }
 
   export type FormComponent<

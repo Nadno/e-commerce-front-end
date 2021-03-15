@@ -12,9 +12,9 @@ interface Token {
 }
 
 export interface StoreProvider {
+  token: string;
   account: Account;
   cart: string[];
-  authorized: boolean;
   setAccount: Dispatch<SetStateAction<Account>>;
   setToken: Dispatch<SetStateAction<string>>;
   setRefreshToken: Dispatch<SetStateAction<string>>;

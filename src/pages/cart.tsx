@@ -11,7 +11,7 @@ import SignUp from '../screen/sign-up';
 import { GridContainer } from '../components/Container/style';
 
 const CartPage: React.FC = () => {
-  const { authorized } = useAccount();
+  const { id } = useAccount().account;
   const { cart, removeFromCart } = useCart();
 
   const [finalPrice, setFinalPrice] = useState(0);
@@ -42,7 +42,7 @@ const CartPage: React.FC = () => {
         removeItem={removeFromCart}
       />
 
-      {authorized ? (
+      {id != null ? (
         <Checkout products={products} finalPrice={finalPrice} />
       ) : (
         <SignUp goToPath="/cart" />

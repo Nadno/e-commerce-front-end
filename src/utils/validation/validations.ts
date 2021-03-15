@@ -11,6 +11,14 @@ export const biggerOrEqualThan = (
   secondValue: number
 ) => (): boolean => firstValue >= secondValue;
 
+export const between = (
+  number: number,
+  firstValue: number,
+  secondValue: number
+) =>
+  biggerOrEqualThan(number, firstValue)() &&
+  lessOrEqualThan(number, secondValue)();
+
 export const isEqual = (
   firstValue: string,
   secondValue: string

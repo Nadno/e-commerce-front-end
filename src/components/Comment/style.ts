@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import Container from '../Container/style';
 
 const Section = styled(Container)`
+  --child-padding: 2rem;
+
+  .title {
+    margin-bottom: 4rem;
+  }
+
   hr {
     width: 100%;
     height: 0.2rem;
@@ -9,11 +15,11 @@ const Section = styled(Container)`
     background-color: ${({ theme }) => theme.colors.secondary};
   }
 
-  ul {
+  .comment-list {
     width: 100%;
     list-style: none;
 
-    & > li:not(:last-child) {
+    & > .comment:not(:last-child) {
       margin-bottom: 2.5rem;
     }
   }
@@ -21,7 +27,7 @@ const Section = styled(Container)`
 
 const CommentForm = styled.form`
   width: 100%;
-  padding: 0;
+  padding: 0 var(--child-padding);
 
   header {
     margin-bottom: 1rem;
@@ -45,6 +51,11 @@ const CommentForm = styled.form`
       font-weight: 500;
       padding: 0.8em;
     }
+
+    &__length {
+      margin-top: 1rem;
+      font-size: 1.4rem;
+    }
   }
 
   button[type='submit'] {
@@ -53,7 +64,7 @@ const CommentForm = styled.form`
     margin-left: auto;
   }
 
-  @media screen and (min-width: 360px) {
+  @media screen and (min-width: 400px) {
     header {
       flex-direction: row;
     }
@@ -64,7 +75,7 @@ const CommentContainer = styled.li`
   width: 100%;
   min-height: 10rem;
 
-  padding: 2rem;
+  padding: var(--child-padding);
   border-radius: 0.4rem;
   background-color: ${({ theme }) => theme.colors.background};
   box-shadow: 0 20px 24px 4px ${({ theme }) => theme.colors.shadow};

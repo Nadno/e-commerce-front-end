@@ -39,24 +39,24 @@ function validTests(name: string, tests: Tests) {
   return NO_ERRORS;
 }
 
-function setDefaultValidation(
-  optionalInputs: string[] = []
-): ValidationFunction {
-  return function defaultValidation(name, data) {
-    const value = data[name];
+const defaultValidation: ValidationFunction = (
+  name,
+  data,
+  optional
+) => {
+  const value = data[name];
 
-    if (!optionalInputs.includes(name)) {
-      const tests: any = [[notNull(value), ERROR.EMPTY]];
+  if (!optional) {
+    const tests: Tests = [[notNull(value), ERROR.EMPTY]];
 
-      if (patternFor[name])
-        tests.push([validPattern(patternFor[name], value), ERROR.INVALID]);
+    if (patternFor[name])
+      tests.push([validPattern(patternFor[name], value), ERROR.INVALID]);
 
-      return validTests(name, tests);
-    }
+    return validTests(name, tests);
+  }
 
-    return NO_ERRORS;
-  };
-}
+  return NO_ERRORS;
+};
 
 const SIGN_UP = 'sign-up',
   SIGN_IN = 'sign-in',
@@ -64,23 +64,23 @@ const SIGN_UP = 'sign-up',
 
 const validationMethods: ValidationMethods = {
   [SIGN_IN]: {
-    default: setDefaultValidation(),
+    default: defaultValidation,
   },
   [SIGN_UP]: {
-    default: setDefaultValidation(['avatar']),
+    default: defaultValidation,
 
-    confirmPassword(name, data) {
+    confirmPassword(name, { password, confirmPassword }) {
       const tests: Tests = [
-        [notNull(data.password), ERROR.DEPENDENT_EMPTY],
-        [notNull(data.confirmPassword), ERROR.EMPTY],
-        [isEqual(data.password, data.confirmPassword), ERROR.NOT_EQUAL],
+        [notNull(password), ERROR.DEPENDENT_EMPTY],
+        [notNull(confirmPassword), ERROR.EMPTY],
+        [isEqual(password, confirmPassword), ERROR.NOT_EQUAL],
       ];
 
       return validTests(name, tests);
     },
   },
   [CREDIT_CARD]: {
-    default: setDefaultValidation(),
+    default: defaultValidation,
 
     cardNumber(name, { cardType, cardNumber }) {
       const tests: Tests = [
@@ -119,14 +119,14 @@ const validationMethods: ValidationMethods = {
 
 function setValidation(
   validationName: string
-): (name: string, data: any) => string {
+): (name: string, data: Record<string, any>) => string {
   const validation = validationMethods[validationName];
 
-  return function validate(name, data) {
+  return function validate(name, data, optional: boolean = false) {
     if (validation[name] != null) {
-      return validation[name](name, data);
+      return validation[name](name, data, optional);
     } else {
-      return validation.default(name, data);
+      return validation.default(name, data, optional);
     }
   };
 }

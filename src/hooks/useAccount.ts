@@ -9,7 +9,7 @@ const useAccount = () => {
   const ctx = useContext(ContextAccount);
   if (!ctx) throw new Error('useAccount must be used within AccountProvider');
 
-  const { account, setAccount, setToken, setRefreshToken, authorized } = ctx;
+  const { account, token, setAccount, setToken, setRefreshToken } = ctx;
 
   const refreshAuth = () => {};
   const login: Login = ({ data }, path = '/') => {
@@ -41,10 +41,10 @@ const useAccount = () => {
 
   return {
     account,
+    token,
     login,
     logout,
     refreshAuth,
-    authorized,
   };
 };
 

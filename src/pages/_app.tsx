@@ -21,13 +21,13 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <ThemeProvider theme={theme}>
-        <StoreProvider>
-          <ModalProvider>
+        <ModalProvider>
+          <StoreProvider>
             <Component {...pageProps} />
             <div id="load" className="load" />
-          </ModalProvider>
-          <GlobalStyle />
-        </StoreProvider>
+          </StoreProvider>
+        </ModalProvider>
+        <GlobalStyle />
       </ThemeProvider>
     </>
   );

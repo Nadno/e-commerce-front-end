@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import router from 'next/router';
 
@@ -12,6 +12,7 @@ import formatCurrency from '../../utils/formatCurrency';
 import ProductItem from '../../types/product';
 import useCart from '../../hooks/useCart';
 import useModal from '../../hooks/useModal';
+import { apiGet } from '../../utils/api';
 
 const Section = styled(Container)`
   margin: 8rem 1rem;
@@ -57,10 +58,20 @@ const ProductSection: React.FC<ProductItem> = ({
   image,
   price,
   title,
-  rating,
 }) => {
   const { addToCart } = useCart();
   const [createModal, openModal] = useModal();
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    const { send, cancel } = apiGet(`/product/rate?value=${id}`);
+
+    send()
+      .then(({ data }) => setRating(data.rating))
+      .catch(console.error);
+
+    return cancel;
+  }, []);
 
   const handleAddToCart = useCallback(() => {
     const toCart = () => router.push('/cart');
@@ -93,7 +104,7 @@ const ProductSection: React.FC<ProductItem> = ({
       <ProductContent>
         <div className="product">
           <h1 className="title">{title}</h1>
-          <Star rating={rating} />
+          <Star rating={Number(rating.toFixed(1))} />
         </div>
 
         <p className="description">{description}</p>

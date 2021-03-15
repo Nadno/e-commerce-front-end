@@ -3,38 +3,58 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 export default function FormData<Props, Data extends Record<string, any>>(
   Component: FormComponent<Data, Props>,
   initialData: Data,
-  validate: Function
+  validate: Function,
+  optionalData: string[] = []
 ) {
   type InputNames = keyof Data;
 
   const FormWrapper: React.FC<Omit<Props, keyof FormProps<Data>>> = props => {
     const [data, setData] = useState(initialData);
-    const [invalid, setInvalid] = useState(true);
     const [changedInput, setChangedInput] = useState<InputNames>('');
     const [inputError, setInputError] = useState<InputError<InputNames>>({});
 
+    const defineRequiredInputs = useCallback(() => {
+      const error = Object.keys(data).reduce(
+        (acc: any, input) =>
+          optionalData.includes(input) ? acc : ((acc[input] = ''), acc),
+        {}
+      );
+
+      setInputError(() => error);
+    }, []);
+
+    useEffect(defineRequiredInputs, []);
+
+    const deleteInputError = useCallback(
+      (error: any) =>
+        Object.keys(error).reduce(
+          (acc: any, key) =>
+            key !== changedInput ? ((acc[key] = ''), acc) : acc,
+          {}
+        ),
+      [changedInput]
+    );
+
     const handleValidate = useCallback(() => {
       if (!changedInput) return;
-      const zeroDotFourSeconds = 400;
 
-      const timeoutId = setTimeout(() => {
-        const error: string = validate(changedInput, data);
-        if (error) {
-          setInputError(prev => ({
-            ...prev,
-            [changedInput]: error,
-          }));
-          setInvalid(() => true);
-        } else {
-          setInputError(prev => (delete prev[changedInput] ? prev : {}));
-          setInvalid(() => false);
-        }
-      }, zeroDotFourSeconds);
+      const error: string = validate(
+        changedInput,
+        data,
+        optionalData.includes(changedInput as string)
+      );
 
-      return () => clearTimeout(timeoutId);
+      if (error) {
+        setInputError(prev => ({
+          ...prev,
+          [changedInput]: error,
+        }));
+      } else {
+        setInputError(deleteInputError);
+      }
     }, [data, changedInput]);
 
-    useEffect(handleValidate, [data, changedInput]);
+    useEffect(handleValidate, [data]);
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
@@ -52,7 +72,6 @@ export default function FormData<Props, Data extends Record<string, any>>(
     return (
       <WrappedComponent
         data={data}
-        invalid={invalid}
         inputError={inputError}
         handleChange={handleChange}
         {...props}

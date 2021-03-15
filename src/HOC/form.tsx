@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import useModal from '../hooks/useModal';
 
 export default function FormData<Props, Data extends Record<string, any>>(
   Component: FormComponent<Data, Props>,
@@ -13,12 +14,20 @@ export default function FormData<Props, Data extends Record<string, any>>(
     const [changedInput, setChangedInput] = useState<InputNames>('');
     const [inputError, setInputError] = useState<InputError<InputNames>>({});
 
+    const [createModal, openModal] = useModal();
+
+    const warnModal = useCallback(message => {
+      createModal.warn({ message });
+      openModal();
+    }, []);
+
     const defineRequiredInputs = useCallback(() => {
-      const error = Object.keys(data).reduce(
-        (acc: any, input) =>
-          optionalData.includes(input) ? acc : ((acc[input] = ''), acc),
-        {}
-      );
+      const error = Object.keys(data).reduce((acc: any, input) => {
+        const isOptional = optionalData.includes(input);
+        const inputError: string = validate(input, data, isOptional);
+
+        return inputError ? ((acc[input] = ''), acc) : acc;
+      }, {});
 
       setInputError(() => error);
     }, []);
@@ -68,12 +77,25 @@ export default function FormData<Props, Data extends Record<string, any>>(
       }
     }, []);
 
+    const validSubmit = useCallback(
+      (callback: (warnModal: Function) => void) => {
+        console.log(inputError);
+
+        if (Object.values(inputError).length)
+          return warnModal('Todos campos precisão estar válidos!');
+
+        return callback(warnModal);
+      },
+      [inputError]
+    );
+
     const WrappedComponent = Component as FormComponent<Data>;
     return (
       <WrappedComponent
         data={data}
         inputError={inputError}
         handleChange={handleChange}
+        validSubmit={validSubmit}
         {...props}
       />
     );

@@ -13,7 +13,7 @@ const Section = styled.section`
       margin-right: 1rem;
     }
 
-    button[type="submit"] {
+    button[type='submit'] {
       width: 8.2rem;
       height: 100%;
       margin: 0;
@@ -26,7 +26,10 @@ const Section = styled.section`
     margin-top: 2rem;
     list-style: none;
     display: flex;
-    gap: 2rem;
+
+    & > :not(:last-child) {
+      margin-right: 2rem;
+    }
 
     li {
       height: 3rem;

@@ -4,8 +4,12 @@ const CartList = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
-  row-gap: 2.5rem;
+
   margin-top: 2rem;
+
+  & > :not(:last-child) {
+    margin-bottom: 2.5rem;
+  }
 
   img {
     max-width: 300px;
@@ -15,7 +19,10 @@ const CartList = styled.ul`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 2rem;
+
+    & > :not(:last-child) {
+      margin-right: 2rem;
+    }
   }
 
   @media screen and (min-width: 350px) {
@@ -32,11 +39,19 @@ const CartList = styled.ul`
       .buttons {
         max-width: 120px;
         flex-direction: column;
+
+        & > :not(:last-child) {
+          margin-bottom: 2rem;
+          margin-right: 0;
+        }
       }
 
       @media screen and (min-width: 520px) {
         .cart {
-          column-gap: 2rem;
+          & > :not(:last-child) {
+            margin-right: 2rem;
+          }
+
           flex-direction: row;
           align-items: flex-start;
 

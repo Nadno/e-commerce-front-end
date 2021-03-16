@@ -18,6 +18,10 @@ const Container = styled.section`
   border-top: 4px solid ${({ theme }) => theme.colors.secondary};
   border-bottom: 4px solid ${({ theme }) => theme.colors.secondary};
 
+  & > * :only-child :not(:last-child) {
+    margin-bottom: 2.5rem;
+  }
+
   @keyframes show-container {
     to {
       transform: initial;
@@ -46,7 +50,10 @@ export const FlexContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  row-gap: 2rem;
+
+  & > :not(:last-child) {
+    margin-bottom: 2rem;
+  }
 `;
 
 export default Container;

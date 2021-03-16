@@ -86,10 +86,12 @@ const CommentContainer = styled.li`
   }
 
   header {
-    row-gap: 2rem;
-
     @media screen and (min-width: 500px) {
       flex-direction: row;
+
+      & > :not(:last-child) {
+        margin-bottom: 0;
+      }
     }
   }
 `;

@@ -40,11 +40,9 @@ export const ProductContent = styled(FlexContainer).attrs(() => ({
 }))`
   width: 100%;
   height: 100%;
-  gap: 2rem;
 
   .info {
     height: 100%;
-    gap: inherit;
   }
 
   .description {

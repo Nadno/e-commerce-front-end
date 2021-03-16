@@ -11,7 +11,6 @@ const useAccount = () => {
 
   const { account, token, setAccount, setToken, setRefreshToken } = ctx;
 
-  const refreshAuth = () => {};
   const login: Login = ({ data }, path = '/') => {
     const { id, avatar = '', name, token, refreshToken } = data;
     if (id && token && refreshToken) {
@@ -44,7 +43,6 @@ const useAccount = () => {
     token,
     login,
     logout,
-    refreshAuth,
   };
 };
 

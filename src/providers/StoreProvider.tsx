@@ -38,7 +38,7 @@ const Store: React.FC = ({ children }) => {
     setToken(token);
     setRefreshToken(refreshToken);
   }, []);
-
+ 
   const unauthorize = useCallback(() => {
     createModal.warn({
       message: 'Sua sessão expirou, por favor, refaça o login.',
@@ -60,7 +60,7 @@ const Store: React.FC = ({ children }) => {
       setToken(() => data.token);
     };
 
-    apiRefreshToken().then(refresh).catch(unauthorize);
+    apiRefreshToken().then(refresh).catch(console.error);
   }, []);
 
   const authorizeAccount = useCallback(() => {

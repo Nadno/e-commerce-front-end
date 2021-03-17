@@ -1,9 +1,17 @@
-export const formatAccountToForm = (account: any) => {
+import { AccountData } from '../pages/account';
+import { SignUpData } from '../screen/sign-up';
+
+export const formatAccountToForm = (account: any): AccountData => {
   const { id, name, address, ...rest } = account;
-  
+
   const [giveName, surname] = name.split(' ');
-  const [stateAndCity, street, block, district, house] = address.split(', ');
-  const formattedAddress = [street, block, district].filter(a => a != null).join(', ');
+  const [
+    stateAndCity,
+    district = '',
+    block = '',
+    street = '',
+    house = '',
+  ] = address.split(',');
 
   const getValidProperties = (acc: any, key: string) => {
     if (rest[key] != null) {
@@ -11,7 +19,7 @@ export const formatAccountToForm = (account: any) => {
     }
     return acc;
   };
-  
+
   const formattedRest = Object.keys(rest).reduce(getValidProperties, {});
 
   return {
@@ -20,32 +28,28 @@ export const formatAccountToForm = (account: any) => {
     stateAndCity,
     giveName,
     surname,
-    house: house ?? '',
-    address: formattedAddress,
+    house,
+    district,
+    block,
+    street,
   };
 };
 
 export const formatAccountToAPI = ({
-  email,
-  password,
-  avatar,
+  stateAndCity,
+  district,
   giveName,
   surname,
-  tel,
-  cep,
-  address,
+  street,
+  block,
   house,
-  stateAndCity,
-}: any) => {
-  const formattedAddress = `${stateAndCity}, ${address}, ${house}`;
-  
+  ...rest
+}: SignUpData | AccountData) => {
+  const formattedAddress = `${stateAndCity.trim()}, ${district.trim()}, ${block.trim()}, ${street.trim()}, ${house.trim()}`;
+
   return {
     name: `${giveName} ${surname}`,
-    tel,
-    email,
-    password,
-    avatar,
-    cep,
     address: formattedAddress,
+    ...rest,
   };
 };

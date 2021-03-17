@@ -23,11 +23,12 @@ function InputField<Element>({
   children,
   ...props
 }: InputFieldProps<Element>) {
+  const hasError = error != null;
   return (
-    <Field className={error ? 'invalid' : ''}>
+    <Field className={hasError ? 'invalid' : ''}>
       <label htmlFor={id}>
         {label}
-        {error && <span className="invalid-error">{error}</span>}
+        {hasError && <span className="invalid-error">{error}</span>}
       </label>
       <div className="input">
         <Input id={id} name={name} value={value} {...props}>

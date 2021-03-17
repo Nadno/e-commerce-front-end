@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import FormData, { FormComponent } from '../../HOC/form';
+import React, { ChangeEvent, useCallback, useMemo } from 'react';
+import FormData, { FormComponent, ValidatedSubmit } from '../../HOC/form';
 
 import { Fieldset, FormContainer } from '../Form/style';
 import { Input } from '../Input';
@@ -14,10 +14,12 @@ import validate from '../../utils/validation/validate';
 import { CartProps } from '../Cart';
 import { FlexContainer } from '../Container/style';
 import { Submit } from '../Button';
+import useModal from '../../hooks/useModal';
+import useOrder from '../../hooks/useOrder';
 
 const INITIAL_DATA = {
   cardNumber: '',
-  cardType: 'VS',
+  cardType: 'Escolher',
   cardOwner: '',
   cardValidate: '',
   cardSecurityCode: '',
@@ -37,36 +39,74 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
   validSubmit,
 }) => {
   const { account } = useAccount();
+  const { createOder } = useOrder();
+  const [createModal, openModal] = useModal();
 
-  const handleSubmit = useCallback(
-    e => {
-      e.preventDefault();
+  const handleCardTypeOnChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      handleChange({ target: { name: 'cardNumber', value: '' } });
+      handleChange(e);
+    },
+    []
+  );
 
-      const formattedProducts = Object.entries(products).map(
+  const confirmOrder = useCallback((okAction: any) => {
+    createModal.action({
+      message: 'Confirmar pedido',
+      okButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      okAction,
+    });
+
+    openModal();
+  }, []);
+
+  const handleSubmit = useCallback<ValidatedSubmit>(
+    warnModal => {
+      const justProducts = Object.entries(products).map(
         ([, product]) => product
       );
+      const { cardOwner } = data;
 
-      validSubmit(warnModal => {
+      confirmOrder(() => {
         apiPost('/order/create', {
           id: account.id,
-          products: formattedProducts,
+          products: justProducts,
+          finalPrice,
+          cardOwner,
         })
-          .then(console.log)
+          .then(createOder)
           .catch(handleRequest(warnModal));
       });
     },
     [data, products, inputError]
   );
 
+  const onSubmit = useMemo(() => validSubmit(handleSubmit), [inputError]);
+
   return (
     <Section>
       <OrderTable products={Object.entries(products)} finalPrice={finalPrice} />
 
       <FormContainer>
-        <FlexContainer onSubmit={handleSubmit} as="form">
+        <FlexContainer onSubmit={onSubmit} as="form">
           <h2 className="title">Cartão</h2>
           <Fieldset>
             <div className="input-block">
+              <Select
+                id="card-type"
+                name="cardType"
+                value={data.cardType}
+                error={inputError.cardType}
+                label="Cartão"
+                onChange={handleCardTypeOnChange}
+                options={[
+                  { value: 'Escolher', abbr: 'none' },
+                  { value: 'Visa', abbr: 'VS' },
+                  { value: 'Mastercard', abbr: 'MS' },
+                ]}
+              />
+
               <Input
                 id="card-number"
                 name="cardNumber"
@@ -75,18 +115,6 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
                 label="Número do cartão"
                 placeholder="Apenas números"
                 onChange={handleChange}
-              />
-              <Select
-                id="card-type"
-                name="cardType"
-                value={data.cardType}
-                error={inputError.cardType}
-                label="Cartão"
-                onChange={handleChange}
-                options={[
-                  { value: 'Visa', abbr: 'VS' },
-                  { value: 'Mastercard', abbr: 'MS' },
-                ]}
               />
             </div>
 

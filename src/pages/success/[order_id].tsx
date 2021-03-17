@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useOrder from '../../hooks/useOrder';
 import { PrimaryButton } from '../../components/Button/style';
 import Container from '../../components/Container/';
@@ -21,9 +21,11 @@ const SuccessContainer = styled(FlexContainer)`
 
 const Success: React.FC = () => {
   const router = useRouter();
-  const { order_id } = router.query;
 
-  if (order_id !== 'asd72dSA32sa4SA7aAS') router.push('/cart');
+  useEffect(() => {
+    const { order_id } = router.query;
+    if (order_id !== 'asd72dSA32sa4SA7aAS') router.push('/cart');
+  }, []);
 
   const { order } = useOrder();
 
@@ -35,7 +37,6 @@ const Success: React.FC = () => {
           <span>Dono do cartão: {order.cardOwner}</span>
           <span>Nome do comprador: {order.account.name}</span>
           <span>Endereço de entrega: {order.account.address}</span>
-
 
           <PrimaryButton onClick={() => router.push('/products')}>
             Voltar a loja

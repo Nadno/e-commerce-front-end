@@ -2,7 +2,7 @@ import errors from './errors.json';
 
 type InputError = { name: string; error: string };
 
-export function getInputError({ name, error }: InputError) {
+export const getInputError = ({ name, error }: InputError): string => {
   const formErrors = errors.form as any;
 
   if (formErrors[name] && formErrors[name][error]) {
@@ -12,4 +12,4 @@ export function getInputError({ name, error }: InputError) {
       ? formErrors.default[error]
       : 'Ops, algo não está certo';
   }
-}
+};

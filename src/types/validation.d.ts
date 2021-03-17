@@ -3,6 +3,9 @@ export type ValidationFunction = (
   data: Record<string, any>,
   optional?: boolean
 ) => string;
+
+export type SetValidation = (validationName: string) => ValidationFunction;
+
 export type ValidationMethods = Record<
   string,
   Record<string, ValidationFunction>

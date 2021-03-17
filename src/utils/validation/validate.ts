@@ -1,4 +1,5 @@
 import {
+  SetValidation,
   Tests,
   ValidationFunction,
   ValidationMethods,
@@ -15,7 +16,7 @@ import {
 const patternFor: Record<string, RegExp> = {
   email: /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/,
   password: /^[a-zA-Z-0-9]{3,30}$/,
-  tel: /^[1-9]{2} (?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/,
+  tel: /^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/,
   VS: /^4[0-9]{12}(?:[0-9]{3})?$/,
   MS: /^5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}$/,
 };
@@ -29,7 +30,7 @@ const ERROR = {
 
 const NO_ERRORS = '';
 
-function validTests(name: string, tests: Tests) {
+const validTests = (name: string, tests: Tests) => {
   for (let [valid, error] of tests) {
     if (!valid()) {
       return getInputError({ name, error });
@@ -37,13 +38,9 @@ function validTests(name: string, tests: Tests) {
   }
 
   return NO_ERRORS;
-}
+};
 
-const defaultValidation: ValidationFunction = (
-  name,
-  data,
-  optional
-) => {
+const defaultValidation: ValidationFunction = (name, data, optional) => {
   const value = data[name];
 
   if (!optional) {
@@ -90,11 +87,11 @@ const validationMethods: ValidationMethods = {
       return validTests(name, tests);
     },
 
-    cardType(name, data) {
+    cardType(name, { cardType }) {
       const CARDS = ['MS', 'VS'];
 
-      return CARDS.includes(data.cardType)
-        ? this.cardNumber('cardNumber', data)
+      return CARDS.includes(cardType)
+        ? NO_ERRORS
         : getInputError({ name, error: ERROR.INVALID });
     },
 
@@ -117,19 +114,17 @@ const validationMethods: ValidationMethods = {
   },
 };
 
-function setValidation(
-  validationName: string
-): (name: string, data: Record<string, any>) => string {
+const setValidation: SetValidation = validationName => {
   const validation = validationMethods[validationName];
 
-  return function validate(name, data, optional: boolean = false) {
+  return (name, data, optional = false) => {
     if (validation[name] != null) {
       return validation[name](name, data, optional);
     } else {
       return validation.default(name, data, optional);
     }
   };
-}
+};
 
 const validate: any = {
   [SIGN_IN]: setValidation(SIGN_IN),

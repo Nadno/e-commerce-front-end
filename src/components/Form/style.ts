@@ -23,10 +23,16 @@ const FormContainer = styled(Container)`
 
     .input-block {
       display: grid;
-      grid-template: 1fr 1fr / 1fr;
+      grid-template: 1fr / 1fr;
       gap: 1.5rem;
+
+
+      &.--three {
+        grid-template: 1fr / 1fr 1fr;
+
+      }
     }
-    
+
     footer {
       width: 100%;
       margin-top: 4rem;
@@ -48,8 +54,15 @@ const FormContainer = styled(Container)`
       margin: 0 auto;
 
       .input-block {
-        grid-template: 1fr / 1fr 1fr;
         align-items: flex-end;
+
+        &.--two {
+          grid-template: 1fr / 1fr 1fr;
+        }
+
+        &.--three {
+          grid-template: 1fr / repeat(3, 1fr);
+        }
       }
     }
   }

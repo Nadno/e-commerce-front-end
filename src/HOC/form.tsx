@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useModal from '../hooks/useModal';
 
 export default function FormData<Props, Data extends Record<string, any>>(
@@ -65,7 +65,7 @@ export default function FormData<Props, Data extends Record<string, any>>(
 
     useEffect(handleValidate, [data]);
 
-    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: HandleChange) => {
       const { name, value } = e.target;
 
       if (data[name] != null) {
@@ -77,12 +77,16 @@ export default function FormData<Props, Data extends Record<string, any>>(
       }
     }, []);
 
-    const validSubmit = useCallback(
-      (callback: (warnModal: Function) => void) => {
-        if (Object.values(inputError).length)
-          return warnModal('Todos campos precisão estar válidos!');
+    const validSubmit = useCallback<ValidSubmit>(
+      cb => event => {
+        event.preventDefault();
 
-        return callback(warnModal);
+        if (Object.values(inputError).length) {
+          warnModal('Todos campos precisão estar válidos!');
+          return;
+        }
+
+        cb(warnModal, event);
       },
       [inputError]
     );

@@ -1,11 +1,11 @@
-import React, { useCallback, FormEvent } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
 import Form from '../components/Form';
 import { Input } from '../components/Input';
 import { Submit } from '../components/Button';
 import { Fieldset } from '../components/Form/style';
-import FormData, { FormComponent } from '../HOC/form';
+import FormData, { FormComponent, ValidatedSubmit } from '../HOC/form';
 import { GridContainer } from '../components/Container/style';
 
 import useAccount from '../hooks/useAccount';
@@ -24,22 +24,20 @@ const SignIn: FormComponent<SignInData> = ({
 }) => {
   const { login } = useAccount();
 
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-
-      validSubmit(warnModal => {
-        apiPost('/user/sign-in', { ...data })
-          .then(login)
-          .catch(handleRequest(warnModal));
-      });
+  const handleSubmit = useCallback<ValidatedSubmit>(
+    warnModal => {
+      apiPost('/user/sign-in', { ...data })
+        .then(login)
+        .catch(handleRequest(warnModal));
     },
     [data, inputError]
   );
 
+  const onSubmit = useMemo(() => validSubmit(handleSubmit), [inputError]);
+
   return (
     <GridContainer>
-      <Form onSubmit={handleSubmit} title="Entrar">
+      <Form onSubmit={onSubmit} title="Entrar">
         <Fieldset>
           <legend>Usuário</legend>
 

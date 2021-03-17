@@ -1,11 +1,10 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
-
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useAccount from '../hooks/useAccount';
 
 import { AccountHeader } from '../components/Header';
 import Form from '../components/Form';
 import { Fieldset } from '../components/Form/style';
-import FormData, { FormComponent } from '../HOC/form';
+import FormData, { FormComponent, ValidatedSubmit } from '../HOC/form';
 import { INITIAL_DATA } from '../screen/sign-up';
 import { GridContainer } from '../components/Container/style';
 import { UserAbout, UserAddress } from '../components/SignUpFields';
@@ -20,10 +19,11 @@ import {
   formatAccountToForm,
 } from '../utils/formatAccount';
 import handleRequest from '../utils/handleRequests';
+import { useRouter } from 'next/router';
 
 const { confirmPassword, ...ACCOUNT_INITIAL_DATA } = INITIAL_DATA;
 
-type AccountData = typeof ACCOUNT_INITIAL_DATA;
+export type AccountData = typeof ACCOUNT_INITIAL_DATA;
 
 const AccountForm: FormComponent<AccountData> = ({
   data,
@@ -31,27 +31,28 @@ const AccountForm: FormComponent<AccountData> = ({
   validSubmit,
   ...props
 }) => {
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
+  const router = useRouter();
+  
+  const handleSubmit = useCallback<ValidatedSubmit>(
+    warnModal => {
+      const successUpdate = ({ data }: any) => {
+        const { status, ...account } = data;
+        storeAccount({ account });
+        warnModal('Alterações feitas conta sucesso!');
+        router.reload();
+      };
 
-      validSubmit(warnModal => {
-        const successUpdate = ({ data }: any) => {
-          const { status, ...account } = data;
-          storeAccount({ account });
-          warnModal('Alterações feitas conta sucesso!');
-        };
-
-        apiPut('/user/update', formatAccountToAPI(data))
-          .then(successUpdate)
-          .catch(handleRequest(warnModal));
-      });
+      apiPut('/user/update', formatAccountToAPI(data))
+        .then(successUpdate)
+        .catch(handleRequest(warnModal));
     },
     [data, inputError]
   );
 
+  const onSubmit = useMemo(() => validSubmit(handleSubmit), [inputError]);
+
   return (
-    <Form onSubmit={handleSubmit} title="Alterar conta">
+    <Form onSubmit={onSubmit} title="Alterar conta">
       <Fieldset>
         <Input
           type="url"
@@ -99,8 +100,10 @@ const AccountForm: FormComponent<AccountData> = ({
 };
 
 const Account = () => {
-  const [initialData, setInitialData] = useState<AccountData>(ACCOUNT_INITIAL_DATA);
-  const { account, token } = useAccount();
+  const [initialData, setInitialData] = useState<AccountData>(
+    ACCOUNT_INITIAL_DATA
+  );
+  const { account } = useAccount();
 
   const getAccount = useCallback(() => {
     if (!account.id) return;
@@ -116,9 +119,9 @@ const Account = () => {
       .catch(console.error);
 
     return cancel;
-  }, [account.id, token]);
+  }, [account]);
 
-  useEffect(getAccount, [token]);
+  useEffect(getAccount, [account]);
 
   const WrappedAccountForm = FormData(
     AccountForm,

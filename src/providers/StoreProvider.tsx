@@ -13,7 +13,7 @@ import {
 
 export const ContextAccount = createContext<StoreProvider | null>(null);
 
-const THIRTY_SECONDS = 60,
+const THIRTY_SECONDS = 30,
   TEN_SECONDS = 10;
 
 const Store: React.FC = ({ children }) => {
@@ -38,7 +38,7 @@ const Store: React.FC = ({ children }) => {
     setToken(token);
     setRefreshToken(refreshToken);
   }, []);
- 
+
   const unauthorize = useCallback(() => {
     createModal.warn({
       message: 'Sua sessão expirou, por favor, refaça o login.',

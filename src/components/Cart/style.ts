@@ -30,37 +30,35 @@ const CartList = styled.ul`
       flex-direction: row;
       align-items: flex-end;
     }
+  }
 
-    @media screen and (min-width: 400px) {
-      .content {
-        flex-direction: row;
+  @media screen and (min-width: 400px) {
+    .content {
+      flex-direction: row;
+    }
+
+    .buttons {
+      max-width: 120px;
+      flex-direction: column;
+
+      & > :not(:last-child) {
+        margin-bottom: 2rem;
+        margin-right: 0;
       }
+    }
 
-      .buttons {
-        max-width: 120px;
-        flex-direction: column;
-
+    @media screen and (min-width: 520px) {
+      .cart {
         & > :not(:last-child) {
-          margin-bottom: 2rem;
-          margin-right: 0;
-        }
-      }
-
-      @media screen and (min-width: 520px) {
-        .cart {
-          & > :not(:last-child) {
-            margin-right: 2rem;
-          }
-
-          flex-direction: row;
-          align-items: flex-start;
-
-          img {
-            max-width: 150px;
-          }
+          margin-right: 2rem;
+          margin-bottom: 0;
         }
 
-        @media screen and (min-width: 600px) {
+        flex-direction: row;
+        align-items: flex-start;
+
+        img {
+          max-width: 150px;
         }
       }
     }

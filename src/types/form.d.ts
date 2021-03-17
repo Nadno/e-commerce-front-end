@@ -1,12 +1,26 @@
-import { ChangeEvent } from 'react';
+import { FormEvent, ChangeEvent } from 'react';
 
 declare module '../HOC/form' {
+  export type ValidatedSubmit = (
+    warnModal: (message: string) => void,
+    event: FormEvent
+  ) => void;
+
+  type ValidSubmit = (
+    callback: ValidatedSubmit,
+    inputNames?: string[]
+  ) => (event: FormEvent) => void;
+
   type InputError<Names> = Partial<Record<Names, string>>;
+
+  type HandleChange =
+    | { target: { name: string; value: any } }
+    | ChangeEvent<HTMLInputElement | HTMLSelectElement>;
   export interface FormProps<Data> {
     data: Data;
+    validSubmit: ValidSubmit;
     inputError: InputError<keyof Data>;
-    handleChange(e: ChangeEvent): void;
-    validSubmit(callback: (warnCallback: Function) => void): void;
+    handleChange(e: HandleChange): void;
   }
 
   export type FormComponent<

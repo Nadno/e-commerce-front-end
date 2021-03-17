@@ -1,4 +1,4 @@
-import React, { useCallback, FormEvent } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../components/SignUpFields';
 import Form from '../components/Form';
 import handleRequest from '../utils/handleRequests';
-import FormData, { FormComponent } from '../HOC/form';
+import FormData, { FormComponent, ValidatedSubmit } from '../HOC/form';
 
 import useAccount from '../hooks/useAccount';
 import { apiPost } from '../utils/api';
@@ -26,7 +26,9 @@ export const INITIAL_DATA = {
   house: '',
   tel: '',
   cep: '',
-  address: '',
+  street: '',
+  block: '',
+  district: '',
   stateAndCity: '',
 };
 interface Props {
@@ -43,20 +45,22 @@ export const SignUp: FormComponent<SignUpData, Props> = ({
 }) => {
   const { login } = useAccount();
 
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      validSubmit(warnModal => {
-        apiPost('/user/sign-up', formatAccountToAPI(data))
-          .then(({ data }) => login({ data }, goToPath))
-          .catch(handleRequest(warnModal));
-      });
+  const handleSubmit = useCallback<ValidatedSubmit>(
+    async warnModal => {
+      const res = await apiPost(
+        '/user/sign-up',
+        formatAccountToAPI(data)
+      ).catch(handleRequest(warnModal));
+
+      if (res) login({ data: res.data }, goToPath);
     },
     [data, props.inputError]
   );
 
+  const onSubmit = useMemo(() => validSubmit(handleSubmit), [props.inputError]);
+
   return (
-    <Form onSubmit={handleSubmit} title="Cadastre-se">
+    <Form onSubmit={onSubmit} title="Cadastre-se">
       <UserAccount data={data} {...props} />
       <UserAbout data={data} {...props} />
       <UserAddress data={data} {...props} />

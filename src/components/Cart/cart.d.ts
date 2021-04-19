@@ -10,8 +10,8 @@ declare module './' {
 
   export interface CartProps {
     items: string[];
-    products: products;
-    setItems: Dispatch<SetStateAction<Record<string, CartItem>>>;
+    cartItems: products;
+    setCartItems: Dispatch<SetStateAction<Record<string, CartItem>>>;
     removeItem(e: string): void;
   }
 }

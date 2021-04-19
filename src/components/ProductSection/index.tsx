@@ -60,7 +60,7 @@ const ProductSection: React.FC<ProductItem> = ({
   title,
 }) => {
   const { addToCart } = useCart();
-  const [createModal, openModal] = useModal();
+  const [Modal, openModal, setModalAs] = useModal();
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -77,14 +77,14 @@ const ProductSection: React.FC<ProductItem> = ({
     const toCart = () => router.push('/cart');
 
     if (addToCart(String(id))) {
-      createModal.action({
+      setModalAs.action({
         message: 'O item foi adicionado ao carrinho.',
-        okButtonText: 'Carrinho',
-        cancelButtonText: 'Continuar',
-        okAction: toCart,
+        confirmText: 'Ir para o carrinho',
+        cancelText: 'Continuar',
+        handleConfirm: toCart,
       });
     } else {
-      createModal.warn({
+      setModalAs.warn({
         message:
           'Erro ao adicionar o item ao carrinho, verifique se o item já não se encontra presente no carrinho.',
       });
@@ -116,6 +116,8 @@ const ProductSection: React.FC<ProductItem> = ({
           </PrimaryButton>
         </FlexContainer>
       </ProductContent>
+
+      <Modal />
     </Section>
   );
 };

@@ -14,10 +14,10 @@ export default function FormData<Props, Data extends Record<string, any>>(
     const [changedInput, setChangedInput] = useState<InputNames>('');
     const [inputError, setInputError] = useState<InputError<InputNames>>({});
 
-    const [createModal, openModal] = useModal();
+    const [Modal, openModal, setModalAs] = useModal();
 
     const warnModal = useCallback(message => {
-      createModal.warn({ message });
+      setModalAs.warn({ message });
       openModal();
     }, []);
 
@@ -93,13 +93,16 @@ export default function FormData<Props, Data extends Record<string, any>>(
 
     const WrappedComponent = Component as FormComponent<Data>;
     return (
-      <WrappedComponent
-        data={data}
-        inputError={inputError}
-        handleChange={handleChange}
-        validSubmit={validSubmit}
-        {...props}
-      />
+      <>
+        <WrappedComponent
+          data={data}
+          inputError={inputError}
+          handleChange={handleChange}
+          validSubmit={validSubmit}
+          {...props}
+        />
+        <Modal />
+      </>
     );
   };
 

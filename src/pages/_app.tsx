@@ -9,7 +9,6 @@ import progress from '../utils/routeLoading';
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
 import Head from 'next/head';
-import ModalProvider from '../providers/ModalProvider';
 import OrderProvider from '../providers/OrderProvider';
 
 Router.events.on('routeChangeStart', progress.start);
@@ -22,14 +21,13 @@ export default function App({ Component, pageProps }: StyledProps<AppProps>) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <StoreProvider>
-            <OrderProvider>
-              <Component {...pageProps} />
-              <div id="load" className="load" />
-            </OrderProvider>
-          </StoreProvider>
-        </ModalProvider>
+        <StoreProvider>
+          <OrderProvider>
+            <Component {...pageProps} />
+            <div id="load" className="load" />
+            <div id="modals" />
+          </OrderProvider>
+        </StoreProvider>
         <GlobalStyle />
       </ThemeProvider>
     </>

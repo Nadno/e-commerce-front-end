@@ -20,6 +20,10 @@ const StyledButton = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  &:focus {
+    outline-offset: 4px;
+  }
 `;
 
 const PrimaryButton = styled(StyledButton)`
@@ -29,13 +33,12 @@ const PrimaryButton = styled(StyledButton)`
   background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover {
+    opacity: 0.7;
     transform: scale(1.01);
   }
 
   &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.background},
-      0 0 0 4px ${({ theme }) => theme.colors.primary};
+    outline: 2px ${({ theme }) => theme.colors.primary} solid;
   }
 `;
 
@@ -60,6 +63,7 @@ const SecondaryButton = styled(StyledButton)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.white};
+    opacity: 0.7;
 
     &::before {
       transform: translateX(0);
@@ -67,10 +71,8 @@ const SecondaryButton = styled(StyledButton)`
   }
 
   &:focus {
-    outline: none;
+    outline: 2px ${({ theme }) => theme.colors.secondary} solid;
     color: ${({ theme }) => theme.colors.white};
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.background},
-      0 0 0 4px ${({ theme }) => theme.colors.secondary};
 
     &::before {
       transform: translateX(0);

@@ -30,7 +30,7 @@ const Store: React.FC = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState('');
 
   const [cart, setCart] = useState<string[]>([]);
-  const [createModal, openModal] = useModal();
+  const [Modal, openModal, setModalAs] = useModal();
 
   const getStorage = useCallback(() => {
     const { account, token, refreshToken } = getAccount();
@@ -40,18 +40,10 @@ const Store: React.FC = ({ children }) => {
   }, []);
 
   const unauthorize = useCallback(() => {
-    createModal.warn({
-      message: 'Sua sessão expirou, por favor, refaça o login.',
-      okAction: () => {
-        removeAccount();
-        setAccount(NO_ACCOUNT);
-        setToken('');
-        setRefreshToken('');
-        router.push('/sign-in');
-      },
-    });
-
-    openModal();
+    removeAccount();
+    setAccount(NO_ACCOUNT);
+    setToken('');
+    setRefreshToken('');
   }, []);
 
   const refreshAccount = useCallback(() => {
@@ -79,6 +71,13 @@ const Store: React.FC = ({ children }) => {
     } else if (hasToRefresh) {
       setRefreshToken('');
       unauthorize();
+
+      setModalAs.warn({
+        message: 'Sua sessão expirou, por favor, refaça o login.',
+        handleConfirm: () => router.push('/sign-in'),
+      });
+
+      openModal();
     }
   }, [token, refreshToken]);
 
@@ -87,7 +86,9 @@ const Store: React.FC = ({ children }) => {
 
     const secondsToExpireInterval = setInterval(authorizeAccount, fiveSeconds);
 
-    return () => clearInterval(secondsToExpireInterval);
+    return () => {
+      clearInterval(secondsToExpireInterval);
+    };
   }, [token, refreshToken]);
 
   useEffect(getStorage, []);
@@ -111,6 +112,7 @@ const Store: React.FC = ({ children }) => {
       }}
     >
       {children}
+      <Modal />
     </ContextAccount.Provider>
   );
 };

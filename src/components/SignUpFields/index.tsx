@@ -4,11 +4,13 @@ import { Fieldset } from '../Form/style';
 import { Input } from '../Input';
 
 interface FieldProps<WithProps extends keyof SignUpData>
-  extends Omit<FormProps<Pick<SignUpData, WithProps>>, 'validSubmit'> {}
+  extends Omit<FormProps<Pick<SignUpData, WithProps>>, 'validSubmit'> {
+  firstFieldFocus?: boolean;
+}
 
 const UserAccount: React.FC<
   FieldProps<'email' | 'password' | 'confirmPassword' | 'avatar'>
-> = ({ data, inputError, handleChange }) => (
+> = ({ data, inputError, handleChange, firstFieldFocus = false }) => (
   <Fieldset>
     <legend>Sua conta</legend>
 
@@ -20,6 +22,7 @@ const UserAccount: React.FC<
       label="Email"
       placeholder="Digite seu e-mail"
       onChange={handleChange}
+      autoFocus={firstFieldFocus}
     />
 
     <div className="input-block --two">
@@ -63,6 +66,7 @@ const UserAbout: React.FC<FieldProps<'giveName' | 'surname' | 'tel'>> = ({
   data,
   inputError,
   handleChange,
+  firstFieldFocus = false,
 }) => (
   <Fieldset>
     <legend>Sobre você</legend>
@@ -76,6 +80,7 @@ const UserAbout: React.FC<FieldProps<'giveName' | 'surname' | 'tel'>> = ({
         label="Nome"
         placeholder="Primeiro Nome"
         onChange={handleChange}
+        autoFocus={firstFieldFocus}
       />
 
       <Input
@@ -103,7 +108,7 @@ const UserAbout: React.FC<FieldProps<'giveName' | 'surname' | 'tel'>> = ({
 
 const UserAddress: React.FC<
   FieldProps<'cep' | 'street' | 'block' | 'district' | 'house' | 'stateAndCity'>
-> = ({ data, inputError, handleChange }) => (
+> = ({ data, inputError, handleChange, firstFieldFocus = false }) => (
   <Fieldset>
     <legend>Endereço</legend>
 
@@ -115,6 +120,7 @@ const UserAddress: React.FC<
       label="Cidade e Estado"
       placeholder="ex.: Brasília DF"
       onChange={handleChange}
+      autoFocus={firstFieldFocus}
     />
 
     <div className="input-block --two">

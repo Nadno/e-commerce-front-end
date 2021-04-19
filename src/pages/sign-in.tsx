@@ -49,6 +49,7 @@ const SignIn: FormComponent<SignInData> = ({
             label="Email"
             placeholder="Digite seu e-mail"
             onChange={handleChange}
+            autoFocus={true}
           />
 
           <Input

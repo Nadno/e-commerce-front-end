@@ -63,6 +63,7 @@ const AccountForm: FormComponent<AccountData> = ({
           label="Foto / Avatar"
           placeholder="ex.: http://exemplo.com (opcional)"
           onChange={props.handleChange}
+          autoFocus={true}
         />
       </Fieldset>
 

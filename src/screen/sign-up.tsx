@@ -61,7 +61,7 @@ export const SignUp: FormComponent<SignUpData, Props> = ({
 
   return (
     <Form onSubmit={onSubmit} title="Cadastre-se">
-      <UserAccount data={data} {...props} />
+      <UserAccount data={data} firstFieldFocus={true} {...props} />
       <UserAbout data={data} {...props} />
       <UserAddress data={data} {...props} />
       <Submit>Cadastrar-se</Submit>

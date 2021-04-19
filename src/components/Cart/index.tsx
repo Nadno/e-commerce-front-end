@@ -12,43 +12,72 @@ import { apiGet } from '../../utils/api';
 
 const Cart: React.FC<CartProps> = ({
   items,
-  products,
-  setItems,
+  cartItems,
+  setCartItems,
   removeItem,
 }) => {
-  const TOTAL_ITEMS = items.length;
   const [currentItems, setCurrentItems] = useState(0);
-
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setCurrentItems(() => Object.keys(products).length);
-  }, [products]);
+    setCurrentItems(() => Object.keys(cartItems).length);
+  }, [cartItems]);
 
-  const getProduct = useCallback(id => {
-    const setProduct = ({ data }: AxiosResponse) => {
-      const productId = String(data.product.id);
+  const setRequestedItems = useCallback(
+    async (requestedItems: Promise<CartItem>[]) => {
+      const cartItems = await Promise.all(requestedItems);
 
-      setItems(products => ({
-        ...products,
+      const getItemAsObject = (
+        acc: Record<string, CartItem>,
+        product: CartItem
+      ) => {
+        if (product) {
+          return (acc[String(product.id)] = product), acc;
+        }
 
-        [productId]: {
-          quantity: 1,
-          ...data.product,
-        },
+        return acc;
+      };
+
+      const newCartItems = cartItems.reduce(getItemAsObject, {});
+
+      setCartItems(cartItems => ({
+        ...cartItems,
+        ...newCartItems,
       }));
-    };
-
-    apiGet(`/product/id?value=${id}`)
-      .send()
-      .then(setProduct)
-      .catch(handleRequest(setError));
-  }, []);
+    },
+    [items]
+  );
 
   const getProducts = useCallback(() => {
-    setItems({});
+    const cancelRequests: Function[] = [];
 
-    items.forEach(getProduct);
+    if (items.length) {
+      const requestedItems = [];
+
+      const getCartItem = ({ data }: AxiosResponse) => {
+        return {
+          quantity: 1,
+          ...data.product,
+        };
+      };
+
+      for (const productId of items) {
+        if (!(productId in cartItems)) {
+          const { send, cancel } = apiGet(`/product/id?value=${productId}`);
+          cancelRequests.push(cancel);
+
+          const requestedItem = send()
+            .then(getCartItem)
+            .catch(handleRequest(setError));
+
+          requestedItems.push(requestedItem);
+        }
+      }
+
+      if (requestedItems.length) setRequestedItems(requestedItems);
+    }
+
+    return () => cancelRequests.forEach(cancel => cancel());
   }, [items]);
 
   const handleChangeQuantity = useCallback(
@@ -57,8 +86,8 @@ const Cart: React.FC<CartProps> = ({
       if (value < 1 || isNaN(value)) return;
 
       // Values null and undefined blocked by condition
-      if (products[productId] != null) {
-        setItems(prev => ({
+      if (cartItems[productId] != null) {
+        setCartItems(prev => ({
           ...prev,
           [productId]: {
             ...prev[productId],
@@ -67,10 +96,8 @@ const Cart: React.FC<CartProps> = ({
         }));
       }
     },
-    [products]
+    [cartItems]
   );
-
-  useEffect(getProducts, [items]);
 
   const cartProducts = useCallback(
     ([productId, { description, ...rest }], index) => (
@@ -89,7 +116,7 @@ const Cart: React.FC<CartProps> = ({
           id={`cart-item-${productId}`}
           name="cartItem"
           label="Quantidade:"
-          value={String(products[productId].quantity)}
+          value={String(cartItems[productId].quantity)}
           onChange={handleChangeQuantity(productId)}
         />
         <PrimaryButton onClick={() => removeItem(productId)}>
@@ -97,15 +124,16 @@ const Cart: React.FC<CartProps> = ({
         </PrimaryButton>
       </Product>
     ),
-    [products]
+    [cartItems]
   );
+
+  useEffect(getProducts, [items]);
 
   return (
     <Container title="Carrinho">
       {currentItems > 0 ? (
         <CartList className="list">
-          {currentItems === TOTAL_ITEMS &&
-            Object.entries(products).map(cartProducts)}
+          {Object.entries(cartItems).map(cartProducts)}
         </CartList>
       ) : (
         <div className="warn">Vazio</div>

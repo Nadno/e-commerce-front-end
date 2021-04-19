@@ -47,7 +47,6 @@ const GlobalStyle = createGlobalStyle`
     .warn,
     .error  {
       text-align: center;
-      margin: 2rem;
     }
 
     .warn {
@@ -74,7 +73,7 @@ const GlobalStyle = createGlobalStyle`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 1000;
 
     &.loading {
       width: 100vw;

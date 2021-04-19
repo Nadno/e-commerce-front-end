@@ -1,13 +1,27 @@
 import styled from 'styled-components';
 import Container from '../Container/style';
 
-const ModalContainer = styled(Container).attrs(p => ({ ...p, as: 'div' }))`
-  width: 100%;
-  max-width: 40rem;
+const ModalContainer = styled(Container)`
+  @keyframes show-modal {
+    from {
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: initial;
+    }
+  }
+
+  animation: show-modal 250ms forwards linear;
+
+  max-width: 42rem;
+  width: 95%;
   margin: 0;
+  opacity: 0;
   background-color: ${({ theme }) => theme.colors.background};
 
-  transform-style: preserve-3d;
+  z-index: 100;
 
   &.action .buttons {
     column-gap: 2rem;
@@ -33,12 +47,15 @@ const ModalContainer = styled(Container).attrs(p => ({ ...p, as: 'div' }))`
   }
 `;
 
-const Background = styled.div`
+const Overlay = styled.div`
   position: fixed;
 
-  display: grid;
-  place-items: center;
-  background-color: ${({ theme }) => theme.colors.shadow};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.5);
 
   top: 0;
   bottom: 0;
@@ -47,4 +64,4 @@ const Background = styled.div`
   right: 0;
 `;
 
-export { ModalContainer, Background };
+export { ModalContainer, Overlay };

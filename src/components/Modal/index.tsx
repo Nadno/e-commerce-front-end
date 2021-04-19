@@ -28,7 +28,7 @@ const Modal: React.FC<Props> = ({ isOpen, message, children, ...props }) => {
         {...props}
         as="div"
         aria-modal="true"
-        aria-aria-describedby="modal-message"
+        aria-describedby="modal-message"
       >
         <p className="message" id="modal-message">
           {message}

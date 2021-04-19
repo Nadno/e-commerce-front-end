@@ -15,18 +15,29 @@ const CartPage: React.FC = () => {
   const { cart, removeFromCart } = useCart();
 
   const [finalPrice, setFinalPrice] = useState(0);
-  const [products, setProducts] = useState<Record<string, CartItem>>({});
+  const [cartItems, setCartItems] = useState<Record<string, CartItem>>({});
 
   const getTotalPrice = useCallback(() => {
-    const total = Object.entries(products).reduce(
+    const total = Object.entries(cartItems).reduce(
       (acc, [, { quantity, price }]) => (acc += price * quantity),
       0
     );
 
     setFinalPrice(total);
-  }, [products]);
+  }, [cartItems, setFinalPrice]);
 
-  useEffect(getTotalPrice, [products]);
+  useEffect(getTotalPrice, [cartItems]);
+
+  const handleRemoveCartItem = useCallback(
+    (productId: string) => {
+      removeFromCart(productId);
+      setCartItems(cartItems => {
+        delete cartItems[productId];
+        return { ...cartItems };
+      });
+    },
+    [setCartItems, removeFromCart]
+  );
 
   return (
     <GridContainer>
@@ -37,13 +48,13 @@ const CartPage: React.FC = () => {
 
       <Cart
         items={cart}
-        products={products}
-        setItems={setProducts}
-        removeItem={removeFromCart}
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+        removeItem={handleRemoveCartItem}
       />
 
       {id != null ? (
-        <Checkout products={products} finalPrice={finalPrice} />
+        <Checkout products={cartItems} finalPrice={finalPrice} />
       ) : (
         <SignUp goToPath="/cart" />
       )}

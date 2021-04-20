@@ -26,7 +26,7 @@ const INITIAL_DATA = {
 };
 type CheckoutData = typeof INITIAL_DATA;
 
-interface Props extends Pick<CartProps, 'products'> {
+interface Props extends Pick<CartProps, 'cartItems'> {
   finalPrice: number;
 }
 
@@ -35,12 +35,12 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
   inputError,
   handleChange,
   finalPrice,
-  products,
+  cartItems,
   validSubmit,
 }) => {
   const { account } = useAccount();
   const { createOder } = useOrder();
-  const [createModal, openModal] = useModal();
+  const [Modal, openModal, setModalAs] = useModal();
 
   const handleCardTypeOnChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -50,12 +50,12 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
     []
   );
 
-  const confirmOrder = useCallback((okAction: any) => {
-    createModal.action({
+  const confirmOrder = useCallback((handleConfirm: () => void) => {
+    setModalAs.action({
       message: 'Confirmar pedido',
-      okButtonText: 'Confirmar',
-      cancelButtonText: 'Cancelar',
-      okAction,
+      confirmText: 'Confirmar',
+      cancelText: 'Cancelar',
+      handleConfirm,
     });
 
     openModal();
@@ -63,7 +63,7 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
 
   const handleSubmit = useCallback<ValidatedSubmit>(
     warnModal => {
-      const justProducts = Object.entries(products).map(
+      const justProducts = Object.entries(cartItems).map(
         ([, product]) => product
       );
       const { cardOwner } = data;
@@ -79,14 +79,14 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
           .catch(handleRequest(warnModal));
       });
     },
-    [data, products, inputError]
+    [data, cartItems, inputError]
   );
 
   const onSubmit = useMemo(() => validSubmit(handleSubmit), [inputError]);
 
   return (
     <Section>
-      <OrderTable products={Object.entries(products)} finalPrice={finalPrice} />
+      <OrderTable products={Object.entries(cartItems)} finalPrice={finalPrice} />
 
       <FormContainer>
         <FlexContainer onSubmit={onSubmit} as="form">
@@ -151,6 +151,7 @@ const Checkout: FormComponent<CheckoutData, Props> = ({
           </Fieldset>
         </FlexContainer>
       </FormContainer>
+      <Modal />
     </Section>
   );
 };

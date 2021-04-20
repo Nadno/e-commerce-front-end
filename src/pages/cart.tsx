@@ -54,7 +54,7 @@ const CartPage: React.FC = () => {
       />
 
       {id != null ? (
-        <Checkout products={cartItems} finalPrice={finalPrice} />
+        <Checkout cartItems={cartItems} finalPrice={finalPrice} />
       ) : (
         <SignUp goToPath="/cart" />
       )}
